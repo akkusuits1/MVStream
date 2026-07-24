@@ -1,0 +1,9 @@
+{
+  "profile": "openai",
+  "env": {
+    "OPENAI_BASE_URL": "https://opencode.ai/zen/v1",
+    "OPENAI_MODEL": "mimo-v2.5-free",
+    "OPENAI_API_KEY": "sk-S6Bz9gUnk1L0uHdulB3NXkeCvbGTYcztpaZq3nWaceofQtYE6jqIp0ouCygMZ1sy"
+  },
+  "createdAt": "2026-07-23T19:28:42.170Z"
+}
