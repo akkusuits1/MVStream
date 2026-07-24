@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:moviesanywhere.com)",
+      "Bash(npm install:*)",
+      "Bash(chmod +x node_modules/@esbuild/android-arm64/bin/esbuild)",
+      "Bash(node_modules/@esbuild/android-arm64/bin/esbuild --version)",
+      "Bash(cp node_modules/@esbuild/android-arm64/bin/esbuild /tmp/esbuild-test)",
+      "Bash(chmod +x /tmp/esbuild-test)",
+      "Bash(/tmp/esbuild-test --version)",
+      "Bash(cp node_modules/@esbuild/android-arm64/bin/esbuild /tmp/esbuild)",
+      "Bash(chmod +x /tmp/esbuild)",
+      "Bash(node_modules/.bin/esbuild:*)",
+      "Bash(chmod +x node_modules/.bin/esbuild)",
+      "Bash(node_modules/.bin/esbuild --version)",
+      "Bash(export ESBUILD_BINARY_PATH=/tmp/esbuild)",
+      "Bash(node node_modules/vite/bin/vite.js --version)",
+      "Bash(mv node_modules /data/data/com.termux/files/home/mvstream-node-modules)",
+      "Bash(ln -s /data/data/com.termux/files/home/mvstream-node-modules node_modules)",
+      "Bash(npm run:*)",
+      "Bash(node /storage/emulated/0/tuyul/claude/MVStream/node_modules/vite/bin/vite.js build)",
+      "Bash(ROLLUP_SKIP_NATIVE=true node /storage/emulated/0/tuyul/claude/MVStream/node_modules/vite/bin/vite.js build)"
+    ]
+  }
+}

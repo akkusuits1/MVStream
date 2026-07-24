@@ -1,0 +1,23 @@
+/** @type {import('prettier').Config} */
+export default {
+  semi: true,
+  singleQuote: true,
+  tabWidth: 2,
+  useTabs: false,
+  printWidth: 100,
+  trailingComma: 'all',
+  bracketSpacing: true,
+  bracketSameLine: false,
+  arrowParens: 'always',
+  endOfLine: 'lf',
+  htmlWhitespaceSensitivity: 'ignore',
+  plugins: [],
+  overrides: [
+    {
+      files: '*.css',
+      options: {
+        singleQuote: false,
+      },
+    },
+  ],
+};

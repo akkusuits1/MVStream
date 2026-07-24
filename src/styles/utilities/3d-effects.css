@@ -1,0 +1,117 @@
+/* ============================================
+   3D Effects & Perspective Utilities
+   ============================================ */
+
+/* Container: sets up the 3D space */
+.perspective {
+  perspective: 1000px;
+}
+
+.perspective-near {
+  perspective: 600px;
+}
+
+.perspective-far {
+  perspective: 2000px;
+}
+
+/* Card 3D transform */
+.card-3d {
+  transform-style: preserve-3d;
+  transition: transform var(--transition-slow),
+              box-shadow var(--transition-slow);
+}
+
+.card-3d:hover {
+  transform: translateY(-8px) rotateX(2deg) rotateY(-2deg) scale(1.02);
+  box-shadow: var(--shadow-3d);
+}
+
+/* Card 3D subtle (smaller movement) */
+.card-3d-subtle {
+  transform-style: preserve-3d;
+  transition: transform var(--transition-base),
+              box-shadow var(--transition-base);
+}
+
+.card-3d-subtle:hover {
+  transform: translateY(-4px) rotateX(1deg) rotateY(-1deg);
+  box-shadow: var(--shadow-xl);
+}
+
+/* Card 3D strong (dramatic) */
+.card-3d-strong {
+  transform-style: preserve-3d;
+  transition: transform var(--transition-slow),
+              box-shadow var(--transition-slow);
+}
+
+.card-3d-strong:hover {
+  transform: translateY(-12px) rotateX(4deg) rotateY(-3deg) scale(1.04);
+  box-shadow: var(--shadow-3d);
+}
+
+/* Shine overlay on hover */
+.card-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-shine::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.04) 30%,
+    transparent 50%
+  );
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.card-shine:hover::after {
+  opacity: 1;
+}
+
+/* 3D Tilt (for hero sections) */
+.tilt-3d {
+  transform-style: preserve-3d;
+  transition: transform 600ms var(--ease-bounce);
+}
+
+/* Depth layers */
+.depth-back {
+  transform: translateZ(-100px) scale(1.1);
+}
+
+.depth-mid {
+  transform: translateZ(-50px) scale(1.05);
+}
+
+.depth-front {
+  transform: translateZ(0);
+}
+
+/* Floating animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Glow pulse */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(229, 9, 20, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(229, 9, 20, 0.6); }
+}
+
+.animate-glow {
+  animation: glow-pulse 3s ease-in-out infinite;
+}

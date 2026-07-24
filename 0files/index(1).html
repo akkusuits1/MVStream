@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MV Stream</title>
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base */
+        * { font-family: 'Poppins', sans-serif; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background-color: #000; color: white; min-height: 100vh; font-size: 16px; overflow-x: hidden; }
+        .hidden { display: none !important; }
+        ::-webkit-scrollbar { width: 0; }
+
+        /* Z-INDEX LAYERING */
+        .full-page { 
+            position: fixed; inset: 0; background: #000; 
+            transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            overflow-y: auto; padding-bottom: 80px; 
+            z-index: 100;
+        }
+        .full-page.active { transform: translateY(0); }
+
+        #searchPage { z-index: 150; }
+        #profilePage { z-index: 150; }
+        
+        /* Sub-pages (Settings, Help, About, Privacy) sit above Profile */
+        #settingsPage, #helpPage, #aboutPage, #privacyPage { z-index: 155; }
+        
+        #listPage { z-index: 160; }   
+        #detailsPage { z-index: 170; } 
+
+        /* Modals & Overlays */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
+        .modal-overlay.active { display: flex; }
+        .loading-overlay { position: fixed; inset: 0; background: #000; z-index: 3000; display: none; flex-direction: column; align-items: center; justify-content: center; }
+        .loading-overlay.active { display: flex; }
+
+        /* UI Components */
+        .poster-card { min-width: 130px; width: 130px; position: relative; cursor: pointer; transition: transform 0.1s; }
+        .poster-card:active { transform: scale(0.95); }
+        .poster-img { width: 100%; height: 190px; object-fit: cover; border-radius: 10px; background: #222; }
+        .progress-bar-bg { position: absolute; bottom: 10px; left: 10px; right: 10px; height: 3px; background: rgba(255,255,255,0.3); border-radius: 2px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: #E50914; width: 0%; }
+        
+        .cast-card { min-width: 80px; width: 80px; text-align: center; }
+        .cast-img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; background: #222; margin-bottom: 5px; }
+        
+        .cat-chip { padding: 8px 16px; background: #222; border-radius: 20px; color: #ccc; font-size: 13px; white-space: nowrap; cursor: pointer; border: 1px solid #333; }
+        .cat-chip.active { background: #E50914; color: white; border-color: #E50914; }
+
+        /* Auth & Nav */
+        .auth-box { width: 90%; max-width: 400px; background: #111; padding: 30px; border-radius: 20px; border: 1px solid #333; position: relative; }
+        .auth-inp { width: 100%; padding: 15px; background: #222; border: 1px solid #444; color: white; border-radius: 8px; margin-bottom: 10px; font-size: 16px; outline: none; }
+        .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 75px; background: rgba(0,0,0,0.95); border-top: 1px solid #333; display: flex; justify-content: space-around; align-items: center; z-index: 90; backdrop-filter: blur(10px); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #888; font-size: 12px; gap: 2px; }
+        .nav-item.active { color: #E50914; }
+
+        /* Buttons */
+        .back-btn { position: fixed; top: 20px; right: 20px; z-index: 500; background: rgba(0,0,0,0.6); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px); }
+        .server-btn { width: 100%; padding: 15px; margin-bottom: 10px; background: #222; border: 1px solid #333; border-radius: 10px; text-align: left; display: flex; justify-content: space-between; align-items: center; }
+        .error-toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #d32f2f; color: white; padding: 12px 25px; border-radius: 30px; z-index: 5000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: none; font-weight: 600; white-space: nowrap; }
+        .spinner { width: 50px; height: 50px; border: 5px solid #333; border-top: 5px solid #E50914; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        /* Ads */
+        .ad-banner-container { position: fixed; bottom: 76px; left: 0; right: 0; z-index: 80; display: none; justify-content: center; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); padding: 5px; }
+        .ad-banner-img { max-height: 50px; max-width: 100%; border-radius: 4px; object-fit: contain; }
+        .ad-overlay { position: fixed; inset: 0; background: #000; z-index: 5000; display: none; flex-direction: column; align-items: center; justify-content: center; }
+        .ad-overlay.active { display: flex; }
+        .ad-skip-btn { position: absolute; top: 20px; right: 20px; background: rgba(0,0,0,0.7); color: white; padding: 10px 20px; border-radius: 20px; border: 1px solid #555; z-index: 5001; pointer-events: none; opacity: 0.7; }
+        .ad-skip-btn.clickable { pointer-events: auto; opacity: 1; background: #E50914; border-color: #E50914; }
+        
+        /* Trailer Modal */
+        #trailerModal .modal-box { width: 100%; max-width: 800px; aspect-ratio: 16/9; padding: 0; background: black; overflow: hidden; display:flex; align-items:center; justify-content:center;}
+        #trailerFrame { width: 100%; height: 100%; border: none; }
+    </style>
+</head>
+<body>
+
+    <div id="errorToast" class="error-toast">Message</div>
+
+    <div id="adBanner" class="ad-banner-container"><a id="adBannerLink" href="#" target="_blank"><img id="adBannerImage" src="" class="ad-banner-img"></a></div>
+    <div id="adOverlay" class="ad-overlay"><button id="adSkipBtn" class="ad-skip-btn">Skip in 5s</button><div id="adContentContainer" class="w-full h-full flex items-center justify-center"></div></div>
+
+    <div id="loadingOverlay" class="loading-overlay"><div class="spinner mb-4"></div><p class="text-gray-400 animate-pulse">Connecting...</p></div>
+
+    <div id="authModal" class="modal-overlay">
+        <div class="auth-box">
+            <button class="absolute top-4 right-4 text-gray-400 text-2xl" onclick="document.getElementById('authModal').classList.remove('active')">×</button>
+            <h2 class="text-3xl font-black text-red-600 mb-2 text-center">MV Stream</h2>
+            <p class="text-gray-400 text-center mb-6 text-sm">Login Required</p>
+            <input type="email" id="logEmail" placeholder="Email" class="auth-inp"><input type="password" id="logPass" placeholder="Password" class="auth-inp">
+            <button onclick="handleLogin()" class="w-full bg-red-600 py-3 rounded-lg font-bold text-lg mb-3 mt-2 hover:bg-red-700">Login</button>
+            <button onclick="handleSignup()" class="w-full bg-[#333] py-3 rounded-lg font-bold text-lg hover:bg-[#444]">Create Account</button>
+            <p class="text-center text-xs text-gray-500 mt-4 cursor-pointer" onclick="handleReset()">Forgot Password?</p>
+        </div>
+    </div>
+
+    <div id="mainApp" class="pb-24">
+        <header class="fixed top-0 inset-x-0 z-30 p-4 bg-gradient-to-b from-black to-transparent flex justify-between items-center">
+            <div class="font-black text-3xl text-red-600 tracking-tighter">MV STREAM</div>
+            <div class="flex gap-4 items-center">
+                <i class="fas fa-search text-2xl cursor-pointer" onclick="document.getElementById('searchPage').classList.add('active')"></i>
+                <div onclick="document.getElementById('profilePage').classList.add('active')" class="w-8 h-8 rounded-full bg-gray-800 border border-gray-600 flex items-center justify-center cursor-pointer overflow-hidden"><i class="fas fa-user text-sm" id="headerProfileIcon"></i></div>
+            </div>
+        </header>
+
+        <div id="heroSection" class="relative h-[60vh] min-h-[400px]">
+            <img id="heroImg" src="" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+            <div class="absolute bottom-0 w-full p-6 pb-12">
+                <h1 id="heroTitle" class="text-4xl font-black mb-2 drop-shadow-lg">Loading...</h1>
+                <p id="heroDesc" class="text-sm text-gray-300 line-clamp-2 mb-4 max-w-md"></p>
+                <div class="flex gap-3">
+                    <button onclick="playHero()" class="bg-white text-black px-8 py-3 rounded-full font-bold flex items-center gap-2 hover:scale-105 transition"><i class="fas fa-play"></i> Play</button>
+                    <button id="heroListBtn" onclick="toggleHeroWatchlist()" class="bg-gray-800/80 backdrop-blur text-white px-6 py-3 rounded-full font-bold flex items-center gap-2"><i class="fas fa-plus"></i> List</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="catRow" class="flex gap-3 px-4 py-4 overflow-x-auto relative z-10"></div>
+
+        <div id="dynamicContent" class="relative z-10 space-y-8"></div>
+    </div>
+
+    <div id="detailsPage" class="full-page">
+        <div class="back-btn" onclick="document.getElementById('detailsPage').classList.remove('active')"><i class="fas fa-arrow-down"></i></div>
+        <div class="h-[45vh] relative"><img id="detImg" src="" class="w-full h-full object-cover"><div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div></div>
+        <div class="p-6 relative -mt-24 bg-gradient-to-t from-black via-black to-transparent pt-20">
+            <h1 id="detTitle" class="mb-2 text-3xl drop-shadow-lg leading-tight">Title</h1>
+            <div id="detMeta" class="text-gray-400 text-sm mb-3 flex flex-wrap gap-2 items-center"></div>
+            
+            <div class="flex gap-3 mb-6">
+                <button id="detListBtn" class="bg-[#222] p-3 rounded-xl flex-1 font-bold border border-gray-700 flex items-center justify-center gap-2" onclick="toggleDetailWatchlist()"><i class="fas fa-plus"></i> Watchlist</button>
+                <button onclick="watchTrailer()" class="bg-[#222] p-3 rounded-xl flex-1 font-bold border border-gray-700 flex items-center justify-center gap-2"><i class="fab fa-youtube text-red-500"></i> Trailer</button>
+            </div>
+
+            <p id="detDesc" class="mb-6 leading-relaxed text-gray-300 text-sm">Description...</p>
+            
+            <div class="mb-6">
+                <h3 class="text-white font-bold mb-3">Cast</h3>
+                <div id="detCast" class="flex gap-4 overflow-x-auto pb-2"></div>
+            </div>
+
+            <div id="movieAction" class="hidden flex gap-3">
+                <button onclick="playCurrentMovie()" class="flex-1 bg-white text-black py-3 rounded-xl font-bold text-lg flex items-center justify-center gap-2"><i class="fas fa-play"></i> Play</button>
+                <button onclick="downloadCurrentMovie()" class="flex-1 bg-[#333] text-white py-3 rounded-xl font-bold text-lg flex items-center justify-center gap-2"><i class="fas fa-download"></i> Download</button>
+            </div>
+            <div id="seriesAction" class="hidden"><h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i class="fas fa-layer-group text-red-600"></i> Episodes</h3><div id="episodesList" class="space-y-3"></div></div>
+        </div>
+    </div>
+
+    <div id="listPage" class="full-page">
+        <div class="p-4 sticky top-0 bg-black/95 backdrop-blur z-20 flex gap-3 border-b border-[#333]">
+            <button class="text-2xl" onclick="document.getElementById('listPage').classList.remove('active')"><i class="fas fa-arrow-left"></i></button>
+            <input type="text" id="listSearchInput" placeholder="Search..." class="flex-1 bg-[#222] border-none rounded-full px-5 py-3 text-white outline-none">
+            <h3 id="listPageTitle" class="text-lg font-bold absolute left-1/2 -translate-x-1/2 top-5 hidden">Title</h3>
+        </div>
+        <div id="listResults" class="grid grid-cols-3 gap-3 p-4 pb-24"></div>
+    </div>
+
+    <div id="searchPage" class="full-page">
+        <div class="p-4 sticky top-0 bg-black/95 backdrop-blur z-20 flex gap-3 border-b border-[#333]">
+            <button class="back-btn static w-10 h-10 text-xl bg-transparent border-0" onclick="document.getElementById('searchPage').classList.remove('active')"><i class="fas fa-arrow-left"></i></button>
+            <input type="text" id="searchInput" placeholder="Search..." class="flex-1 bg-[#222] border-none rounded-full px-5 py-3 text-base outline-none text-white">
+        </div>
+        <div id="searchResults" class="grid grid-cols-3 gap-3 p-4 pb-24"></div>
+    </div>
+
+    <div id="profilePage" class="full-page">
+        <div class="p-6 bg-gradient-to-b from-[#1a1a1a] to-black min-h-screen pt-16">
+            <div class="back-btn" onclick="document.getElementById('profilePage').classList.remove('active')"><i class="fas fa-times"></i></div>
+            <div class="text-center mb-8">
+                <div class="w-24 h-24 bg-red-600 rounded-full mx-auto mb-4 flex items-center justify-center text-4xl font-bold border-4 border-[#333]">U</div>
+                <h2 class="text-xl font-bold" id="profName">Guest</h2>
+                <p class="text-gray-400 text-sm mb-4" id="profEmail">Not Logged In</p>
+                <div id="guestActions" class="hidden flex gap-2 justify-center">
+                    <button onclick="document.getElementById('authModal').classList.add('active')" class="bg-white text-black px-6 py-2 rounded-full font-bold text-sm">Login</button>
+                    <button onclick="document.getElementById('authModal').classList.add('active')" class="bg-[#333] text-white px-6 py-2 rounded-full font-bold text-sm border border-gray-600">Sign Up</button>
+                </div>
+            </div>
+            
+            <div class="space-y-2">
+                <div class="flex gap-4 items-center p-4 bg-[#111] rounded-xl border border-[#222] cursor-pointer active:bg-[#222]" onclick="openList('watchlist')"><i class="fas fa-bookmark text-red-500"></i> My Watchlist</div>
+                <div class="flex gap-4 items-center p-4 bg-[#111] rounded-xl border border-[#222] cursor-pointer active:bg-[#222]" onclick="openList('history')"><i class="fas fa-history text-red-500"></i> Watch History</div>
+                <div class="flex gap-4 items-center p-4 bg-[#111] rounded-xl border border-[#222] cursor-pointer active:bg-[#222]" onclick="document.getElementById('settingsPage').classList.add('active')"><i class="fas fa-cog text-gray-400"></i> Settings</div>
+                <div class="flex gap-4 items-center p-4 bg-[#111] rounded-xl border border-[#222] cursor-pointer active:bg-[#222]" onclick="document.getElementById('helpPage').classList.add('active')"><i class="fas fa-question-circle text-gray-400"></i> Help & Support</div>
+                <div class="flex gap-4 items-center p-4 bg-[#111] rounded-xl border border-[#222] cursor-pointer active:bg-[#222]" onclick="document.getElementById('aboutPage').classList.add('active')"><i class="fas fa-info-circle text-gray-400"></i> About App</div>
+                <div class="flex gap-4 items-center p-4 bg-[#111] rounded-xl border border-[#222] cursor-pointer active:bg-[#222]" onclick="document.getElementById('privacyPage').classList.add('active')"><i class="fas fa-shield-alt text-gray-400"></i> Privacy Policy</div>
+                <button id="logoutBtn" onclick="auth.signOut()" class="w-full p-4 mt-6 bg-red-900/10 text-red-500 rounded-xl font-bold border border-red-900/30 hidden">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="settingsPage" class="full-page">
+        <div class="p-6 bg-black min-h-screen pt-16">
+            <div class="back-btn" onclick="document.getElementById('settingsPage').classList.remove('active')"><i class="fas fa-arrow-left"></i></div>
+            <h2 class="text-2xl font-bold mb-6">Settings</h2>
+            <div class="space-y-4">
+                <div class="flex justify-between items-center p-4 bg-[#111] rounded-xl border border-[#222]" onclick="toggleExtPlayer()">
+                    <div><h4 class="font-bold">External Player</h4><p class="text-xs text-gray-500">Use VLC/MX Player</p></div>
+                    <div id="extToggle" class="text-xs font-bold bg-[#222] px-3 py-1 rounded border border-gray-600">OFF</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="helpPage" class="full-page">
+        <div class="p-6 bg-black min-h-screen pt-16">
+            <div class="back-btn" onclick="document.getElementById('helpPage').classList.remove('active')"><i class="fas fa-arrow-left"></i></div>
+            <h2 class="text-2xl font-bold mb-6">Help & Support</h2>
+            <div class="bg-[#111] p-6 rounded-xl border border-[#222] mb-6">
+                <h3 class="font-bold mb-4 text-lg">Request Content</h3>
+                <p class="text-gray-400 text-sm mb-4">Can't find it? Request here.</p>
+                <input type="text" id="reqInput" placeholder="Movie Name..." class="w-full bg-[#222] p-3 rounded border border-gray-700 mb-3 text-white outline-none">
+                <button onclick="submitRequest()" class="w-full bg-blue-600 py-3 rounded font-bold">Submit Request</button>
+            </div>
+            <div class="text-center text-gray-500 text-sm"><p>support@mvstream.com</p><p class="mt-2">v0.9.2</p></div>
+        </div>
+    </div>
+
+    <div id="aboutPage" class="full-page">
+        <div class="p-6 bg-black min-h-screen pt-16 flex flex-col items-center">
+            <div class="back-btn" onclick="document.getElementById('aboutPage').classList.remove('active')"><i class="fas fa-arrow-left"></i></div>
+            <div class="w-24 h-24 bg-red-600 rounded-2xl flex items-center justify-center text-4xl font-bold mb-6">M</div>
+            <h2 class="text-3xl font-bold mb-2">MV Stream</h2>
+            <p class="text-gray-400 mb-8">Version 0.9.2</p>
+            <div class="text-center text-gray-300 space-y-4 max-w-md">
+                <p>MV Stream offers the best collection of Movies and Web Series in high quality. Enjoy seamless streaming and downloading experience.</p>
+                <p class="text-sm text-gray-500">© 2026 MV Stream. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="privacyPage" class="full-page">
+        <div class="p-6 bg-black min-h-screen pt-16">
+            <div class="back-btn" onclick="document.getElementById('privacyPage').classList.remove('active')"><i class="fas fa-arrow-left"></i></div>
+            <h2 class="text-2xl font-bold mb-6">Privacy Policy</h2>
+            <div class="space-y-4 text-gray-300 text-sm leading-relaxed">
+                <p><strong>1. Data Collection:</strong> We collect basic information such as your email address for account management and preferences like watchlist and history.</p>
+                <p><strong>2. Usage:</strong> Your data is used solely to personalize your experience and improve app performance.</p>
+                <p><strong>3. Third-Party Services:</strong> We may use third-party services for analytics and advertisements.</p>
+                <p><strong>4. Security:</strong> We implement standard security measures to protect your data.</p>
+                <p><strong>5. Contact:</strong> For privacy concerns, contact support@mvstream.com.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="serverModal" class="modal-overlay"><div class="bg-[#111] w-full max-w-md rounded-2xl border border-[#333] p-6 max-h-[70vh] flex flex-col"><div class="flex justify-between mb-6 items-center"><h3 class="font-bold text-xl">Select Source</h3><button onclick="document.getElementById('serverModal').classList.remove('active')" class="text-gray-400 text-2xl">×</button></div><div id="serverList" class="overflow-y-auto space-y-2"></div></div></div>
+    <div id="statusModal" class="modal-overlay" style="z-index: 4000;"><div class="bg-[#1a1a1a] p-8 rounded-2xl w-[90%] max-w-sm text-center border border-[#333]"><div id="statusIcon" class="w-16 h-16 bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4 text-red-500 text-3xl"><i class="fas fa-exclamation-triangle"></i></div><h3 id="statusTitle" class="text-xl font-bold mb-2">Unavailable</h3><p id="statusMsg" class="text-gray-400 text-sm mb-6">Msg</p><div class="space-y-3"><button id="extPlayerBtn" class="w-full bg-red-600 py-3 rounded-xl font-bold hidden">Open External Player</button><button onclick="document.getElementById('statusModal').classList.remove('active')" class="w-full bg-[#333] py-3 rounded-xl font-bold">Close</button></div></div></div>
+    <div id="videoOverlay" class="fixed inset-0 bg-black z-[500] hidden flex-col justify-center"><button onclick="closePlayer()" class="absolute top-6 right-6 z-50 bg-black/50 p-3 rounded-full text-white backdrop-blur border border-white/10"><i class="fas fa-times text-xl"></i></button><video id="player" playsinline controls class="w-full h-full"></video></div>
+    
+    <div id="trailerModal" class="modal-overlay" style="z-index: 5000;">
+        <div class="bg-black w-full max-w-4xl aspect-video relative flex items-center justify-center">
+            <button onclick="closeTrailer()" class="absolute -top-10 right-0 text-white text-3xl"><i class="fas fa-times"></i></button>
+            <iframe id="trailerFrame" class="w-full h-full" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <nav class="nav-bar">
+        <div class="nav-item active" onclick="switchTab('home')"><i class="fas fa-home"></i><span>Home</span></div>
+        <div class="nav-item" onclick="switchTab('movies')"><i class="fas fa-film"></i><span>Movies</span></div>
+        <div class="nav-item" onclick="switchTab('series')"><i class="fas fa-tv"></i><span>Series</span></div>
+        <div class="nav-item" onclick="document.getElementById('profilePage').classList.add('active')"><i class="fas fa-user"></i><span>Profile</span></div>
+    </nav>
+
+    <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+    <script>
+        const firebaseConfig = { apiKey: "AIzaSyBPJpo9G0tw6OlIZr1Rmcsi4O9S0EuFpNg", authDomain: "mv-stream-test.firebaseapp.com", databaseURL: "https://mv-stream-test-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "mv-stream-test", storageBucket: "mv-stream-test.firebasestorage.app", messagingSenderId: "1078144873646", appId: "1:1078144873646:web:04b865aa2b8d7a6a79693f" };
+        firebase.initializeApp(firebaseConfig); const auth = firebase.auth(); const db = firebase.database();
+
+        let allContent = [], heroItem = null, currentItem = null, extPlayer = localStorage.getItem('extPlayer') === 'true';
+        let player = new Plyr('#player'); let viewCounted = false, loadTimeout;
+        let adsConfig = { enabled: false, bannerImg: '', bannerLink: '', interstitial: '' };
+        
+        const KEY_WATCHLIST = 'mv_watchlist'; const KEY_CONTINUE = 'mv_continue'; const KEY_HISTORY = 'mv_history';
+
+        document.addEventListener('DOMContentLoaded', () => { loadContent(); updateExtBtn(); fetchAdSettings(); loadCategories(); });
+        
+        function fetchAdSettings() { db.ref('settings/ads').on('value', s => { adsConfig = s.val() || { enabled: false }; renderBanner(); if(adsConfig.enabled && adsConfig.interstitial && !sessionStorage.getItem('appOpen')) showInterstitial(()=>{sessionStorage.setItem('appOpen','1')}); }); }
+        function renderBanner() { const b = document.getElementById('adBanner'); if (adsConfig.enabled && adsConfig.bannerImg) { document.getElementById('adBannerImage').src = adsConfig.bannerImg; document.getElementById('adBannerLink').href = adsConfig.bannerLink || '#'; b.style.display = 'flex'; } else { b.style.display = 'none'; } }
+        
+        //function showInterstitial(cb) { if (!adsConfig.enabled || !adsConfig.interstitial) { cb(); return; } const o=document.getElementById('adOverlay'), c=document.getElementById('adContentContainer'), b=document.getElementById('adSkipBtn'); const url=adsConfig.interstitial, isV=url.match(/\.(mp4|webm)$/i); c.innerHTML=isV?`<video src="${url}" autoplay muted class="w-full h-full object-contain"></video>`:`<img src="${url}" class="w-full h-full object-contain">`; o.classList.add('active'); let k=5; b.classList.remove('clickable'); b.innerText=`Skip in ${k}s`; const t=setInterval(()=>{ k--; if(k<=0){ clearInterval(t); b.innerText="Skip Ad"; b.classList.add('clickable'); b.onclick=()=>{o.classList.remove('active'); c.innerHTML=''; cb();}; } else b.innerText=`Skip in ${k}s`; },1000); }
+        // REPLACE your existing showInterstitial function with this one:
+        function showInterstitial(cb) {
+            if (!adsConfig.enabled || !adsConfig.interstitial) { cb(); return; }
+            
+            const url = adsConfig.interstitial;
+            
+            // Check if it's a Video/Image or a Direct Link (Adsterra)
+            const isVideo = url.match(/\.(mp4|webm|ogg)$/i);
+            const isImage = url.match(/\.(jpeg|jpg|gif|png|webp)$/i);
+        
+            // If it's a media file (Custom Ad), show the overlay
+            if (isVideo || isImage) {
+                const o = document.getElementById('adOverlay');
+                const c = document.getElementById('adContentContainer');
+                const b = document.getElementById('adSkipBtn');
+                
+                c.innerHTML = isVideo ? 
+                    `<video src="${url}" autoplay muted playsinline class="w-full h-full object-contain"></video>` : 
+                    `<img src="${url}" class="w-full h-full object-contain">`;
+                    
+                o.classList.add('active');
+                
+                let k = 5;
+                b.classList.remove('clickable');
+                b.innerText = `Skip in ${k}s`;
+                
+                const t = setInterval(() => {
+                    k--;
+                    if (k <= 0) {
+                        clearInterval(t);
+                        b.innerText = "Skip Ad";
+                        b.classList.add('clickable');
+                        b.onclick = () => {
+                            o.classList.remove('active');
+                            c.innerHTML = '';
+                            cb(); // Proceed to movie
+                        };
+                    } else {
+                        b.innerText = `Skip in ${k}s`;
+                    }
+                }, 1000);
+            } 
+            // If it's NOT a media file (It's an Adsterra Direct Link)
+            else {
+                // Open Ad in New Tab
+                window.open(url, '_blank');
+                // Proceed to movie in current tab immediately
+                cb();
+            }
+        }
+
+        function loadCategories() { db.ref('categories').once('value', s => { const c=document.getElementById('catRow'); c.innerHTML=''; s.forEach(x=>{ c.innerHTML+=`<div class="cat-chip" onclick="filterByCat('${x.val().name}', this)">${x.val().name}</div>`; }); }); }
+        function filterByCat(cat, el) { 
+            const chips = document.querySelectorAll('.cat-chip'); chips.forEach(c=>c.classList.remove('active')); el.classList.add('active');
+            const filtered = allContent.filter(i => (i.category||'').includes(cat));
+            const c = document.getElementById('dynamicContent');
+            c.innerHTML = `<div class="mb-10"><h3 class="text-lg font-bold px-4 mb-3 flex items-center gap-2"><span class="w-1 h-5 bg-red-600 rounded-full"></span> ${cat}</h3><div class="grid grid-cols-3 gap-3 px-4">${filtered.map(i=>createPoster(i)).join('')}</div></div>`;
+        }
+
+        function loadContent() { Promise.all([db.ref('movies').once('value'), db.ref('webseries').once('value')]).then(([m, s]) => { const mov=[], sers=[]; allContent=[]; m.forEach(c => { const i={id:c.key,type:'movie',...c.val()}; mov.push(i); allContent.push(i); }); s.forEach(c => { const i={id:c.key,type:'series',...c.val()}; sers.push(i); allContent.push(i); }); 
+            // Sorting Newest First
+            mov.sort((a,b)=>b.createdAt-a.createdAt); sers.sort((a,b)=>b.createdAt-a.createdAt); allContent.sort((a,b)=>b.createdAt-a.createdAt);
+            if(mov.length) { heroItem=mov[0]; document.getElementById('heroImg').src=heroItem.backdrop; document.getElementById('heroTitle').innerText=heroItem.title; document.getElementById('heroDesc').innerText=heroItem.description; updateHeroWatchlistBtn(); } renderHome(mov, sers); }); }
+        function renderHome(m, s) { const cw = JSON.parse(localStorage.getItem(KEY_CONTINUE) || '[]'); const cwHtml = cw.length ? `<div class="mb-8"><h3 class="text-lg font-bold px-4 mb-3 flex items-center gap-2"><span class="w-1 h-5 bg-blue-600 rounded-full"></span> Continue Watching</h3><div class="poster-scroll px-4 gap-3 flex overflow-x-auto pb-2">${cw.map(x=>createPoster(allContent.find(c=>c.id===x.id)||{}, true, x.progress)).join('')}</div></div>` : ''; document.getElementById('dynamicContent').innerHTML = `${cwHtml}<div class="mb-10"><h3 class="text-lg font-bold px-4 mb-3 flex items-center gap-2"><span class="w-1 h-5 bg-red-600 rounded-full"></span> Latest Movies</h3><div class="poster-scroll px-4 gap-3 flex overflow-x-auto pb-2">${m.map(i=>createPoster(i)).join('')}</div></div><div class="mb-10"><h3 class="text-lg font-bold px-4 mb-3 flex items-center gap-2"><span class="w-1 h-5 bg-red-600 rounded-full"></span> Web Series</h3><div class="poster-scroll px-4 gap-3 flex overflow-x-auto pb-2">${s.map(i=>createPoster(i)).join('')}</div></div>`; }
+        function createPoster(i, isCw=false, prog=0) { if(!i.id) return ''; return `<div class="poster-card min-w-[130px]" onclick="openDetails('${i.id}')"><img src="${i.poster}" class="poster-img h-[190px] w-full object-cover rounded-lg bg-[#222]">${isCw ? `<div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${prog}%"></div></div>` : ''}<p class="text-xs font-medium mt-2 truncate text-gray-300">${i.title}</p></div>`; }
+
+        function openDetails(id) { 
+            currentItem = allContent.find(i => i.id === id); if(!currentItem) return; addToHistory(id); 
+            document.getElementById('detImg').src = currentItem.backdrop; document.getElementById('detTitle').innerText = currentItem.title; document.getElementById('detDesc').innerText = currentItem.description; 
+            const year = (currentItem.releaseDate || '').split('-')[0]; const genres = currentItem.genres || currentItem.category;
+            document.getElementById('detMeta').innerHTML = `<span>${year}</span> • <span class="text-gray-300">${genres}</span>`;
+            const castDiv = document.getElementById('detCast'); castDiv.innerHTML = '';
+            if(currentItem.cast && currentItem.cast.length) { currentItem.cast.forEach(c => { castDiv.innerHTML += `<div class="cast-card"><img src="${c.img || 'https://via.placeholder.com/80'}" class="cast-img"><p class="text-xs text-gray-300 truncate">${c.name}</p></div>`; }); } else { castDiv.innerHTML = '<p class="text-gray-500 text-xs">No cast info.</p>'; }
+            updateDetailWatchlistBtn(); const m=document.getElementById('movieAction'), s=document.getElementById('seriesAction'); 
+            if(currentItem.type==='movie') { m.classList.remove('hidden'); s.classList.add('hidden'); } else { m.classList.add('hidden'); s.classList.remove('hidden'); const l=document.getElementById('episodesList'); l.innerHTML=''; (currentItem.seasons||[]).forEach((ss,si)=>(ss.episodes||[]).forEach((ee,ei)=>{ l.innerHTML+=`<div class="bg-[#222] p-4 rounded-xl flex justify-between items-center border border-white/5"><div><span class="text-xs text-gray-400 font-bold">${ss.name}</span><div class="font-bold">Ep ${ee.episodeNumber||ei+1}</div></div><div class="flex gap-3"><button onclick="checkAccess(currentItem,'download')" class="p-2 bg-gray-800 rounded-full"><i class="fas fa-download text-gray-400"></i></button><button onclick="playItem(currentItem.seasons[${si}].episodes[${ei}].links,currentItem)" class="p-2"><i class="fas fa-play-circle text-3xl text-red-600"></i></button></div></div>`; })); } 
+            document.getElementById('detailsPage').classList.add('active'); 
+        }
+
+        // --- SUBMIT REQUEST FUNCTION ---
+        function submitRequest() {
+            const val = document.getElementById('reqInput').value;
+            if(!val) return showError("Enter a name");
+            if(!auth.currentUser) return document.getElementById('authModal').classList.add('active');
+            
+            // Fix: Ensure user email is captured safely
+            const email = auth.currentUser.email || "Guest User";
+            
+            db.ref('broken_links').push({type:'request', title:val, user:email, reportedAt:Date.now()})
+            .then(() => { 
+                showError("Request Submitted!"); 
+                document.getElementById('reqInput').value=''; 
+                document.getElementById('helpPage').classList.remove('active'); 
+            }).catch(e => showError(e.message));
+        }
+
+        function watchTrailer() {
+            if(currentItem && currentItem.trailer) {
+                const url = currentItem.trailer;
+                let embedUrl = "";
+                if(url.includes('youtube.com') || url.includes('youtu.be')) {
+                    const id = url.split('v=')[1]?.split('&')[0] || url.split('/').pop();
+                    embedUrl = `https://www.youtube.com/embed/${id}?autoplay=1`;
+                } else { embedUrl = url; }
+                document.getElementById('trailerFrame').src = embedUrl;
+                document.getElementById('trailerModal').classList.add('active');
+            } else { showError("Trailer not available"); }
+        }
+        function closeTrailer() { document.getElementById('trailerModal').classList.remove('active'); document.getElementById('trailerFrame').src = ''; }
+
+        function toggleWatchlist(id) { let list = JSON.parse(localStorage.getItem(KEY_WATCHLIST) || '[]'); if(list.includes(id)) list = list.filter(x=>x!==id); else list.push(id); localStorage.setItem(KEY_WATCHLIST, JSON.stringify(list)); if(currentItem && currentItem.id === id) updateDetailWatchlistBtn(); if(heroItem && heroItem.id === id) updateHeroWatchlistBtn(); }
+        function addToHistory(id) { let list = JSON.parse(localStorage.getItem(KEY_HISTORY) || '[]'); list = list.filter(x=>x!==id); list.unshift(id); if(list.length > 50) list.pop(); localStorage.setItem(KEY_HISTORY, JSON.stringify(list)); }
+        function saveProgress(id, time, duration) { if(!duration) return; let list = JSON.parse(localStorage.getItem(KEY_CONTINUE) || '[]'); list = list.filter(x=>x.id!==id); list.unshift({id:id, progress: (time/duration)*100, timestamp: Date.now()}); if(list.length > 10) list.pop(); localStorage.setItem(KEY_CONTINUE, JSON.stringify(list)); }
+        function toggleHeroWatchlist() { toggleWatchlist(heroItem.id); }
+        function toggleDetailWatchlist() { toggleWatchlist(currentItem.id); }
+        function updateHeroWatchlistBtn() { const list = JSON.parse(localStorage.getItem(KEY_WATCHLIST) || '[]'); const btn = document.getElementById('heroListBtn'); if(list.includes(heroItem.id)) btn.innerHTML = '<i class="fas fa-check"></i> Added'; else btn.innerHTML = '<i class="fas fa-plus"></i> List'; }
+        function updateDetailWatchlistBtn() { const list = JSON.parse(localStorage.getItem(KEY_WATCHLIST) || '[]'); const btn = document.getElementById('detListBtn'); if(list.includes(currentItem.id)) { btn.innerHTML = '<i class="fas fa-check text-green-500"></i>'; btn.style.borderColor = "#00C853"; } else { btn.innerHTML = '<i class="fas fa-plus text-xs"></i>'; btn.style.borderColor = "#4b5563"; } }
+        function openList(type) { const page = document.getElementById('listPage'); const title = document.getElementById('listPageTitle'); const search = document.getElementById('listSearchInput'); const grid = document.getElementById('listResults'); page.classList.add('active'); if(type === 'search') { title.classList.add('hidden'); search.classList.remove('hidden'); search.value=''; search.focus(); grid.innerHTML=''; search.oninput = (e) => { const v = e.target.value.toLowerCase(); const r = allContent.filter(i => i.title.toLowerCase().includes(v)); grid.innerHTML = r.map(i => createPoster(i)).join(''); }; } else { search.classList.add('hidden'); title.classList.remove('hidden'); let ids = []; if(type === 'watchlist') { title.innerText = "My Watchlist"; ids = JSON.parse(localStorage.getItem(KEY_WATCHLIST) || '[]'); } else { title.innerText = "Watch History"; ids = JSON.parse(localStorage.getItem(KEY_HISTORY) || '[]'); } const items = ids.map(id => allContent.find(c => c.id === id)).filter(Boolean); grid.innerHTML = items.length ? items.map(i => createPoster(i)).join('') : '<p class="text-gray-500 col-span-3 text-center mt-10">Nothing here yet.</p>'; } }
+        function playHero() { if(heroItem) checkAccess(heroItem, 'play'); }
+        function playCurrentMovie() { if(currentItem) checkAccess(currentItem, 'play'); }
+        function downloadCurrentMovie() { if(currentItem) checkAccess(currentItem, 'download'); }
+        function checkAccess(item, action) { if(!auth.currentUser) { document.getElementById('authModal').classList.add('active'); return; } db.ref(`users/${auth.currentUser.uid}`).once('value', snap => { if(snap.val()?.approved === false && !snap.val()?.isGuest) { showError("Waiting for Admin Approval"); return; } showInterstitial(() => { if (action === 'download') handleDownload(item); else { if (item.type === 'movie') { if (item.links && item.links.length) playItem(item.links, item); else if (item.movieLink) playItem([{url:item.movieLink}], item); else showStatusModal(true, null, item); } else openDetails(item.id); } }); }); }
+        function playItem(links, item) { if(!links || !links.length) return showStatusModal(true, null, item); const cw = JSON.parse(localStorage.getItem(KEY_CONTINUE) || '[]'); const saved = cw.find(x => x.id === item.id); if(links.length > 1) { const list = document.getElementById('serverList'); list.innerHTML = ''; links.forEach(l => { const btn = document.createElement('div'); btn.className = "server-btn bg-[#222] p-4 rounded-lg flex justify-between items-center mb-2 cursor-pointer border border-[#333] hover:border-red-600"; btn.innerHTML = `<span class="font-medium">${l.label||'Server'}</span> <i class="fas fa-play text-red-600"></i>`; btn.onclick = () => { document.getElementById('serverModal').classList.remove('active'); verifyAndPlay(l.url, item, saved?.progress); }; list.appendChild(btn); }); document.getElementById('serverModal').classList.add('active'); } else verifyAndPlay(links[0].url, item, saved?.progress); }
+        function verifyAndPlay(url, item, startPerc=0) { if(!url || url==='undefined') { showStatusModal(true, url, item); return; } if(extPlayer || url.endsWith('.mkv')) { if(url.endsWith('.mkv')) showStatusModal(false, url, item, true); else window.open(url, '_blank'); return; } document.getElementById('loadingOverlay').classList.remove('hidden'); document.getElementById('loadingOverlay').classList.add('active'); document.getElementById('videoOverlay').classList.remove('hidden'); document.getElementById('videoOverlay').classList.add('active'); document.querySelector('#videoOverlay video').style.opacity = '0'; const type = url.includes('.m3u8') ? 'application/x-mpegURL' : 'video/mp4'; player.source = { type: 'video', sources: [{ src: url, type: type }] }; player.play().catch(e => console.log("Auto-blocked")); loadTimeout = setTimeout(() => { if(!player.playing) handleBroken(item, url); }, 10000); player.once('loadedmetadata', () => { clearTimeout(loadTimeout); document.getElementById('loadingOverlay').classList.remove('active'); document.getElementById('loadingOverlay').classList.add('hidden'); document.querySelector('#videoOverlay video').style.opacity = '1'; if(startPerc > 0 && startPerc < 95) { const time = (startPerc / 100) * player.duration; if(confirm("Resume where you left off?")) player.currentTime = time; } }); player.once('error', (e) => handleBroken(item, url)); viewCounted = false; player.on('timeupdate', () => { saveProgress(item.id, player.currentTime, player.duration); if(!viewCounted && player.currentTime > 120) { db.ref(`analytics/views/${new Date().toISOString().split('T')[0]}`).transaction(v => (v||0)+1); viewCounted = true; } }); }
+        function handleDownload(item, s=null, e=null) { let l=[]; if(item.type==='movie')l=item.links||(item.movieLink?[{url:item.movieLink,label:'DL'}]:[]); else if(s!==null)l=item.seasons[s].episodes[e].links||(item.seasons[s].episodes[e].link?[{url:item.seasons[s].episodes[e].link,label:'DL'}]:[]); if(!l.length)return showStatusModal(true,null,item); if(l.length>1){ const lst=document.getElementById('serverList');lst.innerHTML='';l.forEach(x=>{const b=document.createElement('div');b.className="server-btn bg-[#222] p-4 rounded mb-2 border border-[#333]";b.innerHTML=`<span>${x.label||'Download'}</span><i class="fas fa-download text-gray-400"></i>`;b.onclick=()=>{window.open(x.url,'_blank');document.getElementById('serverModal').classList.remove('active');};lst.appendChild(b)});document.getElementById('serverModal').classList.add('active'); } else window.open(l[0].url,'_blank'); }
+        function handleBroken(i,u,m=false){ clearTimeout(loadTimeout);document.getElementById('loadingOverlay').classList.remove('active');document.getElementById('loadingOverlay').classList.add('hidden');closePlayer();if(!m)db.ref('broken_links').push({type:i.type||'?',title:i.title||'?',url:u,reportedAt:Date.now()});showStatusModal(false,u,i,m); }
+        function showStatusModal(m,u,i,k=false){ const md=document.getElementById('statusModal');md.classList.add('active');document.getElementById('statusTitle').innerText=m?"Coming Soon":"Stream Unavailable";document.getElementById('statusMsg').innerText=m?"Not uploaded yet.":k?"MKV requires external player.":"Link broken. Reported.";const b=document.getElementById('extPlayerBtn');if(u){b.classList.remove('hidden');b.innerText="Open External Player";b.onclick=()=>window.open(u,'_blank');}else b.classList.add('hidden'); }
+        function closeStatusModal(){document.getElementById('statusModal').classList.remove('active');}
+        function closePlayer(){player.stop();document.getElementById('videoOverlay').classList.remove('active');loadContent();}
+        function toggleExtPlayer(){extPlayer=!extPlayer;localStorage.setItem('extPlayer',extPlayer);updateExtBtn();}
+        function updateExtBtn(){document.getElementById('extToggle').innerText=extPlayer?'ON':'OFF';document.getElementById('extToggle').style.backgroundColor=extPlayer?'#00C853':'#222';}
+        function showError(m){const t=document.getElementById('errorToast');t.innerText=m;t.style.display='block';setTimeout(()=>t.style.display='none',3000);}
+        function handleLogin(){auth.signInWithEmailAndPassword(document.getElementById('logEmail').value,document.getElementById('logPass').value).catch(e=>showError(e.message));}
+        function handleSignup(){auth.createUserWithEmailAndPassword(document.getElementById('logEmail').value,document.getElementById('logPass').value).then(u=>{db.ref(`users/${u.user.uid}`).set({email:u.user.email,approved:false});auth.signOut();showError("Created! Wait for approval");}).catch(e=>showError(e.message));}
+        function handleReset(){auth.sendPasswordResetEmail(document.getElementById('logEmail').value).then(()=>showError("Link Sent")).catch(e=>showError(e.message));}
+        document.getElementById('searchInput').addEventListener('input',(e)=>{const v=e.target.value.toLowerCase(),r=allContent.filter(i=>i.title.toLowerCase().includes(v));document.getElementById('searchResults').innerHTML=r.map(i=>`<div class="poster-card w-full" onclick="openDetails('${i.id}')"><img src="${i.poster}" class="w-full h-40 object-cover rounded-lg bg-[#222]"><p class="text-xs mt-1 truncate text-gray-300">${i.title}</p></div>`).join('')});
+        function switchTab(t){const c=document.getElementById('dynamicContent'),h=document.getElementById('heroSection'),cr=document.getElementById('catRow');if(t==='home'){h.style.display='block';cr.style.display='flex';loadContent();}else{h.style.display='none';cr.style.display='none';c.innerHTML=`<div class="p-4 grid grid-cols-3 gap-3 pt-24">${allContent.filter(i=>i.type.includes(t==='movies'?'movie':'series')).map(i=>`<div class="poster-card w-full" onclick="openDetails('${i.id}')"><img src="${i.poster}" class="w-full h-40 object-cover rounded-lg bg-[#222]"><p class="text-xs mt-1 truncate">${i.title}</p></div>`).join('')}</div>`;}document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));event.currentTarget.classList.add('active');}
+        
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                document.getElementById('authModal').classList.remove('active');
+                document.getElementById('headerProfileIcon').className = "fas fa-user-check text-green-400";
+                document.getElementById('profName').innerText = user.email.split('@')[0];
+                document.getElementById('profEmail').innerText = user.email;
+                document.getElementById('guestActions').classList.add('hidden');
+                document.getElementById('profLoginBtn').classList.add('hidden');
+                document.getElementById('logoutBtn').classList.remove('hidden');
+                db.ref(`users/${user.uid}`).once('value', snap => { if(snap.val()?.banned) { showError("Account Banned"); auth.signOut(); } });
+            } else {
+                document.getElementById('headerProfileIcon').className = "fas fa-user";
+                document.getElementById('profName').innerText = "Guest";
+                document.getElementById('profEmail').innerText = "Not Logged In";
+                document.getElementById('guestActions').classList.remove('hidden');
+                document.getElementById('profLoginBtn').classList.remove('hidden');
+                document.getElementById('logoutBtn').classList.add('hidden');
+            }
+        });
+    </script>
+    <script>
+  atOptions = {
+    'key' : 'd3bc0e395cae02e75b595652a70f6714',
+    'format' : 'iframe',
+    'height' : 250,
+    'width' : 300,
+    'params' : {}
+  };
+</script>
+<script src="https://progenybanquet.com/d3bc0e395cae02e75b595652a70f6714/invoke.js"></script>
+</body>
+</html>
