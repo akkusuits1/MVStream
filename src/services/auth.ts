@@ -11,7 +11,7 @@ import {
   sendPasswordResetEmail,
   type User as FirebaseUser,
 } from 'firebase/auth';
-import { ref, get, set, update, onValue } from 'firebase/database';
+import { ref, set, update, onValue, get } from 'firebase/database';
 import { auth, db } from './firebase';
 import { stores } from '@core/store';
 import { events, EVENTS } from '@core/events';

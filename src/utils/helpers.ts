@@ -3,7 +3,7 @@
 // ============================================
 
 import type { Movie, Series } from '@types';
-import { ref, get, set, update, push, query, orderByChild, equalTo } from 'firebase/database';
+import { ref, get, set, push } from 'firebase/database';
 import { db } from '@services/firebase';
 
 // ---- Firebase Data Helpers ----

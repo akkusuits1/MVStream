@@ -4,7 +4,7 @@
 
 import { h, $ } from '@core/utils';
 import { stores } from '@core/store';
-import { getPlayerSettings, setPlayerSettings, clearAllUserData } from '@services/storage';
+import { getPlayerSettings, setPlayerSettings, clearAllUserData, clearWatchHistory } from '@services/storage';
 
 export async function renderSettingsPage(): Promise<void> {
   const main = $('#main-content');
@@ -117,7 +117,6 @@ export async function renderSettingsPage(): Promise<void> {
             class: 'btn btn-secondary btn-sm',
             onClick: () => {
               if (confirm('Clear all watch history?')) {
-                const { clearWatchHistory } = require('@services/storage');
                 clearWatchHistory();
                 // TODO: show toast
               }
