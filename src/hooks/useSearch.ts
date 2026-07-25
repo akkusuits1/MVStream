@@ -4,7 +4,7 @@
 
 import { stores } from '@core/store';
 import { debounce } from '@core/utils';
-import { searchMulti, searchMovies, searchSeries } from '@services/tmdb';
+import { searchMulti } from '@services/tmdb';
 import { getSearchHistory, addSearchHistory, clearSearchHistory } from '@services/storage';
 import type { TMDBMovie, TMDBSeries } from '@types';
 
@@ -56,9 +56,7 @@ export function useSearch(): UseSearchReturn {
     stores.searchQuery.set(q);
 
     try {
-      const result = await searchMulti(q);
-      const movies = result.results.filter((r) => 'title' in r) as TMDBMovie[];
-      const series = result.results.filter((r) => 'name' in r) as TMDBSeries[];
+      await searchMulti(q);
 
       if (!searchAbortController.signal.aborted) {
         stores.searchQuery.set(q);

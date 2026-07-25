@@ -6,7 +6,7 @@ import '../styles/globals.css';
 import { initAuth, isAdmin } from '@services/auth';
 import { stores } from '@core/store';
 import { $, h } from '@core/utils';
-import { fetchMovies, fetchSeries, fetchCategories, fetchSettings, fetchUsers } from '@utils/helpers';
+import { fetchMovies, fetchSeries, fetchCategories } from '@utils/helpers';
 
 // ---- Admin State ----
 const adminState = {
@@ -14,7 +14,6 @@ const adminState = {
   movies: [] as unknown[],
   series: [] as unknown[],
   categories: [] as { id: string; name: string }[],
-  users: [] as unknown[],
   initialized: false,
 };
 

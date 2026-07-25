@@ -20,7 +20,10 @@
       "Bash(ln -s /data/data/com.termux/files/home/mvstream-node-modules node_modules)",
       "Bash(npm run:*)",
       "Bash(node /storage/emulated/0/tuyul/claude/MVStream/node_modules/vite/bin/vite.js build)",
-      "Bash(ROLLUP_SKIP_NATIVE=true node /storage/emulated/0/tuyul/claude/MVStream/node_modules/vite/bin/vite.js build)"
+      "Bash(ROLLUP_SKIP_NATIVE=true node /storage/emulated/0/tuyul/claude/MVStream/node_modules/vite/bin/vite.js build)",
+      "Bash(git push:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ]
   }
 }

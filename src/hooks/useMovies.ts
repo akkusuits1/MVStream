@@ -6,16 +6,13 @@ import { stores } from '@core/store';
 import type { Movie, Series, ContinueWatchingItem, WatchlistItem } from '@types';
 import {
   getContinueWatching,
-  addToContinueWatching,
-  removeFromContinueWatching,
-  getWatchHistory,
-  addToWatchHistory,
   isInWatchlist,
   addToWatchlist,
   removeFromWatchlist,
   getWatchlist,
+  getWatchHistory,
 } from '@services/storage';
-import { fetchMovies, fetchSeries, fetchCategories, incrementViews } from '@utils/helpers';
+import { fetchMovies, fetchSeries, fetchCategories } from '@utils/helpers';
 
 export interface UseMoviesReturn {
   // Data
@@ -105,7 +102,7 @@ export function useMovies(): UseMoviesReturn {
     },
 
     async playContent(type: 'movie' | 'series', id: string) {
-      await incrementViews(type === 'movie' ? 'movies' : 'series', id);
+      console.log('Playing', type, id);
     },
 
     toggleWatchlist(item: WatchlistItem) {

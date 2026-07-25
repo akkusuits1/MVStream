@@ -4,7 +4,6 @@
 
 import { h, $, img } from '@core/utils';
 import { stores } from '@core/store';
-import type { Movie, Series } from '@types';
 import { tmdbImage } from '@services/tmdb';
 
 export async function renderBrowsePage(params: Record<string, string>): Promise<void> {
@@ -73,7 +72,7 @@ export async function renderBrowsePage(params: Record<string, string>): Promise<
   main.appendChild(page);
 }
 
-function renderFilterBar(type: string): HTMLElement {
+function renderFilterBar(_type: string): HTMLElement {
   const categories = stores.categories.get();
   const bar = h('div', { class: 'filter-bar glass' });
 

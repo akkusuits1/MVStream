@@ -3,7 +3,6 @@
 // ============================================
 
 import { stores } from '@core/store';
-import { events, EVENTS } from '@core/events';
 import type { User } from '@types';
 
 export interface UseAuthReturn {

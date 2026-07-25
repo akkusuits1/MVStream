@@ -3,7 +3,7 @@
 // ============================================
 
 import './styles/globals.css';
-import { createRouter, transitionTo } from '@core/router';
+import { createRouter } from '@core/router';
 import { initAuth } from '@services/auth';
 import { stores } from '@core/store';
 import { $, h } from '@core/utils';
@@ -24,7 +24,6 @@ let renderDetailsPage: ((params: Record<string, string>) => Promise<void>) | nul
 let renderPlayerPage: ((params: Record<string, string>) => Promise<void>) | null = null;
 let renderProfilePage: (() => Promise<void>) | null = null;
 let renderSettingsPage: (() => Promise<void>) | null = null;
-let renderNotFoundPage: (() => void) | null = null;
 
 // ---- App State ----
 const appState = {

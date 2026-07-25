@@ -1,0 +1,702 @@
+"Run npm run lint
+
+> mvstream@2.0.0 lint
+> eslint src --report-unused-disable-directives --max-warnings 0
+
+
+/home/runner/work/MVStream/MVStream/src/admin/main.ts
+Warning:     9:9   warning  Replace `·fetchMovies,·fetchSeries,·fetchCategories,·fetchSettings,·fetchUsers·` with `⏎··fetchMovies,⏎··fetchSeries,⏎··fetchCategories,⏎··fetchSettings,⏎··fetchUsers,⏎`                                                                                         prettier/prettier
+Error:     9:68  error    'fetchUsers' is defined but never used. Allowed unused vars must match /^_/u                                                                                                                                                                                      @typescript-eslint/no-unused-vars
+Warning:    75:7   warning  Replace `'div',` with `⏎······'div',⏎·····`                                                                                                                                                                                                                       prettier/prettier
+Warning:    76:9   warning  Replace `'div',` with `⏎········'div',⏎·······`                                                                                                                                                                                                                   prettier/prettier
+Warning:    78:11  warning  Replace `'p',` with `⏎··········'p',⏎·········`                                                                                                                                                                                                                   prettier/prettier
+Warning:    79:49  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:    81:11  warning  Replace `'a',` with `⏎··········'a',⏎·········`                                                                                                                                                                                                                   prettier/prettier
+Warning:    82:1   warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:    83:11  warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:    84:1   warning  Replace `········},·'Go·to·Login')` with `··········},⏎··········'Go·to·Login',⏎········),`                                                                                                                                                                       prettier/prettier
+Warning:    85:8   warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:    86:6   warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:    94:7   warning  Replace `'div',` with `⏎······'div',⏎·····`                                                                                                                                                                                                                       prettier/prettier
+Warning:    95:9   warning  Replace `'div',` with `⏎········'div',⏎·······`                                                                                                                                                                                                                   prettier/prettier
+Warning:    97:11  warning  Replace `'p',` with `⏎··········'p',⏎·········`                                                                                                                                                                                                                   prettier/prettier
+Warning:    98:40  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   100:11  warning  Replace `'button',` with `⏎··········'button',⏎·········`                                                                                                                                                                                                         prettier/prettier
+Warning:   101:1   warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:   102:1   warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:   103:1   warning  Replace `········},·'Retry')` with `··········},⏎··········'Retry',⏎········),`                                                                                                                                                                                   prettier/prettier
+Warning:   104:8   warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   105:6   warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   117:27  warning  Replace `'div',` with `⏎····'div',⏎···`                                                                                                                                                                                                                           prettier/prettier
+Warning:   119:79  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   135:20  warning  Replace `'button',` with `⏎······'button',⏎·····`                                                                                                                                                                                                                 prettier/prettier
+Warning:   136:1   warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:   137:7   warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:   138:1   warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:   139:1   warning  Replace `····` with `······`                                                                                                                                                                                                                                      prettier/prettier
+Warning:   141:63  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   148:23  warning  Replace `'button',` with `⏎····'button',⏎···`                                                                                                                                                                                                                     prettier/prettier
+Warning:   149:1   warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:   150:1   warning  Replace `····` with `······`                                                                                                                                                                                                                                      prettier/prettier
+Warning:   151:1   warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:   152:1   warning  Replace `······` with `········`                                                                                                                                                                                                                                  prettier/prettier
+Warning:   153:1   warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:   154:5   warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:   155:1   warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:   157:59  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   164:18  warning  Replace `'main',` with `⏎····'main',⏎···`                                                                                                                                                                                                                         prettier/prettier
+Warning:   165:7   warning  Replace `'div',` with `⏎······'div',⏎·····`                                                                                                                                                                                                                       prettier/prettier
+Warning:   167:9   warning  Replace `'div',` with `⏎········'div',⏎·······`                                                                                                                                                                                                                   prettier/prettier
+Warning:   168:84  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   169:8   warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   171:68  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   246:20  warning  Replace `'div',` with `⏎······'div',⏎·····`                                                                                                                                                                                                                       prettier/prettier
+Warning:   248:9   warning  Replace `'div',` with `⏎········'div',⏎·······`                                                                                                                                                                                                                   prettier/prettier
+Warning:   250:66  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   251:8   warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   259:28  warning  Replace `'div',` with `⏎····'div',⏎···`                                                                                                                                                                                                                           prettier/prettier
+Warning:   261:67  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   267:28  warning  Replace `⏎··container:·Element,⏎··items:·unknown[],⏎··type:·'movies'·|·'series'⏎` with `container:·Element,·items:·unknown[],·type:·'movies'·|·'series'`                                                                                                          prettier/prettier
+Warning:   274:20  warning  Replace `'div',` with `⏎····'div',⏎···`                                                                                                                                                                                                                           prettier/prettier
+Warning:   275:97  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   281:9   warning  Replace `'div',` with `⏎········'div',⏎·······`                                                                                                                                                                                                                   prettier/prettier
+Warning:   284:11  warning  Replace `'p',·{·class:·'empty-state__description'·},·`Add·your·first·${type.slice(0,·-1)}·to·get·started.`)` with `⏎··········'p',⏎··········{·class:·'empty-state__description'·},⏎··········`Add·your·first·${type.slice(0,·-1)}·to·get·started.`,⏎········),`  prettier/prettier
+Warning:   285:8   warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   291:19  warning  Replace `'div',` with `⏎····'div',⏎···`                                                                                                                                                                                                                           prettier/prettier
+Warning:   295:56  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   300:19  warning  Replace `'div',` with `⏎······'div',⏎·····`                                                                                                                                                                                                                       prettier/prettier
+Warning:   301:9   warning  Replace `'div',` with `⏎········'div',⏎·······`                                                                                                                                                                                                                   prettier/prettier
+Warning:   302:84  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   306:9   warning  Replace `'div',` with `⏎········'div',⏎·······`                                                                                                                                                                                                                   prettier/prettier
+Warning:   308:11  warning  Replace `'button',·{·class:·'btn·btn-ghost·btn-sm',·style:·'color:·var(--status-error);'·},·'Delete')` with `⏎··········'button',⏎··········{·class:·'btn·btn-ghost·btn-sm',·style:·'color:·var(--status-error);'·},⏎··········'Delete',⏎········),`              prettier/prettier
+Warning:   309:8   warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   328:20  warning  Replace `'div',` with `⏎····'div',⏎···`                                                                                                                                                                                                                           prettier/prettier
+Warning:   329:64  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   335:9   warning  Replace `'div',` with `⏎········'div',⏎·······`                                                                                                                                                                                                                   prettier/prettier
+Warning:   337:70  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   338:8   warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   345:20  warning  Replace `'div',` with `⏎······'div',⏎·····`                                                                                                                                                                                                                       prettier/prettier
+Warning:   347:9   warning  Replace `'div',` with `⏎········'div',⏎·······`                                                                                                                                                                                                                   prettier/prettier
+Warning:   349:11  warning  Replace `'button',·{·class:·'btn·btn-ghost·btn-sm',·style:·'color:·var(--status-error);'·},·'Delete')` with `⏎··········'button',⏎··········{·class:·'btn·btn-ghost·btn-sm',·style:·'color:·var(--status-error);'·},⏎··········'Delete',⏎········),`              prettier/prettier
+Warning:   350:8   warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   360:7   warning  Replace `'div',` with `⏎······'div',⏎·····`                                                                                                                                                                                                                       prettier/prettier
+Warning:   363:67  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   364:6   warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   371:7   warning  Replace `'div',` with `⏎······'div',⏎·····`                                                                                                                                                                                                                       prettier/prettier
+Warning:   374:74  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   375:6   warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   382:7   warning  Replace `'div',` with `⏎······'div',⏎·····`                                                                                                                                                                                                                       prettier/prettier
+Warning:   385:67  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   386:6   warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   395:2   warning  Insert `⏎`                                                                                                                                                                                                                                                        prettier/prettier
+
+/home/runner/work/MVStream/MVStream/src/components/layout/Footer.ts
+Warning:   13:19   warning  Replace `'div',` with `⏎····'div',⏎···`                                                                                                                                                                                                            prettier/prettier
+Warning:   14:7    warning  Replace `'a',` with `⏎······'a',⏎·····`                                                                                                                                                                                                            prettier/prettier
+Warning:   16:60   warning  Insert `,`                                                                                                                                                                                                                                         prettier/prettier
+Warning:   18:7    warning  Replace `'p',·{·class:·'footer__description'·},·'Watch·your·favorite·movies·and·series·online·for·free.')` with `⏎······'p',⏎······{·class:·'footer__description'·},⏎······'Watch·your·favorite·movies·and·series·online·for·free.',⏎····),`       prettier/prettier
+Warning:   52:23   warning  Replace `'div',` with `⏎······'div',⏎·····`                                                                                                                                                                                                        prettier/prettier
+Warning:   54:35   warning  Replace `⏎········h('a',·{·class:·'footer__link',·href:·item.href·},·item.label)⏎······)` with `·h('a',·{·class:·'footer__link',·href:·item.href·},·item.label)),`                                                                                 prettier/prettier
+Warning:   63:23   warning  Replace `'div',` with `⏎····'div',⏎···`                                                                                                                                                                                                            prettier/prettier
+Warning:   64:7    warning  Replace `'p',·{·class:·'footer__copyright'·},·`©·${new·Date().getFullYear()}·MVStream.·All·rights·reserved.`` with `⏎······'p',⏎······{·class:·'footer__copyright'·},⏎······`©·${new·Date().getFullYear()}·MVStream.·All·rights·reserved.`,⏎····`  prettier/prettier
+Warning:   65:7    warning  Replace `'p',` with `⏎······'p',⏎·····`                                                                                                                                                                                                            prettier/prettier
+Warning:   66:117  warning  Insert `,`                                                                                                                                                                                                                                         prettier/prettier
+Warning:   67:6    warning  Insert `,`                                                                                                                                                                                                                                         prettier/prettier
+Warning:   73:2    warning  Insert `⏎`                                                                                                                                                                                                                                         prettier/prettier
+
+/home/runner/work/MVStream/MVStream/src/components/layout/Header.ts
+Warning:    15:18  warning  Replace `'a',` with `⏎····'a',⏎···`                                                                                                                                                                                                                                        prettier/prettier
+Warning:    16:1   warning  Replace `····` with `······`                                                                                                                                                                                                                                               prettier/prettier
+Warning: 17:5 warning Insert `··` prettier/prettier 
+Warning: 18:1 warning Insert `··` prettier/prettier 
+Warning: 20:58 warning Insert `,` prettier/prettier 
+Warning: 25:66 warning Replace `·'aria-label':·'Main·navigation'` with `⏎····'aria-label':·'Main·navigation',⏎·` prettier/prettier 
+Warning: 33:17 warning Replace `'a',` with `⏎······'a',⏎·····` prettier/prettier 
+Warning: 34:1 warning Insert `··` prettier/prettier 
+Warning: 35:7 warning Insert `··` prettier/prettier 
+Warning: 36:1 warning Insert `··` prettier/prettier 
+Warning: 37:5 warning Replace `},·link.label` with `··},⏎······link.label,⏎····` prettier/prettier 
+Warning: 46:23 warning Replace `'button',` with `⏎····'button',⏎···` prettier/prettier 
+Warning: 47:1 warning Insert `··` prettier/prettier 
+Warning: 48:5 warning Insert `··` prettier/prettier 
+Warning: 49:5 warning Insert `··` prettier/prettier 
+Warning: 50:1 warning Replace `······` with `········` prettier/prettier 
+Warning: 51:5 warning Insert `··` prettier/prettier 
+Warning: 52:1 warning Replace `··},·'🔍'` with `····},⏎····'🔍',⏎··` prettier/prettier 
+Warning: 56:24 warning Replace `'button',` with `⏎····'button',⏎···` prettier/prettier 
+Warning: 57:1 warning Replace `····` with `······` prettier/prettier 
+Warning: 58:1 warning Insert `··` prettier/prettier 
+Warning: 59:1 warning Insert `··` prettier/prettier 
+Warning: 60:3 warning Insert `··` prettier/prettier 
+Warning: 61:48 warning Insert `,` prettier/prettier 
+Warning: 66:21 warning Replace `'button',` with `⏎····'button',⏎···` prettier/prettier 
+Warning: 67:1 warning Insert `··` prettier/prettier 
+Warning: 68:5 warning Insert `··` prettier/prettier 
+Warning: 69:1 warning Insert `··` prettier/prettier 
+Warning: 70:3 warning Replace `},·'☰'` with `··},⏎····'☰',⏎··` prettier/prettier 
+Warning: 77:25 warning Replace `'div',` with `⏎····'div',⏎···` prettier/prettier 
+Warning: 81:7 warning Replace `'button',` with `⏎······'button',⏎·····` prettier/prettier 
+Warning: 82:1 warning Insert `··` prettier/prettier 
+Warning: 83:7 warning Insert `··` prettier/prettier 
+Warning: 84:1 warning Insert `··` prettier/prettier 
+Warning: 85:1 warning Replace `········` with `··········` prettier/prettier 
+Warning: 86:1 warning Insert `··` prettier/prettier 
+Warning: 87:1 warning Insert `··` prettier/prettier 
+Warning: 88:5 warning Replace `},·'🚪·Logout')` with `··},⏎······'🚪·Logout',⏎····),` prettier/prettier 
+Warning: 93:24 warning Replace `'div',` with `⏎····'div',⏎···` prettier/prettier 
+Warning: 95:9 warning Replace `'a',` with `⏎········'a',⏎·······` prettier/prettier 
+Warning: 96:1 warning Insert `··` prettier/prettier 
+Warning: 97:9 warning Insert `··` prettier/prettier 
+Warning: 98:1 warning Insert `··` prettier/prettier 
+Warning: 99:7 warning Replace `},·link.label)` with `··},⏎········link.label,⏎······),` prettier/prettier 
+Warning: 102:7 warning Replace `'a',·{·class:·'header__mobile-menu-link',·href:·'#/profile',·onClick:·()·=>·closeMobileMenu()·},·'👤·Profile'` with `⏎······'a',⏎······{·class:·'header__mobile-menu-link',·href:·'#/profile',·onClick:·()·=>·closeMobileMenu()·},⏎······'👤·Profile',⏎····` prettier/prettier 
+Warning: 103:7 warning Replace `'a',·{·class:·'header__mobile-menu-link',·href:·'#/settings',·onClick:·()·=>·closeMobileMenu()·},·'⚙️·Settings'` with `⏎······'a',⏎······{·class:·'header__mobile-menu-link',·href:·'#/settings',·onClick:·()·=>·closeMobileMenu()·},⏎······'⚙️·Settings',⏎····` prettier/prettier 
+Error: 118:7 error 'lastScroll' is assigned a value but never used. Allowed unused vars must match /^_/u @typescript-eslint/no-unused-vars 
+Warning: 119:27 warning Replace `'scroll',` with `⏎····'scroll',⏎···` prettier/prettier 
+Warning: 120:1 warning Insert `··` prettier/prettier 
+Warning: 121:1 warning Insert `··` prettier/prettier 
+Warning: 122:5 warning Insert `··` prettier/prettier 
+Warning: 123:3 warning Replace `},·{·passive:·true·}` with `··},⏎····{·passive:·true·},⏎··` prettier/prettier 
+Warning: 155:2 warning Insert `⏎` prettier/prettier 
+/home/runner/work/MVStream/MVStream/src/components/layout/MobileNav.ts 
+Warning: 9:25 warning Replace `·class:·'mobile-nav·glass-strong·safe-bottom',·'aria-label':·'Mobile·navigation'` with `⏎····class:·'mobile-nav·glass-strong·safe-bottom',⏎····'aria-label':·'Mobile·navigation',⏎·` prettier/prettier 
+Warning: 20:17 warning Replace `'a',` with `⏎······'a',⏎·····` prettier/prettier 
+Warning: 21:1 warning Insert `··` prettier/prettier 
+Warning: 22:1 warning Replace `······` with `········` prettier/prettier 
+Warning: 23:1 warning Insert `··` prettier/prettier 
+Warning: 24:1 warning Replace `······` with `········` prettier/prettier 
+Warning: 25:1 warning Insert `··` prettier/prettier 
+Warning: 27:60 warning Insert `,` prettier/prettier 
+Warning: 41:2 warning Insert `⏎` prettier/prettier 
+/home/runner/work/MVStream/MVStream/src/components/layout/Toast.ts 
+Warning: 25:19 warning Replace `'div',` with `⏎····'div',⏎···` prettier/prettier 
+Warning: 26:7 warning Replace `'div',` with `⏎······'div',⏎·····` prettier/prettier 
+Warning: 28:54 warning Insert `,` prettier/prettier 
+Warning: 30:7 warning Replace `'button',` with `⏎······'button',⏎·····` prettier/prettier 
+Warning: 31:7 warning Insert `··` prettier/prettier 
+Warning: 32:1 warning Insert `··` prettier/prettier 
+Warning: 33:7 warning Insert `··` prettier/prettier 
+Warning: 34:1 warning Replace `····},·'✕')` with `······},⏎······'✕',⏎····),` prettier/prettier 
+Warning: 68:53 warning Insert `⏎` prettier/prettier 
+/home/runner/work/MVStream/MVStream/src/core/events.ts 
+Warning: 96:12 warning Insert `⏎` prettier/prettier 
+/home/runner/work/MVStream/MVStream/src/core/router.ts 
+Warning: 126:2 warning Insert `⏎` prettier/prettier 
+/home/runner/work/MVStream/MVStream/src/core/store.ts 
+Warning: 53:12 warning Insert `,` prettier/prettier 
+Warning: 76:31 warning Replace `⏎··store:·Store<A>,⏎··fn:·(value:·A)·=>·B⏎` with `store:·Store<A>,·fn:·(value:·A)·=>·B` prettier/prettier 
+Warning: 91:14 warning Replace `·Movie,·Series,·Category,·User,·ContinueWatchingItem,·WatchlistItem,·AppSettings·` with `⏎··Movie,⏎··Series,⏎··Category,⏎··User,⏎··ContinueWatchingItem,⏎··WatchlistItem,⏎··AppSettings,⏎` prettier/prettier 
+Warning: 115:3 warning Insert `⏎` prettier/prettier 
+/home/runner/work/MVStream/MVStream/src/core/utils.ts 
+Warning: 10:100 warning Replace `·class?:·string;·dataset?:·Record<string,·string>` with `⏎····class?:·string;⏎····dataset?:·Record<string,·string>;⏎·` prettier/prettier 
+Warning: 50:21 warning Replace `props?:·Parameters<typeof·h<'div'>>[1],·...children:·Parameters<typeof·h<'div'>>[2])·=>⏎·` with `⏎··props?:·Parameters<typeof·h<'div'>>[1],⏎··...children:·Parameters<typeof·h<'div'>>[2]⏎)·=>` prettier/prettier 
+Warning: 80:16 warning Insert `,` prettier/prettier 
+Warning: 94:16 warning Insert `,` prettier/prettier 
+Warning: 156:81 warning Insert `,` prettier/prettier 
+Warning: 165:27 warning Replace `⏎··imgEl:·HTMLImageElement,⏎··src:·string,⏎··rootMargin·=·'200px'⏎` with `imgEl:·HTMLImageElement,·src:·string,·rootMargin·=·'200px'` prettier/prettier 
+Warning: 179:19 warning Insert `,` prettier/prettier 
+Warning: 199:48 warning Replace `selector:·string,·root:·Element·|·Document·=·document):·T·|·null·=>⏎·` with `⏎··selector:·string,⏎··root:·Element·|·Document·=·document,⏎):·T·|·null·=>` prettier/prettier 
+Warning: 205:49 warning Replace `selector:·string,·root:·Element·|·Document·=·document):·T[]·=>⏎·` with `⏎··selector:·string,⏎··root:·Element·|·Document·=·document,⏎):·T[]·=>` prettier/prettier 
+Warning: 213:2 warning Insert `⏎` prettier/prettier 
+/home/runner/work/MVStream/MVStream/src/hooks/useAuth.ts 
+Error: 6:10 error 'events' is defined but never used. Allowed unused vars must match /^_/u @typescript-eslint/no-unused-vars 
+Error: 6:18 error 'EVENTS' is defined but never used. Allowed unused vars must match /^_/u @typescript-eslint/no-unused-vars 
+Warning: 61:2 warning Insert `⏎` prettier/prettier 
+/home/runner/work/MVStream/MVStream/src/hooks/useMovies.ts 
+Error: 9:3 error 'addToContinueWatching' is defined but never used. Allowed unused vars must match /^_/u @typescript-eslint/no-unused-vars 
+Error: 10:3 error 'removeFromContinueWatching' is defined but never used. Allowed unused vars must match /^_/u @typescript-eslint/no-unused-vars 
+Error: 12:3 error 'addToWatchHistory' is defined but never used. Allowed unused vars must match /^_/u @typescript-eslint/no-unused-vars 
+Warning: 27:18 warning Replace `·id:·string;·type:·'movie'·|·'series';·title:·string;·poster:·string;·timestamp:·number` with `⏎····id:·string;⏎····type:·'movie'·|·'series';⏎····title:·string;⏎····poster:·string;⏎····timestamp:·number;⏎·` prettier/prettier 
+Warning: 125:26 warning Replace `⏎········this.loadMovies(),⏎········this.loadSeries(),⏎········this.loadCategories(),⏎······` with `this.loadMovies(),·this.loadSeries(),·this.loadCategories()` prettier/prettier 
+Warning: 141:2 warning Insert `⏎` prettier/prettier 
+/home/runner/work/MVStream/MVStream/src/hooks/useSearch.ts 
+Error: 7:23 error 'searchMovies' is defined but never used. Allowed unused vars must match /^_/u @typescript-eslint/no-unused-vars 
+Error: 7:37 error 'searchSeries' is defined but never used. Allowed unused vars must match /^_/u @typescript-eslint/no-unused-vars 
+Error: 60:13 error 'movies' is assigned a value but never used. Allowed unused vars must match /^_/u @typescript-eslint/no-unused-vars 
+Error: 61:13 error 'series' is assigned a value but never used. Allowed unused vars must match /^_/u @typescript-eslint/no-unused-vars 
+Warning: 126:2 warning Insert `⏎` prettier/prettier 
+/home/runner/work/MVStream/MVStream/src/hooks/useSettings.ts 
+Warning: 62:2 warning Insert `⏎` prettier/prettier 
+/home/runner/work/MVStream/MVStream/src/main.ts 
+Error: 6:24 error 'transitionTo' is defined but never used. Allowed unused vars must match /^_/u @typescript-eslint/no-unused-vars 
+Error: 27:5 error 'renderNotFoundPage' is never reassigned. Use 'const' instead prefer-const 
+Error: 27:5 error 'renderNotFoundPage' is assigned a value but never used. Allowed unused vars must match /^_/u @typescript-eslint/no-unused-vars 
+Warning: 85:7 warning Replace `'div',` with `⏎······'div',⏎·····` prettier/prettier 
+Warning: 86:9 warning Replace `'div',` with `⏎········'div',⏎·······` prettier/prettier 
+Warning: 90:53 warning Replace `'We\'ll·be·back·soon!')` with `"We'll·be·back·soon!"),` prettier/prettier 
+Warning: 91:8 warning Insert `,` prettier/prettier 
+Warning: 92:6 warning Insert `,` prettier/prettier 
+Warning: 100:7 warning Replace `'div',` with `⏎······'div',⏎·····` prettier/prettier 
+Warning: 101:9 warning Replace `'div',` with `⏎········'div',⏎·······` prettier/prettier 
+Warning: 104:11 warning Replace `'p',·{·class:·'error-page__message'·},·'Failed·to·load·the·application.·Please·try·again.'` with `⏎··········'p',⏎··········{·class:·'error-page__message'·},⏎··········'Failed·to·load·the·application.·Please·try·again.',⏎········` prettier/prettier 
+Warning: 105:11 warning Replace `'button',` with `⏎··········'button',⏎·········` prettier/prettier 
+Warning: 106:11 warning Insert `··` prettier/prettier 
+Warning: 107:1 warning Insert `··` prettier/prettier 
+Warning: 108:9 warning Replace `},·'Retry')` with `··},⏎··········'Retry',⏎········),` prettier/prettier 
+Warning: 109:8 warning Insert `,` prettier/prettier 
+Warning: 110:6 warning Insert `,` prettier/prettier 
+Warning: 120:83 warning Insert `,` prettier/prettier 
+Warning: 254:7 warning Replace `'div',` with `⏎······'div',⏎·····` prettier/prettier 
+Warning: 257:53 warning Replace `'The·page·you\'re·looking·for·doesn\'t·exist.'` with `"The·page·you're·looking·for·doesn't·exist."` prettier/prettier 
+Warning: 258:66 warning Insert `,` prettier/prettier 
+Warning: 259:6 warning Insert `,` prettier/prettier 
+Warning: 268:2 warning Insert `⏎` prettier/prettier 
+/home/runner/work/MVStream/MVStream/src/pages/BrowsePage.ts 
+Error: 7:15 error 'Movie' is defined but never used. Allowed unused vars must match /^_/u @typescript-eslint/no-unused-vars 
+Error: 7:22 error 'Series' is defined but never used. Allowed unused vars must match /^_/u @typescript-eslint/no-unused-vars 
+Warning: 15:34 warning Replace `⏎····?·stores.movies.get()⏎···` with `·?·stores.movies.get()` prettier/prettier 
+Warning: 24:7 warning Replace `'div',` with `⏎······'div',⏎·····` prettier/prettier 
+Warning: 26:9 warning Replace `'p',` with `⏎········'p',⏎·······` prettier/prettier 
+Warning: 27:79 warning Insert `,` prettier/prettier 
+Warning: 28:8 warning Insert `,` prettier/prettier 
+Warning: 29:6 warning Insert `,` prettier/prettier 
+Warning: 43:20 warning Replace `'a',` with `⏎······'a',⏎·····` prettier/prettier 
+Warning: 44:1 warning Insert `··` prettier/prettier 
+Warning: 45:1 warning Replace `······` with `········` prettier/prettier 
+Warning: 46:7 warning Insert `··` prettier/prettier 
+Warning: 47:1 warning Replace `····` with `······` prettier/prettier 
+Warning: 48:9 warning Replace `'div',` with `⏎········'div',⏎·······` prettier/prettier 
+Warning: 53:9 warning Replace `'div',` with `⏎········'div',⏎·······` prettier/prettier 
+Warning: 55:11 warning Replace `'p',·{·class:·'movie-card__meta'·},·`${item.year}${item.duration·?·'·•·'·+·item.duration·:·''}`)` with `⏎··········'p',⏎··········{·class:·'movie-card__meta'·},⏎··········`${item.year}${item.duration·?·'·•·'·+·item.duration·:·''}`,⏎········),` prettier/prettier 
+Warning: 56:8 warning Insert `,` prettier/prettier 
+Warning: 64:9 warning Replace `'div',` with `⏎········'div',⏎·······` prettier/prettier 
+Warning: 67:91 warning Insert `,` prettier/prettier 
+Warning: 68:8 warning Insert `,` prettier/prettier 
+Error: 76:26 error 'type' is defined but never used. Allowed unused args must match /^_/u @typescript-eslint/no-unused-vars 
+Warning: 83:7 warning Replace `'button',` with `⏎······'button',⏎·····` prettier/prettier 
+Warning: 84:7 warning Insert `··` prettier/prettier 
+Warning: 85:7 warning Insert `··` prettier/prettier 
+Warning: 86:1 warning Replace `······` with `········` prettier/prettier 
+Warning: 87:5 warning Replace `},·'All')` with `··},⏎······'All',⏎····),` prettier/prettier 
+Warning: 92:9 warning Replace `'button',` with `⏎········'button',⏎·······` prettier/prettier 
+Warning: 93:1 warning Replace `········` with `··········` prettier/prettier 
+Warning: 94:1 warning Insert `··` prettier/prettier 
+Warning: 95:1 warning Replace `········` with `··········` prettier/prettier 
+Warning: 96:7 warning Replace `},·cat.name)` with `··},⏎········cat.name,⏎······),` prettier/prettier 
+Warning: 102:27 warning Replace `'div',` with `⏎····'div',⏎···` prettier/prettier 
+Warning: 104:7 warning Replace `'select',` with `⏎······'select',⏎·····` prettier/prettier 
+Warning: 105:7 warning Insert `··` prettier/prettier 
+Warning: 106:7 warning Insert `··` prettier/prettier 
+Warning: 107:1 warning Replace `········` with `··········` prettier/prettier 
+Warning: 108:9 warning Insert `··` prettier/prettier 
+Warning: 109:1 warning Replace `········` with `··········` prettier/prettier 
+Warning: 109:9 warning Unexpected console statement no-console 
+Warning: 110:7 warning Insert `··` prettier/prettier 
+Warning: 111:1 warning Insert `··` prettier/prettier 
+Warning: 116:45 warning Insert `,` prettier/prettier 
+Warning: 117:6 warning Insert `,` prettier/prettier 
+Warning: 135:3 warning Unexpected console statement no-console 
+Warning: 136:2 warning Insert `⏎` prettier/prettier 
+/home/runner/work/MVStream/MVStream/src/pages/DetailsPage.ts 
+Warning: 18:7 warning Replace `'div',` with `⏎······'div',⏎·····` prettier/prettier 
+Warning: 20:87 warning Insert `,` prettier/prettier 
+Warning: 21:6 warning Insert `,` prettier/prettier 
+Warning: 35:9 warning Replace `'div',` with `⏎········'div',⏎·······` prettier/prettier 
+Warning: 35:9 warning Replace `'div',` with `⏎········'div',⏎·······` prettier/prettier 
+Warning: 39:68 warning Insert `,` prettier/prettier 
+Warning: 40:8 warning Insert `,` prettier/prettier 
+Warning: 52:18 warning Replace `'div',` with `⏎····'div',⏎···` prettier/prettier 
+Warning: 58:7 warning Replace `'div',` with `⏎······'div',⏎·····` prettier/prettier 
+Warning: 59:9 warning Replace `'div',` with `⏎········'div',⏎·······` prettier/prettier 
+Warning: 64:37 warning Insert `,` prettier/prettier 
+Warning: 66:9 warning Replace `'div',` with `⏎········'div',⏎·······` prettier/prettier 
+Warning: 68:11 warning Replace `'div',` with `⏎··········'div',⏎·········` prettier/prettier 
+Warning: 72:17 warning Replace `'span',` with `⏎················'span',⏎···············` prettier/prettier 
+Warning: 73:105 warning Insert `,` prettier/prettier 
+Warning: 77:17 warning Replace `'span',·{·class:·`badge·${series.status·===·'ongoing'·?·'badge--success'·:·'badge--warning'}`` with `⏎················'span',⏎················{⏎··················class:·`badge·${series.status·===·'ongoing'·?·'badge--success'·:·'badge--warning'}`,⏎···············` prettier/prettier 
+Warning: 78:70 warning Insert `,` prettier/prettier 
+Warning: 82:11 warning Replace `'div',` with `⏎··········'div',⏎·········` prettier/prettier 
+Warning: 83:81 warning Insert `,` prettier/prettier 
+Warning: 85:11 warning Replace `'div',` with `⏎··········'div',⏎·········` prettier/prettier 
+Warning: 86:13 warning Replace `'a',` with `⏎············'a',⏎···········` prettier/prettier 
+Warning: 87:1 warning Insert `··` prettier/prettier 
+Warning: 88:13 warning Insert `··` prettier/prettier 
+Warning: 89:1 warning Replace `··········},·'▶·Play·Now'` with `············},⏎············'▶·Play·Now',⏎··········` prettier/prettier 
+Warning: 90:13 warning Replace `'button',` with `⏎············'button',⏎···········` prettier/prettier 
+Warning: 91:1 warning Insert `··` prettier/prettier 
+Warning: 92:1 warning Replace `············` with `··············` prettier/prettier 
+Warning: 93:1 warning Insert `··` prettier/prettier 
+Warning: 94:1 warning Insert `··` prettier/prettier 
+Warning: 95:11 warning Replace `},·'🤍·Watchlist'` with `··},⏎············'🤍·Watchlist',⏎··········` prettier/prettier 
+Warning: 97:17 warning Replace `'a',` with `⏎················'a',⏎···············` prettier/prettier 
+Warning: 98:1 warning Insert `··` prettier/prettier 
+Warning: 99:1 warning Insert `··` prettier/prettier 
+Warning: 100:17 warning Insert `··` prettier/prettier 
+Warning: 101:1 warning Replace `··············},·'▶·Trailer'` with `················},⏎················'▶·Trailer',⏎··············` prettier/prettier 
+Warning: 104:11 warning Replace `'div',` with `⏎··········'div',⏎·········` prettier/prettier 
+Warning: 105:70 warning Insert `,` prettier/prettier 
+Warning: 109:15 warning Replace `'div',` with `⏎··············'div',⏎·············` prettier/prettier 
+Warning: 115:15 warning Replace `'div',` with `⏎··············'div',⏎·············` prettier/prettier 
+Warning: 120:8 warning Insert `,` prettier/prettier 
+Warning: 121:6 warning Insert `,` prettier/prettier 
+Warning: 127:30 warning Replace `'div',` with `⏎······'div',⏎·····` prettier/prettier 
+Warning: 128:65 warning Insert `,` prettier/prettier 
+Warning: 132:29 warning Replace `'div',` with `⏎········'div',⏎·······` prettier/prettier 
+Warning: 133:11 warning Replace `'div',` with `⏎··········'div',⏎·········` prettier/prettier 
+Warning: 134:13 warning Replace `'h3',·{·class:·'season-block__title'·},·season.title·||·`Season·${season.seasonNumber}`` with `⏎············'h3',⏎············{·class:·'season-block__title'·},⏎············season.title·||·`Season·${season.seasonNumber}`,⏎··········` prettier/prettier 
+Warning: 135:98 warning Insert `,` prettier/prettier 
+Warning: 136:10 warning Insert `,` prettier/prettier 
+Warning: 143:28 warning Replace `'a',` with `⏎············'a',⏎···········` prettier/prettier 
+Warning: 144:1 warning Insert `··` prettier/prettier 
+Warning: 145:1 warning Insert `··` prettier/prettier 
+Warning: 146:1 warning Replace `··········` with `············` prettier/prettier 
+Warning: 148:15 warning Replace `'div',` with `⏎··············'div',⏎·············` prettier/prettier 
+Warning: 151:14 warning Insert `,` prettier/prettier 
+Warning: 167:2 warning Insert `⏎` prettier/prettier 
+/home/runner/work/MVStream/MVStream/src/pages/HomePage.ts 
+Warning: 28:34 warning Replace `'Trending·Now',·[...movies.slice(0,·10),·...series.slice(0,·10)]·as·(Movie·|·Series)[],·'movie'` with `⏎····'Trending·Now',⏎····[...movies.slice(0,·10),·...series.slice(0,·10)]·as·(Movie·|·Series)[],⏎····'movie',⏎··` prettier/prettier 
+Warning: 32:35 warning Replace `'Top·Rated·Movies',·movies.sort((a,·b)·=>·b.rating·-·a.rating).slice(0,·10),·'movie'` with `⏎····'Top·Rated·Movies',⏎····movies.sort((a,·b)·=>·b.rating·-·a.rating).slice(0,·10),⏎····'movie',⏎··` prettier/prettier 
+Warning: 48:14 warning Replace `'div',` with `⏎······'div',⏎·····` prettier/prettier 
+Warning: 49:9 warning Replace `'div',` with `⏎········'div',⏎·······` prettier/prettier 
+Warning: 51:11 warning Replace `'p',·{·class:·'hero__subtitle'·},·'Watch·your·favorite·movies·and·series·online·for·free.'` with `⏎··········'p',⏎··········{·class:·'hero__subtitle'·},⏎··········'Watch·your·favorite·movies·and·series·online·for·free.',⏎········` prettier/prettier 
+Warning: 52:87 warning Insert `,` prettier/prettier 
+Warning: 53:8 warning Insert `,` prettier/prettier 
+Warning: 83:20 warning Replace `'div',` with `⏎····'div',⏎···` prettier/prettier 
+Warning: 86:66 warning Insert `,` prettier/prettier 
+Warning: 90:20 warning Replace `'div',` with `⏎····'div',⏎···` prettier/prettier 
+Warning: 91:66 warning Replace `⏎······h('span',·{·class:·'chip'·},·g)⏎····)` with `·h('span',·{·class:·'chip'·},·g)),` prettier/prettier 
+Warning: 97:21 warning Replace `'div',` with `⏎····'div',⏎···` prettier/prettier 
+Warning: 98:7 warning Replace `'a',` with `⏎······'a',⏎·····` prettier/prettier 
+Warning: 99:1 warning Insert `··` prettier/prettier 
+Warning: 100:1 warning Insert `··` prettier/prettier 
+Warning: 101:5 warning Replace `},·'▶·Play'` with `··},⏎······'▶·Play',⏎····` prettier/prettier 
+Warning: 102:7 warning Replace `'a',` with `⏎······'a',⏎·····` prettier/prettier 
+Warning: 103:7 warning Insert `··` prettier/prettier 
+Warning: 104:1 warning Insert `··` prettier/prettier 
+Warning: 105:5 warning Replace `},·'ℹ·More·Info')` with `··},⏎······'ℹ·More·Info',⏎····),` prettier/prettier 
+Warning: 162:24 warning Replace `title:·string,·items:·(Movie·|·Series)[],·defaultType:·'movie'·|·'series'` with `⏎··title:·string,⏎··items:·(Movie·|·Series)[],⏎··defaultType:·'movie'·|·'series',⏎` prettier/prettier 
+Warning: 165:20 warning Replace `'div',` with `⏎····'div',⏎···` prettier/prettier 
+Warning: 167:7 warning Replace `'a',` with `⏎······'a',⏎·····` prettier/prettier 
+Warning: 168:18 warning Insert `,` prettier/prettier 
+Warning: 169:6 warning Insert `,` prettier/prettier 
+Warning: 179:20 warning Replace `'a',` with `⏎······'a',⏎·····` prettier/prettier 
+Warning: 180:1 warning Replace `······` with `········` prettier/prettier 
+Warning: 181:1 warning Insert `··` prettier/prettier 
+Warning: 182:7 warning Insert `··` prettier/prettier 
+Warning: 183:1 warning Replace `····` with `······` prettier/prettier 
+Warning: 184:9 warning Replace `'div',` with `⏎········'div',⏎·······` prettier/prettier 
+Warning: 189:9 warning Replace `'div',` with `⏎········'div',⏎·······` prettier/prettier 
+Warning: 191:11 warning Replace `'p',·{·class:·'movie-card__meta'·},·`${item.year}${item.duration·?·'·•·'·+·item.duration·:·''}`)` with `⏎··········'p',⏎··········{·class:·'movie-card__meta'·},⏎··········`${item.year}${item.duration·?·'·•·'·+·item.duration·:·''}`,⏎········),` prettier/prettier 
+Warning: 192:8 warning Insert `,` prettier/prettier 
+Warning: 200:2 warning Insert `⏎` prettier/prettier 
+/home/runner/work/MVStream/MVStream/src/pages/PlayerPage.ts 
+Warning: 20:7 warning Replace `'div',` with `⏎······'div',⏎·····` prettier/prettier 
+Warning: 21:9 warning Replace `'div',` with `⏎········'div',⏎·······` prettier/prettier 
+Warning: 24:11 warning Replace `'div',` with `⏎··········'div',⏎·········` prettier/prettier 
+Warning: 25:13 warning Replace `'a',` with `⏎············'a',⏎···········` prettier/prettier 
+Warning: 26:1 warning Insert `··` prettier/prettier 
+Warning: 27:1 warning Insert `··` prettier/prettier 
+Warning: 28:11 warning Replace `},·'←·Back·to·Details')` with `··},⏎············'←·Back·to·Details',⏎··········),` prettier/prettier 
+Warning:    46:15   warning  Replace `'button',` with `⏎··············'button',⏎·············`                                                                                                                                                                                               prettier/prettier
+Warning:    47:1    warning  Insert `··`                                                                                                                                                                                                                                                     prettier/prettier
+Warning:    48:1    warning  Insert `··`                                                                                                                                                                                                                                                     prettier/prettier
+Warning:    49:13   warning  Replace `},·'📺·VLC'` with `··},⏎··············'📺·VLC',⏎············`                                                                                                                                                                                          prettier/prettier
+Warning:    50:15   warning  Replace `'button',` with `⏎··············'button',⏎·············`                                                                                                                                                                                               prettier/prettier
+Warning:    51:15   warning  Insert `··`                                                                                                                                                                                                                                                     prettier/prettier
+Warning:    52:1    warning  Insert `··`                                                                                                                                                                                                                                                     prettier/prettier
+Warning:    53:13   warning  Replace `},·'📱·MX·Player')` with `··},⏎··············'📱·MX·Player',⏎············),`                                                                                                                                                                           prettier/prettier
+Warning:    54:12   warning  Insert `,`                                                                                                                                                                                                                                                      prettier/prettier
+Warning:    58:79   warning  Insert `,`                                                                                                                                                                                                                                                      prettier/prettier
+Warning:    59:8    warning  Insert `,`                                                                                                                                                                                                                                                      prettier/prettier
+Warning:    60:6    warning  Insert `,`                                                                                                                                                                                                                                                      prettier/prettier
+Warning:    67:22   warning  Replace `type:·string,·id:·string,·seasonId:·string·|·null,·episodeId:·string·|·null` with `⏎··type:·string,⏎··id:·string,⏎··seasonId:·string·|·null,⏎··episodeId:·string·|·null,⏎`                                                                             prettier/prettier
+Warning:    81:11   warning  Replace `'div',` with `⏎··········'div',⏎·········`                                                                                                                                                                                                             prettier/prettier
+Warning:    83:13   warning  Replace `'p',·{·style:·'color:·var(--text-secondary);'·},·`${item.year}·•·${item.genres?.join(',·')}`)` with `⏎············'p',⏎············{·style:·'color:·var(--text-secondary);'·},⏎············`${item.year}·•·${item.genres?.join(',·')}`,⏎··········),`  prettier/prettier
+Warning:    84:10   warning  Insert `,`                                                                                                                                                                                                                                                      prettier/prettier
+Warning:    99:13   warning  Replace `'div',` with `⏎············'div',⏎···········`                                                                                                                                                                                                         prettier/prettier
+Warning:   102:90   warning  Insert `,`                                                                                                                                                                                                                                                      prettier/prettier
+Warning:   103:12   warning  Insert `,`                                                                                                                                                                                                                                                      prettier/prettier
+Warning:   113:77   warning  Insert `,`                                                                                                                                                                                                                                                      prettier/prettier
+Warning:   117:21   warning  Replace `'button',` with `⏎········'button',⏎·······`                                                                                                                                                                                                           prettier/prettier
+Warning:   118:1    warning  Insert `··`                                                                                                                                                                                                                                                     prettier/prettier
+Warning:   119:9    warning  Insert `··`                                                                                                                                                                                                                                                     prettier/prettier
+Warning:   120:7    warning  Replace `},·server.name·+·(server.quality·?·`·(${server.quality})`·:·'')` with `··},⏎········server.name·+·(server.quality·?·`·(${server.quality})`·:·''),⏎······`                                                                                              prettier/prettier
+Warning:   132:3    warning  Unexpected console statement                                                                                                                                                                                                                                    no-console
+Warning:   139:3    warning  Unexpected console statement                                                                                                                                                                                                                                    no-console
+Warning:   141:2    warning  Insert `⏎`                                                                                                                                                                                                                                                      prettier/prettier
+
+/home/runner/work/MVStream/MVStream/src/pages/ProfilePage.ts
+Warning:    20:7   warning  Replace `'div',` with `⏎······'div',⏎·····`                                                                                          prettier/prettier
+Warning:    21:9   warning  Replace `'div',` with `⏎········'div',⏎·······`                                                                                      prettier/prettier
+Warning:    22:11  warning  Replace `'div',` with `⏎··········'div',⏎·········`                                                                                  prettier/prettier
+Warning:    23:77  warning  Insert `,`                                                                                                                           prettier/prettier
+Warning:    24:10  warning  Insert `,`                                                                                                                           prettier/prettier
+Warning:    26:9   warning  Replace `'div',` with `⏎········'div',⏎·······`                                                                                      prettier/prettier
+Warning:    28:97  warning  Insert `,`                                                                                                                           prettier/prettier
+Warning:    30:9   warning  Replace `'div',` with `⏎········'div',⏎·······`                                                                                      prettier/prettier
+Warning:    31:82  warning  Insert `,`                                                                                                                           prettier/prettier
+Warning:    32:8   warning  Insert `,`                                                                                                                           prettier/prettier
+Warning:    33:6   warning  Insert `,`                                                                                                                           prettier/prettier
+Warning:    37:18  warning  Replace `'div',` with `⏎····'div',⏎···`                                                                                              prettier/prettier
+Warning:    82:9   warning  Replace `'div',` with `⏎········'div',⏎·······`                                                                                      prettier/prettier
+Warning:    86:81  warning  Insert `,`                                                                                                                           prettier/prettier
+Warning:    87:8   warning  Insert `,`                                                                                                                           prettier/prettier
+Warning:    94:20  warning  Replace `'a',` with `⏎······'a',⏎·····`                                                                                              prettier/prettier
+Warning:    95:1   warning  Insert `··`                                                                                                                          prettier/prettier
+Warning:    96:7   warning  Insert `··`                                                                                                                          prettier/prettier
+Warning:    97:7   warning  Insert `··`                                                                                                                          prettier/prettier
+Warning:    98:1   warning  Insert `··`                                                                                                                          prettier/prettier
+Warning:    99:9   warning  Replace `'div',` with `⏎········'div',⏎·······`                                                                                      prettier/prettier
+Warning:   107:46  warning  Replace `⏎········h('h3',·{·class:·'movie-card__title'·},·item.title)` with `·h('h3',·{·class:·'movie-card__title'·},·item.title))`  prettier/prettier
+Warning:   109:1   warning  Delete `······)⏎`                                                                                                                    prettier/prettier
+Warning:   122:9   warning  Replace `'div',` with `⏎········'div',⏎·······`                                                                                      prettier/prettier
+Warning:   125:95  warning  Insert `,`                                                                                                                           prettier/prettier
+Warning:   126:8   warning  Insert `,`                                                                                                                           prettier/prettier
+Warning:   134:9   warning  Replace `'a',` with `⏎········'a',⏎·······`                                                                                          prettier/prettier
+Warning:   135:1   warning  Insert `··`                                                                                                                          prettier/prettier
+Warning:   136:1   warning  Insert `··`                                                                                                                          prettier/prettier
+Warning:   137:1   warning  Insert `··`                                                                                                                          prettier/prettier
+Warning:   144:11  warning  Replace `'div',` with `⏎··········'div',⏎·········`                                                                                  prettier/prettier
+Warning:   146:97  warning  Insert `,`                                                                                                                           prettier/prettier
+Warning:   147:10  warning  Insert `,`                                                                                                                           prettier/prettier
+Warning:   148:8   warning  Insert `,`                                                                                                                           prettier/prettier
+Warning:   160:9   warning  Replace `'div',` with `⏎········'div',⏎·······`                                                                                      prettier/prettier
+Warning:   163:83  warning  Insert `,`                                                                                                                           prettier/prettier
+Warning:   164:8   warning  Insert `,`                                                                                                                           prettier/prettier
+Warning:   172:9   warning  Replace `'a',` with `⏎········'a',⏎·······`                                                                                          prettier/prettier
+Warning:   173:1   warning  Insert `··`                                                                                                                          prettier/prettier
+Warning:   174:1   warning  Insert `··`                                                                                                                          prettier/prettier
+Warning:   175:1   warning  Insert `··`                                                                                                                          prettier/prettier
+Warning:   182:11  warning  Replace `'div',` with `⏎··········'div',⏎·········`                                                                                  prettier/prettier
+Warning:   184:13  warning  Replace `'div',` with `⏎············'div',⏎···········`                                                                              prettier/prettier
+Warning:   188:15  warning  Insert `,`                                                                                                                           prettier/prettier
+Warning:   190:84  warning  Insert `,`                                                                                                                           prettier/prettier
+Warning:   191:10  warning  Insert `,`                                                                                                                           prettier/prettier
+Warning:   192:8   warning  Insert `,`                                                                                                                           prettier/prettier
+Warning:   197:2   warning  Insert `⏎`                                                                                                                           prettier/prettier
+
+/home/runner/work/MVStream/MVStream/src/pages/SearchPage.ts
+Warning:    20:23  warning  Replace `'div',` with `⏎····'div',⏎···`                                                                                    prettier/prettier
+Warning:    21:7   warning  Replace `'div',` with `⏎······'div',⏎·····`                                                                                prettier/prettier
+Warning:    30:9   warning  Replace `'button',` with `⏎········'button',⏎·······`                                                                      prettier/prettier
+Warning:    31:1   warning  Insert `··`                                                                                                                prettier/prettier
+Warning:    32:9   warning  Insert `··`                                                                                                                prettier/prettier
+Warning:    33:7   warning  Replace `},·'✕')` with `··},⏎········'✕',⏎······),`                                                                        prettier/prettier
+Warning:    34:6   warning  Insert `,`                                                                                                                 prettier/prettier
+Warning:    62:9   warning  Replace `'div',` with `⏎········'div',⏎·······`                                                                            prettier/prettier
+Warning:    64:35  warning  Insert `,`                                                                                                                 prettier/prettier
+Warning:    65:8   warning  Insert `,`                                                                                                                 prettier/prettier
+Warning:    73:42  warning  Replace `(r)·=>·'name'·in·r·&&·'first_air_date'·in·r` with `⏎········(r)·=>·'name'·in·r·&&·'first_air_date'·in·r,⏎······`  prettier/prettier
+Warning:    77:13  warning  Replace `'div',` with `⏎············'div',⏎···········`                                                                    prettier/prettier
+Warning:    80:87  warning  Insert `,`                                                                                                                 prettier/prettier
+Warning:    81:12  warning  Insert `,`                                                                                                                 prettier/prettier
+Error:    97:14  error    'error' is defined but never used                                                                                          @typescript-eslint/no-unused-vars
+Error:    97:14  error    'error' is defined but never used                                                                                          @typescript-eslint/no-unused-vars
+Warning:   100:11  warning  Replace `'div',` with `⏎··········'div',⏎·········`                                                                        prettier/prettier
+Warning:   101:92  warning  Insert `,`                                                                                                                 prettier/prettier
+Warning:   102:10  warning  Insert `,`                                                                                                                 prettier/prettier
+Warning:   122:21  warning  Replace `'div',` with `⏎····'div',⏎···`                                                                                    prettier/prettier
+Warning:   123:7   warning  Replace `'div',` with `⏎······'div',⏎·····`                                                                                prettier/prettier
+Warning:   125:9   warning  Replace `'button',` with `⏎········'button',⏎·······`                                                                      prettier/prettier
+Warning:   126:1   warning  Insert `··`                                                                                                                prettier/prettier
+Warning:   127:9   warning  Insert `··`                                                                                                                prettier/prettier
+Warning:   128:1   warning  Insert `··`                                                                                                                prettier/prettier
+Warning:   129:1   warning  Insert `··`                                                                                                                prettier/prettier
+Warning:   130:9   warning  Insert `··`                                                                                                                prettier/prettier
+Warning:   131:7   warning  Replace `},·'Clear·All')` with `··},⏎········'Clear·All',⏎······),`                                                        prettier/prettier
+Warning:   133:7   warning  Replace `'div',` with `⏎······'div',⏎·····`                                                                                prettier/prettier
+Warning:   135:11  warning  Replace `'button',` with `⏎··········'button',⏎·········`                                                                  prettier/prettier
+Warning:   136:1   warning  Insert `··`                                                                                                                prettier/prettier
+Warning:   137:11  warning  Insert `··`                                                                                                                prettier/prettier
+Warning:   138:1   warning  Insert `··`                                                                                                                prettier/prettier
+Warning:   139:1   warning  Insert `··`                                                                                                                prettier/prettier
+Warning:   140:15  warning  Insert `··`                                                                                                                prettier/prettier
+Warning:   141:1   warning  Insert `··`                                                                                                                prettier/prettier
+Warning:   142:1   warning  Insert `··`                                                                                                                prettier/prettier
+Warning:   143:11  warning  Insert `··`                                                                                                                prettier/prettier
+Warning:   144:9   warning  Replace `},·q)` with `··},⏎··········q,⏎········),`                                                                        prettier/prettier
+Warning:   145:8   warning  Insert `,`                                                                                                                 prettier/prettier
+Warning:   146:6   warning  Insert `,`                                                                                                                 prettier/prettier
+Warning:   155:27  warning  Insert `,`                                                                                                                 prettier/prettier
+Warning:   157:21  warning  Replace `'div',` with `⏎····'div',⏎···`                                                                                    prettier/prettier
+Warning:   159:38  warning  Insert `,`                                                                                                                 prettier/prettier
+Warning:   168:17  warning  Insert `⏎·····`                                                                                                            prettier/prettier
+Warning:   170:20  warning  Replace `'a',` with `⏎······'a',⏎·····`                                                                                    prettier/prettier
+Warning:   171:7   warning  Insert `··`                                                                                                                prettier/prettier
+Warning:   172:7   warning  Insert `··`                                                                                                                prettier/prettier
+Warning:   173:1   warning  Insert `··`                                                                                                                prettier/prettier
+Warning:   174:5   warning  Insert `··`                                                                                                                prettier/prettier
+Warning:   175:9   warning  Replace `'div',` with `⏎········'div',⏎·······`                                                                            prettier/prettier
+Warning:   184:9   warning  Replace `'div',` with `⏎········'div',⏎·······`                                                                            prettier/prettier
+Warning:   186:73  warning  Insert `,`                                                                                                                 prettier/prettier
+Warning:   187:8   warning  Insert `,`                                                                                                                 prettier/prettier
+Warning:   194:2   warning  Insert `⏎`                                                                                                                 prettier/prettier
+
+/home/runner/work/MVStream/MVStream/src/pages/SettingsPage.ts
+Warning:    23:7   warning  Replace `'section',` with `⏎······'section',⏎·····`                                                                                                                                                                                                               prettier/prettier
+Warning:    25:9   warning  Replace `'div',` with `⏎········'div',⏎·······`                                                                                                                                                                                                                   prettier/prettier
+Warning:    26:11  warning  Replace `'div',` with `⏎··········'div',⏎·········`                                                                                                                                                                                                               prettier/prettier
+Warning:    27:13  warning  Replace `'div',` with `⏎············'div',⏎···········`                                                                                                                                                                                                           prettier/prettier
+Warning:    29:86  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:    30:12  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:    32:11  warning  Replace `'div',` with `⏎··········'div',⏎·········`                                                                                                                                                                                                               prettier/prettier
+Warning:    33:13  warning  Replace `'div',` with `⏎············'div',⏎···········`                                                                                                                                                                                                           prettier/prettier
+Warning:    35:83  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:    37:69  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:    38:10  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:    39:8   warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:    40:6   warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:    45:7   warning  Replace `'section',` with `⏎······'section',⏎·····`                                                                                                                                                                                                               prettier/prettier
+Warning:    47:9   warning  Replace `'div',` with `⏎········'div',⏎·······`                                                                                                                                                                                                                   prettier/prettier
+Warning:    48:11  warning  Replace `'div',` with `⏎··········'div',⏎·········`                                                                                                                                                                                                               prettier/prettier
+Warning:    49:13  warning  Replace `'div',` with `⏎············'div',⏎···········`                                                                                                                                                                                                           prettier/prettier
+Warning:    51:99  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:    53:13  warning  Replace `'label',` with `⏎············'label',⏎···········`                                                                                                                                                                                                       prettier/prettier
+Warning:    63:51  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:    64:12  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:    66:11  warning  Replace `'div',` with `⏎··········'div',⏎·········`                                                                                                                                                                                                               prettier/prettier
+Warning:    67:13  warning  Replace `'div',` with `⏎············'div',⏎···········`                                                                                                                                                                                                           prettier/prettier
+Warning:    69:97  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:    71:13  warning  Replace `'select',` with `⏎············'select',⏎···········`                                                                                                                                                                                                     prettier/prettier
+Warning:    72:13  warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:    73:13  warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:    74:1   warning  Replace `··············` with `················`                                                                                                                                                                                                                  prettier/prettier
+Warning:    75:1   warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:    76:1   warning  Replace `············` with `··············`                                                                                                                                                                                                                      prettier/prettier
+Warning:    77:1   warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:    78:15  warning  Replace `'option',·{·value:·'auto',·selected:·playerSettings.defaultQuality·===·'auto'·},·'Auto'` with `⏎··············'option',⏎··············{·value:·'auto',·selected:·playerSettings.defaultQuality·===·'auto'·},⏎··············'Auto',⏎············`         prettier/prettier
+Warning:    79:15  warning  Replace `'option',·{·value:·'1080',·selected:·playerSettings.defaultQuality·===·'1080'·},·'1080p'` with `⏎··············'option',⏎··············{·value:·'1080',·selected:·playerSettings.defaultQuality·===·'1080'·},⏎··············'1080p',⏎············`       prettier/prettier
+Warning:    80:15  warning  Replace `'option',·{·value:·'720',·selected:·playerSettings.defaultQuality·===·'720'·},·'720p'` with `⏎··············'option',⏎··············{·value:·'720',·selected:·playerSettings.defaultQuality·===·'720'·},⏎··············'720p',⏎············`             prettier/prettier
+Warning:    81:15  warning  Replace `'option',·{·value:·'480',·selected:·playerSettings.defaultQuality·===·'480'·},·'480p')` with `⏎··············'option',⏎··············{·value:·'480',·selected:·playerSettings.defaultQuality·===·'480'·},⏎··············'480p',⏎············),`          prettier/prettier
+Warning:    82:12  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:    84:11  warning  Replace `'div',` with `⏎··········'div',⏎·········`                                                                                                                                                                                                               prettier/prettier
+Warning:    85:13  warning  Replace `'div',` with `⏎············'div',⏎···········`                                                                                                                                                                                                           prettier/prettier
+Warning:    87:15  warning  Replace `'p',·{·class:·'settings-item__description'·},·'Open·videos·in·external·player·by·default')` with `⏎··············'p',⏎··············{·class:·'settings-item__description'·},⏎··············'Open·videos·in·external·player·by·default',⏎············),`  prettier/prettier
+Warning:    89:13  warning  Replace `'label',` with `⏎············'label',⏎···········`                                                                                                                                                                                                       prettier/prettier
+Warning:    99:51  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   100:12  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   101:10  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   102:8   warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   103:6   warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   108:7   warning  Replace `'section',` with `⏎······'section',⏎·····`                                                                                                                                                                                                               prettier/prettier
+Warning:   110:9   warning  Replace `'div',` with `⏎········'div',⏎·······`                                                                                                                                                                                                                   prettier/prettier
+Warning:   111:11  warning  Replace `'div',` with `⏎··········'div',⏎·········`                                                                                                                                                                                                               prettier/prettier
+Warning:   112:13  warning  Replace `'div',` with `⏎············'div',⏎···········`                                                                                                                                                                                                           prettier/prettier
+Warning:   114:15  warning  Replace `'p',·{·class:·'settings-item__description'·},·'Remove·all·items·from·your·watch·history')` with `⏎··············'p',⏎··············{·class:·'settings-item__description'·},⏎··············'Remove·all·items·from·your·watch·history',⏎············),`    prettier/prettier
+Warning:   116:13  warning  Replace `'button',` with `⏎············'button',⏎···········`                                                                                                                                                                                                     prettier/prettier
+Warning:   117:1   warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:   118:1   warning  Replace `············` with `··············`                                                                                                                                                                                                                      prettier/prettier
+Warning:   119:1   warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:   120:1   warning  Replace `················` with `··················`                                                                                                                                                                                                              prettier/prettier
+Error:   120:47  error    A `require()` style import is forbidden                                                                                                                                                                                                                           @typescript-eslint/no-require-imports
+Warning:   121:17  warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:   118:1   warning  Replace `············` with `··············`                                                                                                                                                                                                                      prettier/prettier
+Warning:   119:1   warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:   120:1   warning  Replace `················` with `··················`                                                                                                                                                                                                              prettier/prettier
+Error:   120:47  error    A `require()` style import is forbidden                                                                                                                                                                                                                           @typescript-eslint/no-require-imports
+Warning:   121:17  warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:   122:1   warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:   123:15  warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:   124:1   warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:   125:11  warning  Replace `},·'Clear')` with `··},⏎············'Clear',⏎··········),`                                                                                                                                                                                               prettier/prettier
+Warning:   127:11  warning  Replace `'div',` with `⏎··········'div',⏎·········`                                                                                                                                                                                                               prettier/prettier
+Warning:   128:13  warning  Replace `'div',` with `⏎············'div',⏎···········`                                                                                                                                                                                                           prettier/prettier
+Warning:   130:94  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   132:13  warning  Replace `'button',` with `⏎············'button',⏎···········`                                                                                                                                                                                                     prettier/prettier
+Warning:   133:1   warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:   134:13  warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:   135:13  warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:   136:1   warning  Replace `··············` with `················`                                                                                                                                                                                                                  prettier/prettier
+Warning:   137:17  warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:   138:1   warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:   139:15  warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:   140:1   warning  Insert `··`                                                                                                                                                                                                                                                       prettier/prettier
+Warning:   141:11  warning  Replace `},·'Clear·All')` with `··},⏎············'Clear·All',⏎··········),`                                                                                                                                                                                       prettier/prettier
+Warning:   142:10  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   143:8   warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   144:6   warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   149:7   warning  Replace `'section',` with `⏎······'section',⏎·····`                                                                                                                                                                                                               prettier/prettier
+Warning:   151:9   warning  Replace `'div',` with `⏎········'div',⏎·······`                                                                                                                                                                                                                   prettier/prettier
+Warning:   152:11  warning  Replace `'div',` with `⏎··········'div',⏎·········`                                                                                                                                                                                                               prettier/prettier
+Warning:   153:13  warning  Replace `'div',` with `⏎············'div',⏎···········`                                                                                                                                                                                                           prettier/prettier
+Warning:   155:73  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   156:12  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   158:11  warning  Replace `'div',` with `⏎··········'div',⏎·········`                                                                                                                                                                                                               prettier/prettier
+Warning:   159:13  warning  Replace `'div',` with `⏎············'div',⏎···········`                                                                                                                                                                                                           prettier/prettier
+Warning:   162:81  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   164:11  warning  Replace `'div',` with `⏎··········'div',⏎·········`                                                                                                                                                                                                               prettier/prettier
+Warning:   165:13  warning  Replace `'div',` with `⏎············'div',⏎···········`                                                                                                                                                                                                           prettier/prettier
+Warning:   168:78  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   169:10  warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   170:8   warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   171:6   warning  Insert `,`                                                                                                                                                                                                                                                        prettier/prettier
+Warning:   175:2   warning  Insert `⏎`                                                                                                                                                                                                                                                        prettier/prettier
+
+/home/runner/work/MVStream/MVStream/src/services/auth.ts
+Error:    14:15  error    'get' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+Warning:    96:22  warning  Insert `,`                                                             prettier/prettier
+Warning:   150:59  warning  Insert `,`                                                             prettier/prettier
+Warning:   173:2   warning  Insert `⏎`                                                             prettier/prettier
+
+/home/runner/work/MVStream/MVStream/src/services/firebase.ts
+Warning:   29:26  warning  Replace `await·isSupported(` with `(await·isSupported()`  prettier/prettier
+Warning:   37:20  warning  Insert `⏎`                                                prettier/prettier
+
+/home/runner/work/MVStream/MVStream/src/services/index.ts
+Warning:    5:9   warning  Replace `⏎··auth,⏎··db,⏎··analytics,⏎` with `·auth,·db,·analytics·`  prettier/prettier
+Warning:   73:19  warning  Insert `⏎`                                                           prettier/prettier
+
+/home/runner/work/MVStream/MVStream/src/services/player.ts
+Warning:    15:34  warning  Insert `,`                                                                                                                                      prettier/prettier
+Warning:    49:27  warning  Replace `⏎··player:·Plyr,⏎··url:·string,⏎··type:·'video'·|·'hls'·=·'video'⏎` with `player:·Plyr,·url:·string,·type:·'video'·|·'hls'·=·'video'`  prettier/prettier
+Warning:    79:24  warning  Insert `,`                                                                                                                                      prettier/prettier
+Warning:   146:52  warning  Insert `,`                                                                                                                                      prettier/prettier
+Warning:   157:17  warning  Insert `,`                                                                                                                                      prettier/prettier
+Warning:   189:3   warning  Insert `⏎`                                                                                                                                      prettier/prettier
+
+/home/runner/work/MVStream/MVStream/src/services/storage.ts
+Warning:    43:37  warning  Insert `,`                                                                                                  prettier/prettier
+Warning:    57:46  warning  Replace `⏎····(i)·=>·!(i.id·===·id·&&·i.type·===·type)⏎··` with `(i)·=>·!(i.id·===·id·&&·i.type·===·type)`  prettier/prettier
+Warning:   113:42  warning  Replace `⏎····(i)·=>·!(i.id·===·id·&&·i.type·===·type)⏎··` with `(i)·=>·!(i.id·===·id·&&·i.type·===·type)`  prettier/prettier
+Warning:   118:43  warning  Replace `⏎····(i)·=>·!(i.id·===·id·&&·i.type·===·type)⏎··` with `(i)·=>·!(i.id·===·id·&&·i.type·===·type)`  prettier/prettier
+Warning:   190:2   warning  Insert `⏎`                                                                                                  prettier/prettier
+
+/home/runner/work/MVStream/MVStream/src/services/tmdb.ts
+Warning:    34:81  warning  Insert `,`                                                                                                                                                                                                                                                                                                                                                                                                              prettier/prettier
+Warning:    42:57  warning  Insert `,`                                                                                                                                                                                                                                                                                                                                                                                                              prettier/prettier
+Warning:    50:54  warning  Insert `,`                                                                                                                                                                                                                                                                                                                                                                                                              prettier/prettier
+Warning:    85:38  warning  Replace `timeWindow:·'day'·|·'week'·=·'week'` with `⏎··timeWindow:·'day'·|·'week'·=·'week',⏎`                                                                                                                                                                                                                                                                                                                           prettier/prettier
+Warning:    89:38  warning  Replace `timeWindow:·'day'·|·'week'·=·'week'` with `⏎··timeWindow:·'day'·|·'week'·=·'week',⏎`                                                                                                                                                                                                                                                                                                                           prettier/prettier
+Warning:    94:38  warning  Replace `params:·Record<string,·string>·=·{}` with `⏎··params:·Record<string,·string>·=·{},⏎`                                                                                                                                                                                                                                                                                                                           prettier/prettier
+Warning:   101:38  warning  Replace `params:·Record<string,·string>·=·{}` with `⏎··params:·Record<string,·string>·=·{},⏎`                                                                                                                                                                                                                                                                                                                           prettier/prettier
+Warning:   123:23  warning  Insert `,`                                                                                                                                                                                                                                                                                                                                                                                                              prettier/prettier
+Warning:   124:12  warning  Replace `TMDBSeason·&·{·episodes:·{·id:·number;·episode_number:·number;·name:·string;·overview:·string;·still_path:·string·|·null;·runtime:·number;·vote_average:·number·}[]·}` with `⏎··TMDBSeason·&·{⏎····episodes:·{⏎······id:·number;⏎······episode_number:·number;⏎······name:·string;⏎······overview:·string;⏎······still_path:·string·|·null;⏎······runtime:·number;⏎······vote_average:·number;⏎····}[];⏎··}⏎`  prettier/prettier
+Warning:   129:29  warning  Replace `tmdb:·TMDBMovie` with `⏎··tmdb:·TMDBMovie,⏎`                                                                                                                                                                                                                                                                                                                                                                   prettier/prettier
+Warning:   149:30  warning  Replace `tmdb:·TMDBSeries` with `⏎··tmdb:·TMDBSeries,⏎`                                                                                                                                                                                                                                                                                                                                                                 prettier/prettier
+Warning:   176:2   warning  Insert `⏎`                                                                                                                                                                                                                                                                                                                                                                                                              prettier/prettier
+
+/home/runner/work/MVStream/MVStream/src/types/api.ts
+Warning:   142:2  warning  Insert `⏎`  prettier/prettier
+
+/home/runner/work/MVStream/MVStream/src/types/index.ts
+Warning:   38:16  warning  Insert `⏎`  prettier/prettier
+
+/home/runner/work/MVStream/MVStream/src/types/movie.ts
+Warning:   124:2  warning  Insert `⏎`  prettier/prettier
+
+/home/runner/work/MVStream/MVStream/src/types/user.ts
+Warning:   59:2  warning  Insert `⏎`  prettier/prettier
+
+/home/runner/work/MVStream/MVStream/src/utils/constants.ts
+Warning:   106:12  warning  Insert `⏎`  prettier/prettier
+
+/home/runner/work/MVStream/MVStream/src/utils/helpers.ts
+Error:     6:25  error    'update' is defined but never used. Allowed unused vars must match /^_/u                                                                                                                             @typescript-eslint/no-unused-vars
+Error:     6:39  error    'query' is defined but never used. Allowed unused vars must match /^_/u                                                                                                                              @typescript-eslint/no-unused-vars
+Error:     6:46  error    'orderByChild' is defined but never used. Allowed unused vars must match /^_/u                                                                                                                       @typescript-eslint/no-unused-vars
+Error:     6:60  error    'equalTo' is defined but never used. Allowed unused vars must match /^_/u                                                                                                                            @typescript-eslint/no-unused-vars
+Warning:    70:50  warning  Replace `{·id:·string;·name:·string;·slug:·string;·icon?:·string·}[]` with `⏎··{·id:·string;·name:·string;·slug:·string;·icon?:·string·}[]⏎`                                                         prettier/prettier
+Warning:    76:41  warning  Replace `string,·{·name:·string;·slug:·string;·icon?:·string;·order?:·number·}` with `⏎····string,⏎····{·name:·string;·slug:·string;·icon?:·string;·order?:·number·}⏎··`                             prettier/prettier
+Warning:   166:60  warning  Replace `⏎··items:·T[],⏎··query:·string⏎` with `items:·T[],·query:·string`                                                                                                                           prettier/prettier
+Warning:   175:27  warning  Replace `·(item·as·T·&·{·genres:·string[]·}).genres.some((g)·=>·g.toLowerCase().includes(q)))` with `⏎········(item·as·T·&·{·genres:·string[]·}).genres.some((g)·=>·g.toLowerCase().includes(q))),`  prettier/prettier
+Warning:   182:27  warning  Replace `⏎··items:·T[],⏎··key:·keyof·T,⏎··direction:·'asc'·|·'desc'·=·'desc'⏎` with `items:·T[],·key:·keyof·T,·direction:·'asc'·|·'desc'·=·'desc'`                                                   prettier/prettier
+Warning:   218:80  warning  Replace `⏎····navigator.userAgent⏎··` with `navigator.userAgent`                                                                                                                                     prettier/prettier
+Warning:   245:2   warning  Insert `⏎`                                                                                                                                                                                           prettier/prettier
+
+/home/runner/work/MVStream/MVStream/src/vite-env.d.ts
+Warning:   22:2  warning  Insert `⏎`  prettier/prettier
+
+✖ 640 problems (24 errors, 616 warnings)
+  1 error and 612 warnings potentially fixable with the `--fix` option.
+
+Error: Process completed with exit code 1.

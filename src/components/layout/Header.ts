@@ -115,11 +115,9 @@ export function renderHeader(container: Element): void {
   });
 
   // Handle scroll for header styling
-  let lastScroll = 0;
   window.addEventListener('scroll', () => {
     const currentScroll = window.scrollY;
     header.classList.toggle('header--scrolled', currentScroll > 50);
-    lastScroll = currentScroll;
   }, { passive: true });
 }
 
