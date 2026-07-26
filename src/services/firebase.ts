@@ -3,12 +3,8 @@
 // ============================================
 
 import { initializeApp, type FirebaseApp } from 'firebase/app';
-import {
-  getAuth, connectAuthEmulator, type Auth,
-} from 'firebase/auth';
-import {
-  getDatabase, connectDatabaseEmulator, type Database,
-} from 'firebase/database';
+import { getAuth, connectAuthEmulator, type Auth } from 'firebase/auth';
+import { getDatabase, connectDatabaseEmulator, type Database } from 'firebase/database';
 import { getAnalytics, isSupported } from 'firebase/analytics';
 
 // Environment variables (via Vite .env)
