@@ -108,7 +108,7 @@ export function useMovies(): UseMoviesReturn {
     },
 
     async playContent(type: 'movie' | 'series', id: string) {
-      console.log('Playing', type, id);
+      // TODO: implement play logic
     },
 
     toggleWatchlist(item: WatchlistItem) {

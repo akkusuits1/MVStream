@@ -174,13 +174,13 @@ function loadContent(
 }
 
 function selectServer(server: ServerLink): void {
-  console.log('Selected server:', server);
+  console.warn('Selected server:', server);
   // TODO: initialize Plyr with server URL
   // const player = initPlayer('#player-container');
   // loadVideo(player, server.url);
 }
 
 function openExternalPlayer(player: 'vlc' | 'mx'): void {
-  console.log('Open in external player:', player);
+  console.warn('Open in external player:', player);
   // TODO: implement external player launch
 }

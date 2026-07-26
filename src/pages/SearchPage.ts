@@ -108,7 +108,7 @@ export async function renderSearchPage(): Promise<void> {
       }
 
       addSearchHistory(query);
-    } catch (_error) {
+    } catch {
       results.innerHTML = '';
       results.appendChild(
         h(
