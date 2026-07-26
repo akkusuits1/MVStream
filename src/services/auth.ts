@@ -21,11 +21,23 @@ import type { User } from '@types';
 let unsubAuth: (() => void) | null = null;
 let unsubUser: (() => void) | null = null;
 
+// ---- Null guards ----
+function requireAuth(): NonNullable<typeof auth> {
+  if (!auth) throw new Error('Firebase Auth is not configured.');
+  return auth;
+}
+
+function requireDb(): NonNullable<typeof db> {
+  if (!db) throw new Error('Firebase Database is not configured.');
+  return db;
+}
+
 // ---- Initialize auth listener ----
 export function initAuth(): void {
+  const firebaseAuth = requireAuth();
   stores.authLoading.set(true);
 
-  unsubAuth = onAuthStateChanged(auth, (firebaseUser: FirebaseUser | null) => {
+  unsubAuth = onAuthStateChanged(firebaseAuth, (firebaseUser: FirebaseUser | null) => {
     if (firebaseUser) {
       listenToUserProfile(firebaseUser.uid);
     } else {
@@ -40,15 +52,17 @@ export function initAuth(): void {
 function listenToUserProfile(uid: string): void {
   unsubUser?.();
 
-  const userRef = ref(db, `users/${uid}`);
+  const firebaseAuth = requireAuth();
+  const database = requireDb();
+  const userRef = ref(database, `users/${uid}`);
   unsubUser = onValue(userRef, (snapshot) => {
     if (snapshot.exists()) {
       const data = snapshot.val();
       const user: User = {
         uid,
-        email: data.email || auth.currentUser?.email || '',
-        displayName: data.displayName || auth.currentUser?.displayName || 'User',
-        photoURL: data.photoURL || auth.currentUser?.photoURL || undefined,
+        email: data.email || firebaseAuth.currentUser?.email || '',
+        displayName: data.displayName || firebaseAuth.currentUser?.displayName || 'User',
+        photoURL: data.photoURL || firebaseAuth.currentUser?.photoURL || undefined,
         role: data.role || 'user',
         status: data.status || 'active',
         createdAt: data.createdAt || Date.now(),
@@ -59,9 +73,9 @@ function listenToUserProfile(uid: string): void {
       // Create user profile if doesn't exist
       const newUser: User = {
         uid,
-        email: auth.currentUser?.email || '',
-        displayName: auth.currentUser?.displayName || 'User',
-        photoURL: auth.currentUser?.photoURL || undefined,
+        email: firebaseAuth.currentUser?.email || '',
+        displayName: firebaseAuth.currentUser?.displayName || 'User',
+        photoURL: firebaseAuth.currentUser?.photoURL || undefined,
         role: 'user',
         status: 'active',
         createdAt: Date.now(),
@@ -77,10 +91,12 @@ function listenToUserProfile(uid: string): void {
 
 // ---- Login ----
 export async function login(email: string, password: string): Promise<void> {
+  const firebaseAuth = requireAuth();
+  const database = requireDb();
   try {
-    const result = await signInWithEmailAndPassword(auth, email, password);
+    const result = await signInWithEmailAndPassword(firebaseAuth, email, password);
     // Update last login
-    const userRef = ref(db, `users/${result.user.uid}/lastLogin`);
+    const userRef = ref(database, `users/${result.user.uid}/lastLogin`);
     await set(userRef, Date.now());
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Login failed';
@@ -95,14 +111,16 @@ export async function register(
   password: string,
   displayName: string,
 ): Promise<void> {
+  const firebaseAuth = requireAuth();
+  const database = requireDb();
   try {
-    const result = await createUserWithEmailAndPassword(auth, email, password);
+    const result = await createUserWithEmailAndPassword(firebaseAuth, email, password);
 
     // Update profile
     await updateProfile(result.user, { displayName });
 
     // Create user profile in DB
-    const userRef = ref(db, `users/${result.user.uid}`);
+    const userRef = ref(database, `users/${result.user.uid}`);
     const newUser: User = {
       uid: result.user.uid,
       email,
@@ -124,9 +142,10 @@ export async function register(
 
 // ---- Logout ----
 export async function logout(): Promise<void> {
+  const firebaseAuth = requireAuth();
   try {
     unsubUser?.();
-    await signOut(auth);
+    await signOut(firebaseAuth);
     stores.user.set(null);
     events.emit(EVENTS.AUTH_LOGOUT);
   } catch (error: unknown) {
@@ -137,8 +156,9 @@ export async function logout(): Promise<void> {
 
 // ---- Reset Password ----
 export async function resetPassword(email: string): Promise<void> {
+  const firebaseAuth = requireAuth();
   try {
-    await sendPasswordResetEmail(auth, email);
+    await sendPasswordResetEmail(firebaseAuth, email);
   } catch (error: unknown) {
     console.error('Password reset failed:', error);
     throw error;
@@ -149,14 +169,16 @@ export async function resetPassword(email: string): Promise<void> {
 export async function updateUserProfile(
   data: Partial<{ displayName: string; photoURL: string }>,
 ): Promise<void> {
-  const user = auth.currentUser;
+  const firebaseAuth = requireAuth();
+  const database = requireDb();
+  const user = firebaseAuth.currentUser;
   if (!user) throw new Error('Not authenticated');
 
   if (data.displayName || data.photoURL) {
     await updateProfile(user, data);
   }
 
-  const userRef = ref(db, `users/${user.uid}`);
+  const userRef = ref(database, `users/${user.uid}`);
   await update(userRef, data);
 }
 

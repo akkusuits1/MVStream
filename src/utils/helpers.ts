@@ -8,11 +8,17 @@ import { db } from '@services/firebase';
 
 // ---- Firebase Data Helpers ----
 
+function requireDb(): NonNullable<typeof db> {
+  if (!db) throw new Error('Firebase is not configured. Please set VITE_FIREBASE_* environment variables.');
+  return db;
+}
+
 /**
  * Fetch all movies from Firebase
  */
 export async function fetchMovies(): Promise<Movie[]> {
-  const moviesRef = ref(db, 'movies');
+  const database = requireDb();
+  const moviesRef = ref(database, 'movies');
   const snapshot = await get(moviesRef);
 
   if (!snapshot.exists()) return [];
@@ -28,7 +34,8 @@ export async function fetchMovies(): Promise<Movie[]> {
  * Fetch all series from Firebase
  */
 export async function fetchSeries(): Promise<Series[]> {
-  const seriesRef = ref(db, 'series');
+  const database = requireDb();
+  const seriesRef = ref(database, 'series');
   const snapshot = await get(seriesRef);
 
   if (!snapshot.exists()) return [];
@@ -44,7 +51,8 @@ export async function fetchSeries(): Promise<Series[]> {
  * Fetch a single movie by ID
  */
 export async function fetchMovieById(id: string): Promise<Movie | null> {
-  const movieRef = ref(db, `movies/${id}`);
+  const database = requireDb();
+  const movieRef = ref(database, `movies/${id}`);
   const snapshot = await get(movieRef);
 
   if (!snapshot.exists()) return null;
@@ -56,7 +64,8 @@ export async function fetchMovieById(id: string): Promise<Movie | null> {
  * Fetch a single series by ID
  */
 export async function fetchSeriesById(id: string): Promise<Series | null> {
-  const seriesRef = ref(db, `series/${id}`);
+  const database = requireDb();
+  const seriesRef = ref(database, `series/${id}`);
   const snapshot = await get(seriesRef);
 
   if (!snapshot.exists()) return null;
@@ -70,7 +79,8 @@ export async function fetchSeriesById(id: string): Promise<Series | null> {
 export async function fetchCategories(): Promise<
   { id: string; name: string; slug: string; icon?: string; order?: number }[]
 > {
-  const catRef = ref(db, 'categories');
+  const database = requireDb();
+  const catRef = ref(database, 'categories');
   const snapshot = await get(catRef);
 
   if (!snapshot.exists()) return [];
@@ -88,7 +98,8 @@ export async function fetchCategories(): Promise<
  * Fetch app settings from Firebase
  */
 export async function fetchSettings(): Promise<Record<string, unknown> | null> {
-  const settingsRef = ref(db, 'settings');
+  const database = requireDb();
+  const settingsRef = ref(database, 'settings');
   const snapshot = await get(settingsRef);
   return snapshot.exists() ? snapshot.val() : null;
 }
@@ -97,7 +108,8 @@ export async function fetchSettings(): Promise<Record<string, unknown> | null> {
  * Increment view count
  */
 export async function incrementViews(type: 'movies' | 'series', id: string): Promise<void> {
-  const itemRef = ref(db, `${type}/${id}/views`);
+  const database = requireDb();
+  const itemRef = ref(database, `${type}/${id}/views`);
   const snapshot = await get(itemRef);
   const currentViews = snapshot.val() || 0;
   await set(itemRef, currentViews + 1);
@@ -114,7 +126,8 @@ export async function submitReport(report: {
   message: string;
   contactEmail?: string;
 }): Promise<string> {
-  const reportsRef = ref(db, 'reports');
+  const database = requireDb();
+  const reportsRef = ref(database, 'reports');
   const newRef = push(reportsRef);
   await set(newRef, {
     ...report,
