@@ -76,7 +76,7 @@ export interface Category {
   name: string;
   slug: string;
   icon?: string;
-  order: number;
+  order?: number;
 }
 
 // ---- View/Watch State ----

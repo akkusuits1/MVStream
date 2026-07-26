@@ -11,7 +11,7 @@ export function h<K extends keyof HTMLElementTagNameMap>(
     class?: string;
     dataset?: Record<string, string>;
   },
-  ...children: (Node | string)[]
+  ...children: (Node | string | null | false | undefined)[]
 ): HTMLElementTagNameMap[K] {
   const el = document.createElement(tag);
 
@@ -51,8 +51,11 @@ export function h<K extends keyof HTMLElementTagNameMap>(
  * Shorthand for creating a div
  */
 export const div = (
-  props?: Parameters<typeof h<'div'>>[1],
-  ...children: Parameters<typeof h<'div'>>[2]
+  props?: Record<string, string | number | boolean | EventListenerOrEventListenerObject | null> & {
+    class?: string;
+    dataset?: Record<string, string>;
+  },
+  ...children: (Node | string | null | false | undefined)[]
 ) => h('div', props, ...children);
 
 /**
@@ -80,12 +83,12 @@ export function clearChildren(el: Element): void {
 /**
  * Debounce a function
  */
-export function debounce<T extends (...args: unknown[]) => unknown>(
-  fn: T,
+export function debounce<T extends unknown[]>(
+  fn: (...args: T) => void,
   delay: number,
-): (...args: Parameters<T>) => void {
+): (...args: T) => void {
   let timeoutId: ReturnType<typeof setTimeout>;
-  return (...args: Parameters<T>) => {
+  return (...args: T) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => fn(...args), delay);
   };
@@ -94,12 +97,12 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
 /**
  * Throttle a function
  */
-export function throttle<T extends (...args: unknown[]) => unknown>(
-  fn: T,
+export function throttle<T extends unknown[]>(
+  fn: (...args: T) => void,
   limit: number,
-): (...args: Parameters<T>) => void {
+): (...args: T) => void {
   let inThrottle = false;
-  return (...args: Parameters<T>) => {
+  return (...args: T) => {
     if (!inThrottle) {
       fn(...args);
       inThrottle = true;

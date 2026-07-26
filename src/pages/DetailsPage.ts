@@ -4,7 +4,7 @@
 
 import { h, $ } from '@core/utils';
 import { stores } from '@core/store';
-import { tmdbImage } from '@services/tmdb';
+import { tmdbImage } from '@core/utils';
 import type { Movie, Series } from '@types';
 
 export async function renderDetailsPage(params: Record<string, string>): Promise<void> {

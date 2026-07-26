@@ -5,7 +5,7 @@
 import { h, $, img } from '@core/utils';
 import { stores } from '@core/store';
 import type { Movie, Series } from '@types';
-import { tmdbImage } from '@services/tmdb';
+import { tmdbImage } from '@core/utils';
 
 export async function renderHomePage(): Promise<void> {
   const main = $('#main-content');
@@ -101,7 +101,7 @@ function renderHero(movies: Movie[], series: Series[]): HTMLElement {
     { class: 'hero__badges' },
     h('span', { class: 'badge badge--primary' }, '★ ' + String(firstItem.rating)),
     h('span', { class: 'badge' }, String(firstItem.year)),
-    h('span', { class: 'badge' }, firstItem.duration || 'Series'),
+    h('span', { class: 'badge' }, (firstItem as Movie).duration || 'Series'),
   );
 
   // Genre chips
@@ -233,7 +233,7 @@ function renderSection(
         h(
           'p',
           { class: 'movie-card__meta' },
-          `${item.year}${item.duration ? ' • ' + item.duration : ''}`,
+          `${item.year}${(item as Movie).duration ? ' • ' + (item as Movie).duration : ''}`,
         ),
       ),
     );

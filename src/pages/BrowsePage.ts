@@ -2,9 +2,9 @@
 // Browse Page — Movies/Series Grid with Filters
 // ============================================
 
-import { h, $, img } from '@core/utils';
+import { h, $, img, tmdbImage } from '@core/utils';
 import { stores } from '@core/store';
-import { tmdbImage } from '@services/tmdb';
+import type { Movie } from '@types';
 
 export async function renderBrowsePage(params: Record<string, string>): Promise<void> {
   const main = $('#main-content');
@@ -62,7 +62,7 @@ export async function renderBrowsePage(params: Record<string, string>): Promise<
         h(
           'p',
           { class: 'movie-card__meta' },
-          `${item.year}${item.duration ? ' • ' + item.duration : ''}`,
+          `${item.year}${(item as Movie).duration ? ' • ' + (item as Movie).duration : ''}`,
         ),
       ),
     );

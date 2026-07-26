@@ -4,6 +4,8 @@
 
 import type { TMDBMovie, TMDBSeries, TMDBSeason, TMDBSearchResult, Movie, Series } from '@types';
 
+export { tmdbImage } from '@core/utils';
+
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const BASE_URL = import.meta.env.VITE_TMDB_BASE_URL || 'https://api.themoviedb.org/3';
 

@@ -24,9 +24,9 @@ class EventBus {
   once<T = unknown>(event: string, callback: EventCallback<T>): () => void {
     const wrapper: EventCallback<T> = (data) => {
       callback(data);
-      this.off(event, wrapper);
+      this.off(event, wrapper as EventCallback);
     };
-    return this.on(event, wrapper);
+    return this.on<T>(event, wrapper);
   }
 
   off(event: string, callback: EventCallback): void {

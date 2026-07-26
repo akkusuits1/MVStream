@@ -24,9 +24,7 @@ export function renderHeader(container: Element): void {
   inner.appendChild(logo);
 
   // Desktop Navigation
-  const nav = h('nav', { class: 'header__nav hide-sm' }, 'nav', {
-    'aria-label': 'Main navigation',
-  });
+  const nav = h('nav', { class: 'header__nav hide-sm', 'aria-label': 'Main navigation' }, 'nav');
   const navLinks = [
     { href: '#/', label: 'Home', page: 'home' },
     { href: '#/movies', label: 'Movies', page: 'movies' },

@@ -68,7 +68,7 @@ export async function fetchSeriesById(id: string): Promise<Series | null> {
  * Fetch categories from Firebase
  */
 export async function fetchCategories(): Promise<
-  { id: string; name: string; slug: string; icon?: string }[]
+  { id: string; name: string; slug: string; icon?: string; order?: number }[]
 > {
   const catRef = ref(db, 'categories');
   const snapshot = await get(catRef);

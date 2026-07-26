@@ -43,11 +43,10 @@ async function initAdmin(): Promise<void> {
 
   // Load data
   try {
-    const [movies, series, categories, settings] = await Promise.all([
+    const [movies, series, categories] = await Promise.all([
       fetchMovies(),
       fetchSeries(),
       fetchCategories(),
-      fetchSettings(),
     ]);
 
     adminState.movies = movies;
@@ -58,7 +57,6 @@ async function initAdmin(): Promise<void> {
     stores.movies.set(movies);
     stores.series.set(series);
     stores.categories.set(categories);
-    if (settings) stores.settings.set(settings as never);
 
     renderAdmin(app);
   } catch (error) {

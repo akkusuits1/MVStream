@@ -20,7 +20,6 @@ interface RouterOptions {
 
 export class Router {
   private routes: Route[] = [];
-  private currentRoute: Route | null = null;
   private options: RouterOptions;
 
   constructor(options: RouterOptions = {}) {
@@ -75,8 +74,6 @@ export class Router {
           const allowed = await route.guard();
           if (!allowed) return;
         }
-
-        this.currentRoute = route;
 
         // Extract params
         const paramNames: string[] = [];
