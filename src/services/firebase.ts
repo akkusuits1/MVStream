@@ -26,7 +26,13 @@ export const auth = getAuth(app);
 export const db = getDatabase(app);
 
 // Analytics (conditional — fails gracefully if not supported)
-export const analytics = (await isSupported()) ? getAnalytics(app) : null;
+let analyticsInstance: ReturnType<typeof getAnalytics> | null = null;
+isSupported()
+  .then((supported) => {
+    if (supported) analyticsInstance = getAnalytics(app);
+  })
+  .catch(() => {});
+export const getAnalyticsInstance = () => analyticsInstance;
 
 // Emulator support (for development)
 if (import.meta.env.DEV && import.meta.env.VITE_USE_EMULATORS === 'true') {

@@ -2,7 +2,7 @@
 // Services Barrel Export
 // ============================================
 
-export { auth, db, analytics } from './firebase';
+export { auth, db, getAnalyticsInstance } from './firebase';
 
 export {
   initAuth,
