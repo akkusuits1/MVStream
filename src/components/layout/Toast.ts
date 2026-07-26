@@ -22,16 +22,24 @@ export function showToast(options: ToastOptions): void {
   // Clear existing toasts
   container.innerHTML = '';
 
-  const toast = h('div', { class: `toast toast--${type}` },
-    h('div', { class: 'toast__content' },
+  const toast = h(
+    'div',
+    { class: `toast toast--${type}` },
+    h(
+      'div',
+      { class: 'toast__content' },
       h('span', { class: 'toast__icon' }, getToastIcon(type)),
-      h('span', { class: 'toast__message' }, message)
+      h('span', { class: 'toast__message' }, message),
     ),
-    h('button', {
-      class: 'toast__close',
-      'aria-label': 'Close',
-      onClick: () => dismissToast(toast),
-    }, '✕')
+    h(
+      'button',
+      {
+        class: 'toast__close',
+        'aria-label': 'Close',
+        onClick: () => dismissToast(toast),
+      },
+      '✕',
+    ),
   );
 
   container.appendChild(toast);

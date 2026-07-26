@@ -81,14 +81,18 @@ async function initApp(): Promise<void> {
 function renderMaintenance(container: Element, message: string): void {
   container.innerHTML = '';
   container.appendChild(
-    h('div', { class: 'maintenance-page' },
-      h('div', { class: 'maintenance-page__content' },
+    h(
+      'div',
+      { class: 'maintenance-page' },
+      h(
+        'div',
+        { class: 'maintenance-page__content' },
         h('div', { class: 'maintenance-page__icon' }, '🔧'),
         h('h1', { class: 'maintenance-page__title' }, 'Under Maintenance'),
         h('p', { class: 'maintenance-page__message' }, message),
-        h('p', { class: 'maintenance-page__hint' }, 'We\'ll be back soon!')
-      )
-    )
+        h('p', { class: 'maintenance-page__hint' }, "We'll be back soon!"),
+      ),
+    ),
   );
 }
 
@@ -96,17 +100,29 @@ function renderMaintenance(container: Element, message: string): void {
 function renderError(container: Element): void {
   container.innerHTML = '';
   container.appendChild(
-    h('div', { class: 'error-page' },
-      h('div', { class: 'error-page__content' },
+    h(
+      'div',
+      { class: 'error-page' },
+      h(
+        'div',
+        { class: 'error-page__content' },
         h('div', { class: 'error-page__icon' }, '⚠️'),
         h('h1', { class: 'error-page__title' }, 'Something went wrong'),
-        h('p', { class: 'error-page__message' }, 'Failed to load the application. Please try again.'),
-        h('button', {
-          class: 'btn btn-primary btn-lg',
-          onClick: () => window.location.reload(),
-        }, 'Retry')
-      )
-    )
+        h(
+          'p',
+          { class: 'error-page__message' },
+          'Failed to load the application. Please try again.',
+        ),
+        h(
+          'button',
+          {
+            class: 'btn btn-primary btn-lg',
+            onClick: () => window.location.reload(),
+          },
+          'Retry',
+        ),
+      ),
+    ),
   );
 }
 
@@ -116,7 +132,7 @@ function renderShell(container: Element): void {
 
   // Skip link (a11y)
   container.appendChild(
-    h('a', { class: 'skip-to-content', href: '#main-content' }, 'Skip to content')
+    h('a', { class: 'skip-to-content', href: '#main-content' }, 'Skip to content'),
   );
 
   // Header
@@ -250,12 +266,14 @@ function renderNotFound(): void {
   if (!main) return;
   main.innerHTML = '';
   main.appendChild(
-    h('div', { class: 'empty-state' },
+    h(
+      'div',
+      { class: 'empty-state' },
       h('div', { class: 'empty-state__icon' }, '🔍'),
       h('h2', { class: 'empty-state__title' }, 'Page Not Found'),
-      h('p', { class: 'empty-state__description' }, 'The page you\'re looking for doesn\'t exist.'),
-      h('a', { class: 'btn btn-primary', href: '#/' }, 'Go Home')
-    )
+      h('p', { class: 'empty-state__description' }, "The page you're looking for doesn't exist."),
+      h('a', { class: 'btn btn-primary', href: '#/' }, 'Go Home'),
+    ),
   );
 }
 

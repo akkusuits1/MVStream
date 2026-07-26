@@ -12,7 +12,7 @@ let progressInterval: ReturnType<typeof setInterval> | null = null;
 // ---- Initialize Plyr ----
 export function initPlayer(
   container: string | HTMLDivElement,
-  options?: Partial<Plyr.Options>
+  options?: Partial<Plyr.Options>,
 ): Plyr {
   destroyPlayer();
 
@@ -46,11 +46,7 @@ export function initPlayer(
 }
 
 // ---- Load video source ----
-export function loadVideo(
-  player: Plyr,
-  url: string,
-  type: 'video' | 'hls' = 'video'
-): void {
+export function loadVideo(player: Plyr, url: string, type: 'video' | 'hls' = 'video'): void {
   if (type === 'hls') {
     // For HLS streams, we use the native HLS support or a library
     player.source = {
@@ -76,7 +72,7 @@ export function startProgressTracking(
   seasonId?: string,
   episodeId?: string,
   episodeNumber?: number,
-  seasonNumber?: number
+  seasonNumber?: number,
 ): void {
   stopProgressTracking();
 
@@ -143,7 +139,7 @@ export function getPlayer(): Plyr | null {
 // ---- External player launch ----
 export function launchExternalPlayer(
   url: string,
-  player: 'vlc' | 'mx-player' | 'system' = 'system'
+  player: 'vlc' | 'mx-player' | 'system' = 'system',
 ): void {
   switch (player) {
     case 'vlc':
@@ -154,7 +150,7 @@ export function launchExternalPlayer(
       // MX Player intent
       window.open(
         `intent:${url}#Intent;package=com.mxtech.videoplayer.ad;type=video/*;end`,
-        '_blank'
+        '_blank',
       );
       break;
     default:

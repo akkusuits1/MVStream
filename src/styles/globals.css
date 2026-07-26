@@ -3,12 +3,12 @@
    ============================================ */
 
 /* ---- Imports ---- */
-@import './tokens.css';
-@import './reset.css';
-@import './utilities/3d-effects.css';
-@import './utilities/glassmorphism.css';
-@import './utilities/animations.css';
-@import './utilities/responsive.css';
+@import "./tokens.css";
+@import "./reset.css";
+@import "./utilities/3d-effects.css";
+@import "./utilities/glassmorphism.css";
+@import "./utilities/animations.css";
+@import "./utilities/responsive.css";
 
 /* ---- Body ---- */
 body {
@@ -23,19 +23,38 @@ body {
 }
 
 /* ---- Typography ---- */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-primary);
   color: var(--text-primary);
   line-height: var(--leading-tight);
   font-weight: var(--font-bold);
 }
 
-h1 { font-size: var(--text-5xl); letter-spacing: var(--tracking-tighter); }
-h2 { font-size: var(--text-4xl); letter-spacing: var(--tracking-tight); }
-h3 { font-size: var(--text-3xl); }
-h4 { font-size: var(--text-2xl); }
-h5 { font-size: var(--text-xl); }
-h6 { font-size: var(--text-lg); }
+h1 {
+  font-size: var(--text-5xl);
+  letter-spacing: var(--tracking-tighter);
+}
+h2 {
+  font-size: var(--text-4xl);
+  letter-spacing: var(--tracking-tight);
+}
+h3 {
+  font-size: var(--text-3xl);
+}
+h4 {
+  font-size: var(--text-2xl);
+}
+h5 {
+  font-size: var(--text-xl);
+}
+h6 {
+  font-size: var(--text-lg);
+}
 
 p {
   color: var(--text-secondary);
@@ -97,7 +116,10 @@ a:hover {
 }
 
 @keyframes ripple {
-  to { transform: scale(4); opacity: 0; }
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
 }
 
 .btn-primary {
@@ -159,8 +181,9 @@ a:hover {
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   color: var(--text-primary);
-  transition: border-color var(--transition-fast),
-              box-shadow var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .input::placeholder {
@@ -343,10 +366,22 @@ a:hover {
   max-width: 400px;
 }
 
-.toast--success { background: var(--status-success); color: var(--text-inverse); }
-.toast--error { background: var(--status-error); color: var(--text-primary); }
-.toast--warning { background: var(--status-warning); color: var(--text-inverse); }
-.toast--info { background: var(--status-info); color: var(--text-primary); }
+.toast--success {
+  background: var(--status-success);
+  color: var(--text-inverse);
+}
+.toast--error {
+  background: var(--status-error);
+  color: var(--text-primary);
+}
+.toast--warning {
+  background: var(--status-warning);
+  color: var(--text-inverse);
+}
+.toast--info {
+  background: var(--status-info);
+  color: var(--text-primary);
+}
 
 /* ---- Progress Bar ---- */
 .progress-bar {

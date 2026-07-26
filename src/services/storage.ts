@@ -40,7 +40,7 @@ export function addToContinueWatching(item: ContinueWatchingItem): void {
       i.id === item.id &&
       i.type === item.type &&
       i.seasonId === item.seasonId &&
-      i.episodeId === item.episodeId
+      i.episodeId === item.episodeId,
   );
 
   if (existing >= 0) {
@@ -54,9 +54,7 @@ export function addToContinueWatching(item: ContinueWatchingItem): void {
 }
 
 export function removeFromContinueWatching(id: string, type: string): void {
-  const items = getContinueWatching().filter(
-    (i) => !(i.id === id && i.type === type)
-  );
+  const items = getContinueWatching().filter((i) => !(i.id === id && i.type === type));
   setStorageItem('continue_watching', items);
 }
 
@@ -110,14 +108,10 @@ export function addToWatchlist(item: WatchlistItem): void {
 }
 
 export function removeFromWatchlist(id: string, type: string): boolean {
-  const items = getWatchHistory().filter(
-    (i) => !(i.id === id && i.type === type)
-  );
+  const items = getWatchHistory().filter((i) => !(i.id === id && i.type === type));
   setStorageItem('watch_history', items);
 
-  const watchlist = getWatchlist().filter(
-    (i) => !(i.id === id && i.type === type)
-  );
+  const watchlist = getWatchlist().filter((i) => !(i.id === id && i.type === type));
   setStorageItem('watchlist', watchlist);
 
   return true;

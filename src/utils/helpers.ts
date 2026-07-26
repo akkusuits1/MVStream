@@ -67,13 +67,18 @@ export async function fetchSeriesById(id: string): Promise<Series | null> {
 /**
  * Fetch categories from Firebase
  */
-export async function fetchCategories(): Promise<{ id: string; name: string; slug: string; icon?: string }[]> {
+export async function fetchCategories(): Promise<
+  { id: string; name: string; slug: string; icon?: string }[]
+> {
   const catRef = ref(db, 'categories');
   const snapshot = await get(catRef);
 
   if (!snapshot.exists()) return [];
 
-  const data = snapshot.val() as Record<string, { name: string; slug: string; icon?: string; order?: number }>;
+  const data = snapshot.val() as Record<
+    string,
+    { name: string; slug: string; icon?: string; order?: number }
+  >;
   return Object.entries(data)
     .map(([id, cat]) => ({ id, ...cat }))
     .sort((a, b) => (a.order || 0) - (b.order || 0));
@@ -163,27 +168,21 @@ export function groupByCategory<T extends { category: string }>(items: T[]): Map
 /**
  * Filter items by search query
  */
-export function filterByQuery<T extends { title: string }>(
-  items: T[],
-  query: string
-): T[] {
+export function filterByQuery<T extends { title: string }>(items: T[], query: string): T[] {
   if (!query) return items;
   const q = query.toLowerCase().trim();
   return items.filter(
     (item) =>
       item.title.toLowerCase().includes(q) ||
-      ('genres' in item && (item as T & { genres: string[] }).genres.some((g) => g.toLowerCase().includes(q)))
+      ('genres' in item &&
+        (item as T & { genres: string[] }).genres.some((g) => g.toLowerCase().includes(q))),
   );
 }
 
 /**
  * Sort items by key
  */
-export function sortBy<T>(
-  items: T[],
-  key: keyof T,
-  direction: 'asc' | 'desc' = 'desc'
-): T[] {
+export function sortBy<T>(items: T[], key: keyof T, direction: 'asc' | 'desc' = 'desc'): T[] {
   return [...items].sort((a, b) => {
     const aVal = a[key];
     const bVal = b[key];
@@ -215,9 +214,7 @@ export function topN<T>(array: T[], n: number): T[] {
  * Check if device is mobile
  */
 export function isMobile(): boolean {
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
-  );
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
 /**

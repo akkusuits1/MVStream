@@ -31,7 +31,7 @@ async function tmdbFetch<T>(endpoint: string, params: Record<string, string> = {
 // ---- Image URLs ----
 export function posterURL(
   path: string | null | undefined,
-  size: 'w92' | 'w154' | 'w185' | 'w342' | 'w500' | 'w780' | 'original' = 'w500'
+  size: 'w92' | 'w154' | 'w185' | 'w342' | 'w500' | 'w780' | 'original' = 'w500',
 ): string {
   if (!path) return '/placeholder-poster.svg';
   return `${TMDB_IMAGE_BASE}/${size}${path}`;
@@ -39,7 +39,7 @@ export function posterURL(
 
 export function backdropURL(
   path: string | null | undefined,
-  size: 'w300' | 'w780' | 'w1280' | 'original' = 'w1280'
+  size: 'w300' | 'w780' | 'w1280' | 'original' = 'w1280',
 ): string {
   if (!path) return '/placeholder-backdrop.svg';
   return `${TMDB_IMAGE_BASE}/${size}${path}`;
@@ -47,7 +47,7 @@ export function backdropURL(
 
 export function profileURL(
   path: string | null | undefined,
-  size: 'w45' | 'w185' | 'h632' | 'original' = 'w185'
+  size: 'w45' | 'w185' | 'h632' | 'original' = 'w185',
 ): string {
   if (!path) return '';
   return `${TMDB_IMAGE_BASE}/${size}${path}`;
@@ -82,23 +82,31 @@ export async function trendingAll(timeWindow: 'day' | 'week' = 'week'): Promise<
   return tmdbFetch<TMDBSearchResult>(`/trending/all/${timeWindow}`);
 }
 
-export async function trendingMovies(timeWindow: 'day' | 'week' = 'week'): Promise<TMDBSearchResult> {
+export async function trendingMovies(
+  timeWindow: 'day' | 'week' = 'week',
+): Promise<TMDBSearchResult> {
   return tmdbFetch<TMDBSearchResult>(`/trending/movie/${timeWindow}`);
 }
 
-export async function trendingSeries(timeWindow: 'day' | 'week' = 'week'): Promise<TMDBSearchResult> {
+export async function trendingSeries(
+  timeWindow: 'day' | 'week' = 'week',
+): Promise<TMDBSearchResult> {
   return tmdbFetch<TMDBSearchResult>(`/trending/tv/${timeWindow}`);
 }
 
 // ---- Discover ----
-export async function discoverMovies(params: Record<string, string> = {}): Promise<TMDBSearchResult> {
+export async function discoverMovies(
+  params: Record<string, string> = {},
+): Promise<TMDBSearchResult> {
   return tmdbFetch<TMDBSearchResult>('/discover/movie', {
     sort_by: 'popularity.desc',
     ...params,
   });
 }
 
-export async function discoverSeries(params: Record<string, string> = {}): Promise<TMDBSearchResult> {
+export async function discoverSeries(
+  params: Record<string, string> = {},
+): Promise<TMDBSearchResult> {
   return tmdbFetch<TMDBSearchResult>('/discover/tv', {
     sort_by: 'popularity.desc',
     ...params,
@@ -120,13 +128,27 @@ export async function getSeriesDetails(id: number): Promise<TMDBSeries> {
 
 export async function getSeasonDetails(
   seriesId: number,
-  seasonNumber: number
-): Promise<TMDBSeason & { episodes: { id: number; episode_number: number; name: string; overview: string; still_path: string | null; runtime: number; vote_average: number }[] }> {
+  seasonNumber: number,
+): Promise<
+  TMDBSeason & {
+    episodes: {
+      id: number;
+      episode_number: number;
+      name: string;
+      overview: string;
+      still_path: string | null;
+      runtime: number;
+      vote_average: number;
+    }[];
+  }
+> {
   return tmdbFetch(`/tv/${seriesId}/season/${seasonNumber}`);
 }
 
 // ---- Convert TMDB movie to app Movie ----
-export function tmdbToMovie(tmdb: TMDBMovie): Omit<Movie, 'servers' | 'views' | 'createdAt' | 'updatedAt'> {
+export function tmdbToMovie(
+  tmdb: TMDBMovie,
+): Omit<Movie, 'servers' | 'views' | 'createdAt' | 'updatedAt'> {
   return {
     id: String(tmdb.id),
     title: tmdb.title,
@@ -146,7 +168,9 @@ export function tmdbToMovie(tmdb: TMDBMovie): Omit<Movie, 'servers' | 'views' | 
 }
 
 // ---- Convert TMDB series to app Series ----
-export function tmdbToSeries(tmdb: TMDBSeries): Omit<Series, 'servers' | 'views' | 'createdAt' | 'updatedAt'> {
+export function tmdbToSeries(
+  tmdb: TMDBSeries,
+): Omit<Series, 'servers' | 'views' | 'createdAt' | 'updatedAt'> {
   return {
     id: String(tmdb.id),
     title: tmdb.name,

@@ -21,7 +21,13 @@ export interface UseMoviesReturn {
   categories: { id: string; name: string; slug: string }[];
   continueWatching: ContinueWatchingItem[];
   watchlist: WatchlistItem[];
-  watchHistory: { id: string; type: 'movie' | 'series'; title: string; poster: string; timestamp: number }[];
+  watchHistory: {
+    id: string;
+    type: 'movie' | 'series';
+    title: string;
+    poster: string;
+    timestamp: number;
+  }[];
 
   // Loading
   moviesLoading: boolean;
@@ -119,11 +125,7 @@ export function useMovies(): UseMoviesReturn {
     },
 
     async refreshData() {
-      await Promise.all([
-        this.loadMovies(),
-        this.loadSeries(),
-        this.loadCategories(),
-      ]);
+      await Promise.all([this.loadMovies(), this.loadSeries(), this.loadCategories()]);
       this.loadUserData();
     },
 

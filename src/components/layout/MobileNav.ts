@@ -6,7 +6,10 @@ import { h } from '@core/utils';
 import { stores } from '@core/store';
 
 export function renderMobileNav(container: Element): void {
-  const nav = h('nav', { class: 'mobile-nav glass-strong safe-bottom', 'aria-label': 'Mobile navigation' });
+  const nav = h('nav', {
+    class: 'mobile-nav glass-strong safe-bottom',
+    'aria-label': 'Mobile navigation',
+  });
 
   const links = [
     { href: '#/', icon: '🏠', label: 'Home', page: 'home' },
@@ -17,14 +20,16 @@ export function renderMobileNav(container: Element): void {
   ];
 
   for (const link of links) {
-    const a = h('a', {
-      class: 'mobile-nav__item',
-      href: link.href,
-      'data-page': link.page,
-      'aria-label': link.label,
-    },
+    const a = h(
+      'a',
+      {
+        class: 'mobile-nav__item',
+        href: link.href,
+        'data-page': link.page,
+        'aria-label': link.label,
+      },
       h('span', { class: 'mobile-nav__icon' }, link.icon),
-      h('span', { class: 'mobile-nav__label' }, link.label)
+      h('span', { class: 'mobile-nav__label' }, link.label),
     );
     nav.appendChild(a);
   }

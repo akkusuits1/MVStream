@@ -26,7 +26,7 @@ export const auth = getAuth(app);
 export const db = getDatabase(app);
 
 // Analytics (conditional — fails gracefully if not supported)
-export const analytics = await isSupported() ? getAnalytics(app) : null;
+export const analytics = (await isSupported()) ? getAnalytics(app) : null;
 
 // Emulator support (for development)
 if (import.meta.env.DEV && import.meta.env.VITE_USE_EMULATORS === 'true') {

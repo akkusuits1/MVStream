@@ -25,11 +25,19 @@ export async function renderHomePage(): Promise<void> {
   // TODO: renderContinueWatching()
 
   // Trending section
-  const trending = renderSection('Trending Now', [...movies.slice(0, 10), ...series.slice(0, 10)] as (Movie | Series)[], 'movie');
+  const trending = renderSection(
+    'Trending Now',
+    [...movies.slice(0, 10), ...series.slice(0, 10)] as (Movie | Series)[],
+    'movie',
+  );
   main.firstElementChild!.appendChild(trending);
 
   // Top Rated Movies
-  const topMovies = renderSection('Top Rated Movies', movies.sort((a, b) => b.rating - a.rating).slice(0, 10), 'movie');
+  const topMovies = renderSection(
+    'Top Rated Movies',
+    movies.sort((a, b) => b.rating - a.rating).slice(0, 10),
+    'movie',
+  );
   main.firstElementChild!.appendChild(topMovies);
 
   // New Series
@@ -45,12 +53,20 @@ function renderHero(movies: Movie[], series: Series[]): HTMLElement {
   const featured = allContent.slice(0, 5);
 
   if (featured.length === 0) {
-    return h('div', { class: 'hero hero--empty' },
-      h('div', { class: 'hero__content container' },
+    return h(
+      'div',
+      { class: 'hero hero--empty' },
+      h(
+        'div',
+        { class: 'hero__content container' },
         h('h1', { class: 'hero__title' }, 'Welcome to MVStream'),
-        h('p', { class: 'hero__subtitle' }, 'Watch your favorite movies and series online for free.'),
-        h('a', { class: 'btn btn-primary btn-lg', href: '#/movies' }, 'Browse Movies')
-      )
+        h(
+          'p',
+          { class: 'hero__subtitle' },
+          'Watch your favorite movies and series online for free.',
+        ),
+        h('a', { class: 'btn btn-primary btn-lg', href: '#/movies' }, 'Browse Movies'),
+      ),
     );
   }
 
@@ -80,29 +96,41 @@ function renderHero(movies: Movie[], series: Series[]): HTMLElement {
   const description = h('p', { class: 'hero__description' }, firstItem.description || '');
 
   // Badges
-  const badges = h('div', { class: 'hero__badges' },
+  const badges = h(
+    'div',
+    { class: 'hero__badges' },
     h('span', { class: 'badge badge--primary' }, '★ ' + String(firstItem.rating)),
     h('span', { class: 'badge' }, String(firstItem.year)),
-    h('span', { class: 'badge' }, firstItem.duration || 'Series')
+    h('span', { class: 'badge' }, firstItem.duration || 'Series'),
   );
 
   // Genre chips
-  const genres = h('div', { class: 'hero__genres' },
-    ...((firstItem as Movie).genres || []).slice(0, 3).map((g) =>
-      h('span', { class: 'chip' }, g)
-    )
+  const genres = h(
+    'div',
+    { class: 'hero__genres' },
+    ...((firstItem as Movie).genres || []).slice(0, 3).map((g) => h('span', { class: 'chip' }, g)),
   );
 
   // Action buttons
-  const actions = h('div', { class: 'hero__actions' },
-    h('a', {
-      class: 'btn btn-primary btn-lg',
-      href: `#/player/${'seasons' in firstItem ? 'series' : 'movie'}/${firstItem.id}`,
-    }, '▶ Play'),
-    h('a', {
-      class: 'btn btn-secondary btn-lg',
-      href: `#/details/${'seasons' in firstItem ? 'series' : 'movie'}/${firstItem.id}`,
-    }, 'ℹ More Info')
+  const actions = h(
+    'div',
+    { class: 'hero__actions' },
+    h(
+      'a',
+      {
+        class: 'btn btn-primary btn-lg',
+        href: `#/player/${'seasons' in firstItem ? 'series' : 'movie'}/${firstItem.id}`,
+      },
+      '▶ Play',
+    ),
+    h(
+      'a',
+      {
+        class: 'btn btn-secondary btn-lg',
+        href: `#/details/${'seasons' in firstItem ? 'series' : 'movie'}/${firstItem.id}`,
+      },
+      'ℹ More Info',
+    ),
   );
 
   content.appendChild(title);
@@ -159,14 +187,22 @@ function switchHeroSlide(index: number, items: (Movie | Series)[]): void {
 }
 
 // ---- Section Row ----
-function renderSection(title: string, items: (Movie | Series)[], defaultType: 'movie' | 'series'): HTMLElement {
+function renderSection(
+  title: string,
+  items: (Movie | Series)[],
+  defaultType: 'movie' | 'series',
+): HTMLElement {
   const section = h('div', { class: 'section container' });
 
-  const header = h('div', { class: 'section__header' },
+  const header = h(
+    'div',
+    { class: 'section__header' },
     h('h2', { class: 'section__title' }, title),
-    h('a', { class: 'section__link', href: `#/${defaultType === 'movie' ? 'movies' : 'series'}` },
-      'See All →'
-    )
+    h(
+      'a',
+      { class: 'section__link', href: `#/${defaultType === 'movie' ? 'movies' : 'series'}` },
+      'See All →',
+    ),
   );
   section.appendChild(header);
 
@@ -176,20 +212,30 @@ function renderSection(title: string, items: (Movie | Series)[], defaultType: 'm
     const isSeries = 'seasons' in item;
     const type = isSeries ? 'series' : 'movie';
 
-    const card = h('a', {
-      class: 'movie-card animate-card-enter',
-      href: `#/details/${type}/${item.id}`,
-      style: `--stagger-index: ${index}`,
-    },
-      h('div', { class: 'movie-card__poster card-3d card-shine' },
+    const card = h(
+      'a',
+      {
+        class: 'movie-card animate-card-enter',
+        href: `#/details/${type}/${item.id}`,
+        style: `--stagger-index: ${index}`,
+      },
+      h(
+        'div',
+        { class: 'movie-card__poster card-3d card-shine' },
         img(tmdbImage(item.poster, 'w342'), item.title, 'movie-card__image'),
         h('div', { class: 'movie-card__rating' }, '★ ' + String(item.rating)),
         isSeries ? h('span', { class: 'movie-card__type-badge' }, 'Series') : null,
       ),
-      h('div', { class: 'movie-card__info' },
+      h(
+        'div',
+        { class: 'movie-card__info' },
         h('h3', { class: 'movie-card__title' }, item.title),
-        h('p', { class: 'movie-card__meta' }, `${item.year}${item.duration ? ' • ' + item.duration : ''}`)
-      )
+        h(
+          'p',
+          { class: 'movie-card__meta' },
+          `${item.year}${item.duration ? ' • ' + item.duration : ''}`,
+        ),
+      ),
     );
 
     scrollRow.appendChild(card);

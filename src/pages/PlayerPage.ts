@@ -17,54 +17,87 @@ export async function renderPlayerPage(params: Record<string, string>): Promise<
 
   main.innerHTML = '';
   main.appendChild(
-    h('div', { class: 'player-page animate-page-enter' },
-      h('div', { class: 'player-page__wrapper container' },
+    h(
+      'div',
+      { class: 'player-page animate-page-enter' },
+      h(
+        'div',
+        { class: 'player-page__wrapper container' },
 
         // Back button
-        h('div', { class: 'player-page__nav' },
-          h('a', {
-            class: 'btn btn-ghost',
-            href: `#/details/${type}/${id}`,
-          }, '← Back to Details')
+        h(
+          'div',
+          { class: 'player-page__nav' },
+          h(
+            'a',
+            {
+              class: 'btn btn-ghost',
+              href: `#/details/${type}/${id}`,
+            },
+            '← Back to Details',
+          ),
         ),
 
         // Player container
-        h('div', { class: 'player-page__player glass-card' },
-          h('div', { id: 'player-container', class: 'player-page__video' },
+        h(
+          'div',
+          { class: 'player-page__player glass-card' },
+          h(
+            'div',
+            { id: 'player-container', class: 'player-page__video' },
             h('div', { class: 'app-loader__spinner', style: 'margin: 100px auto;' }),
-            h('p', { style: 'text-align: center; color: var(--text-muted);' }, 'Loading player...')
-          )
+            h('p', { style: 'text-align: center; color: var(--text-muted);' }, 'Loading player...'),
+          ),
         ),
 
         // Server selection
-        h('div', { class: 'player-page__controls glass' },
-          h('div', { class: 'player-page__servers' },
+        h(
+          'div',
+          { class: 'player-page__controls glass' },
+          h(
+            'div',
+            { class: 'player-page__servers' },
             h('span', { class: 'player-page__servers-label' }, 'Server:'),
-            h('div', { class: 'player-page__server-list', id: 'server-list' })
+            h('div', { class: 'player-page__server-list', id: 'server-list' }),
           ),
-          h('div', { class: 'player-page__external' },
-            h('button', {
-              class: 'btn btn-secondary btn-sm',
-              onClick: () => openExternalPlayer('vlc'),
-            }, '📺 VLC'),
-            h('button', {
-              class: 'btn btn-secondary btn-sm',
-              onClick: () => openExternalPlayer('mx'),
-            }, '📱 MX Player')
-          )
+          h(
+            'div',
+            { class: 'player-page__external' },
+            h(
+              'button',
+              {
+                class: 'btn btn-secondary btn-sm',
+                onClick: () => openExternalPlayer('vlc'),
+              },
+              '📺 VLC',
+            ),
+            h(
+              'button',
+              {
+                class: 'btn btn-secondary btn-sm',
+                onClick: () => openExternalPlayer('mx'),
+              },
+              '📱 MX Player',
+            ),
+          ),
         ),
 
         // Video info
-        h('div', { class: 'player-page__info glass-card', id: 'player-info' })
-      )
-    )
+        h('div', { class: 'player-page__info glass-card', id: 'player-info' }),
+      ),
+    ),
   );
 
   // Load content and set up servers
   loadContent(type, id, seasonId, episodeId);
 }
 
-function loadContent(type: string, id: string, seasonId: string | null, episodeId: string | null): void {
+function loadContent(
+  type: string,
+  id: string,
+  seasonId: string | null,
+  episodeId: string | null,
+): void {
   const infoEl = $('#player-info');
   const serverListEl = $('#server-list');
   if (!infoEl || !serverListEl) return;
@@ -78,10 +111,16 @@ function loadContent(type: string, id: string, seasonId: string | null, episodeI
       servers = (item as Movie).servers || [];
       infoEl.innerHTML = '';
       infoEl.appendChild(
-        h('div', {},
+        h(
+          'div',
+          {},
           h('h2', {}, item.title),
-          h('p', { style: 'color: var(--text-secondary);' }, `${item.year} • ${item.genres?.join(', ')}`)
-        )
+          h(
+            'p',
+            { style: 'color: var(--text-secondary);' },
+            `${item.year} • ${item.genres?.join(', ')}`,
+          ),
+        ),
       );
     }
   } else {
@@ -96,11 +135,13 @@ function loadContent(type: string, id: string, seasonId: string | null, episodeI
       if (episode) {
         infoEl.innerHTML = '';
         infoEl.appendChild(
-          h('div', {},
+          h(
+            'div',
+            {},
             h('h2', {}, `${series.title} — S${season?.seasonNumber || 1}E${episode.episodeNumber}`),
             h('p', {}, episode.title || ''),
-            h('p', { style: 'color: var(--text-secondary);' }, episode.description || '')
-          )
+            h('p', { style: 'color: var(--text-secondary);' }, episode.description || ''),
+          ),
         );
       }
     }
@@ -110,14 +151,18 @@ function loadContent(type: string, id: string, seasonId: string | null, episodeI
   serverListEl.innerHTML = '';
   if (servers.length === 0) {
     serverListEl.appendChild(
-      h('p', { style: 'color: var(--text-muted);' }, 'No servers available')
+      h('p', { style: 'color: var(--text-muted);' }, 'No servers available'),
     );
   } else {
     servers.forEach((server, index) => {
-      const btn = h('button', {
-        class: `btn ${index === 0 ? 'btn-primary' : 'btn-secondary'} btn-sm`,
-        onClick: () => selectServer(server),
-      }, server.name + (server.quality ? ` (${server.quality})` : ''));
+      const btn = h(
+        'button',
+        {
+          class: `btn ${index === 0 ? 'btn-primary' : 'btn-secondary'} btn-sm`,
+          onClick: () => selectServer(server),
+        },
+        server.name + (server.quality ? ` (${server.quality})` : ''),
+      );
       serverListEl.appendChild(btn);
     });
 

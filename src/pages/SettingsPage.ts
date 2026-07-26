@@ -4,7 +4,12 @@
 
 import { h, $ } from '@core/utils';
 import { stores } from '@core/store';
-import { getPlayerSettings, setPlayerSettings, clearAllUserData, clearWatchHistory } from '@services/storage';
+import {
+  getPlayerSettings,
+  setPlayerSettings,
+  clearAllUserData,
+  clearWatchHistory,
+} from '@services/storage';
 
 export async function renderSettingsPage(): Promise<void> {
   const main = $('#main-content');
@@ -20,37 +25,59 @@ export async function renderSettingsPage(): Promise<void> {
 
   // Account section
   page.appendChild(
-    h('section', { class: 'settings-section glass-card' },
+    h(
+      'section',
+      { class: 'settings-section glass-card' },
       h('h2', { class: 'settings-section__title' }, 'Account'),
-      h('div', { class: 'settings-section__content' },
-        h('div', { class: 'settings-item' },
-          h('div', { class: 'settings-item__info' },
+      h(
+        'div',
+        { class: 'settings-section__content' },
+        h(
+          'div',
+          { class: 'settings-item' },
+          h(
+            'div',
+            { class: 'settings-item__info' },
             h('label', { class: 'settings-item__label' }, 'Email'),
-            h('p', { class: 'settings-item__value' }, user?.email || 'Not signed in')
-          )
-        ),
-        h('div', { class: 'settings-item' },
-          h('div', { class: 'settings-item__info' },
-            h('label', { class: 'settings-item__label' }, 'Display Name'),
-            h('p', { class: 'settings-item__value' }, user?.displayName || 'User')
+            h('p', { class: 'settings-item__value' }, user?.email || 'Not signed in'),
           ),
-          h('button', { class: 'btn btn-secondary btn-sm' }, 'Edit')
-        )
-      )
-    )
+        ),
+        h(
+          'div',
+          { class: 'settings-item' },
+          h(
+            'div',
+            { class: 'settings-item__info' },
+            h('label', { class: 'settings-item__label' }, 'Display Name'),
+            h('p', { class: 'settings-item__value' }, user?.displayName || 'User'),
+          ),
+          h('button', { class: 'btn btn-secondary btn-sm' }, 'Edit'),
+        ),
+      ),
+    ),
   );
 
   // Playback section
   page.appendChild(
-    h('section', { class: 'settings-section glass-card' },
+    h(
+      'section',
+      { class: 'settings-section glass-card' },
       h('h2', { class: 'settings-section__title' }, 'Playback'),
-      h('div', { class: 'settings-section__content' },
-        h('div', { class: 'settings-item' },
-          h('div', { class: 'settings-item__info' },
+      h(
+        'div',
+        { class: 'settings-section__content' },
+        h(
+          'div',
+          { class: 'settings-item' },
+          h(
+            'div',
+            { class: 'settings-item__info' },
             h('label', { class: 'settings-item__label' }, 'Auto-play next episode'),
-            h('p', { class: 'settings-item__description' }, 'Automatically play the next episode')
+            h('p', { class: 'settings-item__description' }, 'Automatically play the next episode'),
           ),
-          h('label', { class: 'toggle' },
+          h(
+            'label',
+            { class: 'toggle' },
             h('input', {
               type: 'checkbox',
               class: 'toggle__input',
@@ -60,33 +87,65 @@ export async function renderSettingsPage(): Promise<void> {
                 setPlayerSettings({ autoPlay: checked });
               },
             } as Record<string, string | boolean | ((e: Event) => void)>),
-            h('span', { class: 'toggle__slider' })
-          )
+            h('span', { class: 'toggle__slider' }),
+          ),
         ),
-        h('div', { class: 'settings-item' },
-          h('div', { class: 'settings-item__info' },
+        h(
+          'div',
+          { class: 'settings-item' },
+          h(
+            'div',
+            { class: 'settings-item__info' },
             h('label', { class: 'settings-item__label' }, 'Default Quality'),
-            h('p', { class: 'settings-item__description' }, 'Video playback quality preference')
+            h('p', { class: 'settings-item__description' }, 'Video playback quality preference'),
           ),
-          h('select', {
-            class: 'input settings-item__select',
-            onChange: (e: Event) => {
-              const value = (e.target as HTMLSelectElement).value;
-              setPlayerSettings({ defaultQuality: value as 'auto' | '1080' | '720' | '480' });
+          h(
+            'select',
+            {
+              class: 'input settings-item__select',
+              onChange: (e: Event) => {
+                const value = (e.target as HTMLSelectElement).value;
+                setPlayerSettings({ defaultQuality: value as 'auto' | '1080' | '720' | '480' });
+              },
             },
-          },
-            h('option', { value: 'auto', selected: playerSettings.defaultQuality === 'auto' }, 'Auto'),
-            h('option', { value: '1080', selected: playerSettings.defaultQuality === '1080' }, '1080p'),
-            h('option', { value: '720', selected: playerSettings.defaultQuality === '720' }, '720p'),
-            h('option', { value: '480', selected: playerSettings.defaultQuality === '480' }, '480p')
-          )
-        ),
-        h('div', { class: 'settings-item' },
-          h('div', { class: 'settings-item__info' },
-            h('label', { class: 'settings-item__label' }, 'External Player'),
-            h('p', { class: 'settings-item__description' }, 'Open videos in external player by default')
+            h(
+              'option',
+              { value: 'auto', selected: playerSettings.defaultQuality === 'auto' },
+              'Auto',
+            ),
+            h(
+              'option',
+              { value: '1080', selected: playerSettings.defaultQuality === '1080' },
+              '1080p',
+            ),
+            h(
+              'option',
+              { value: '720', selected: playerSettings.defaultQuality === '720' },
+              '720p',
+            ),
+            h(
+              'option',
+              { value: '480', selected: playerSettings.defaultQuality === '480' },
+              '480p',
+            ),
           ),
-          h('label', { class: 'toggle' },
+        ),
+        h(
+          'div',
+          { class: 'settings-item' },
+          h(
+            'div',
+            { class: 'settings-item__info' },
+            h('label', { class: 'settings-item__label' }, 'External Player'),
+            h(
+              'p',
+              { class: 'settings-item__description' },
+              'Open videos in external player by default',
+            ),
+          ),
+          h(
+            'label',
+            { class: 'toggle' },
             h('input', {
               type: 'checkbox',
               class: 'toggle__input',
@@ -96,78 +155,118 @@ export async function renderSettingsPage(): Promise<void> {
                 setPlayerSettings({ externalPlayer: checked });
               },
             } as Record<string, string | boolean | ((e: Event) => void)>),
-            h('span', { class: 'toggle__slider' })
-          )
-        )
-      )
-    )
+            h('span', { class: 'toggle__slider' }),
+          ),
+        ),
+      ),
+    ),
   );
 
   // Data section
   page.appendChild(
-    h('section', { class: 'settings-section glass-card' },
+    h(
+      'section',
+      { class: 'settings-section glass-card' },
       h('h2', { class: 'settings-section__title' }, 'Data'),
-      h('div', { class: 'settings-section__content' },
-        h('div', { class: 'settings-item' },
-          h('div', { class: 'settings-item__info' },
+      h(
+        'div',
+        { class: 'settings-section__content' },
+        h(
+          'div',
+          { class: 'settings-item' },
+          h(
+            'div',
+            { class: 'settings-item__info' },
             h('label', { class: 'settings-item__label' }, 'Clear Watch History'),
-            h('p', { class: 'settings-item__description' }, 'Remove all items from your watch history')
+            h(
+              'p',
+              { class: 'settings-item__description' },
+              'Remove all items from your watch history',
+            ),
           ),
-          h('button', {
-            class: 'btn btn-secondary btn-sm',
-            onClick: () => {
-              if (confirm('Clear all watch history?')) {
-                clearWatchHistory();
-                // TODO: show toast
-              }
+          h(
+            'button',
+            {
+              class: 'btn btn-secondary btn-sm',
+              onClick: () => {
+                if (confirm('Clear all watch history?')) {
+                  clearWatchHistory();
+                  // TODO: show toast
+                }
+              },
             },
-          }, 'Clear')
+            'Clear',
+          ),
         ),
-        h('div', { class: 'settings-item' },
-          h('div', { class: 'settings-item__info' },
+        h(
+          'div',
+          { class: 'settings-item' },
+          h(
+            'div',
+            { class: 'settings-item__info' },
             h('label', { class: 'settings-item__label' }, 'Clear All Data'),
-            h('p', { class: 'settings-item__description' }, 'Remove all locally stored data')
+            h('p', { class: 'settings-item__description' }, 'Remove all locally stored data'),
           ),
-          h('button', {
-            class: 'btn btn-secondary btn-sm',
-            style: 'color: var(--status-error); border-color: var(--status-error);',
-            onClick: () => {
-              if (confirm('This will clear all your local data. Continue?')) {
-                clearAllUserData();
-                // TODO: show toast
-              }
+          h(
+            'button',
+            {
+              class: 'btn btn-secondary btn-sm',
+              style: 'color: var(--status-error); border-color: var(--status-error);',
+              onClick: () => {
+                if (confirm('This will clear all your local data. Continue?')) {
+                  clearAllUserData();
+                  // TODO: show toast
+                }
+              },
             },
-          }, 'Clear All')
-        )
-      )
-    )
+            'Clear All',
+          ),
+        ),
+      ),
+    ),
   );
 
   // About section
   page.appendChild(
-    h('section', { class: 'settings-section glass-card' },
+    h(
+      'section',
+      { class: 'settings-section glass-card' },
       h('h2', { class: 'settings-section__title' }, 'About'),
-      h('div', { class: 'settings-section__content' },
-        h('div', { class: 'settings-item' },
-          h('div', { class: 'settings-item__info' },
+      h(
+        'div',
+        { class: 'settings-section__content' },
+        h(
+          'div',
+          { class: 'settings-item' },
+          h(
+            'div',
+            { class: 'settings-item__info' },
             h('label', { class: 'settings-item__label' }, 'Version'),
-            h('p', { class: 'settings-item__value' }, 'MVStream v2.0.0')
-          )
+            h('p', { class: 'settings-item__value' }, 'MVStream v2.0.0'),
+          ),
         ),
-        h('div', { class: 'settings-item' },
-          h('div', { class: 'settings-item__info' },
+        h(
+          'div',
+          { class: 'settings-item' },
+          h(
+            'div',
+            { class: 'settings-item__info' },
             h('label', { class: 'settings-item__label' }, 'Privacy Policy'),
           ),
-          h('a', { class: 'btn btn-ghost btn-sm', href: '#/privacy' }, 'View →')
+          h('a', { class: 'btn btn-ghost btn-sm', href: '#/privacy' }, 'View →'),
         ),
-        h('div', { class: 'settings-item' },
-          h('div', { class: 'settings-item__info' },
+        h(
+          'div',
+          { class: 'settings-item' },
+          h(
+            'div',
+            { class: 'settings-item__info' },
             h('label', { class: 'settings-item__label' }, 'Help'),
           ),
-          h('a', { class: 'btn btn-ghost btn-sm', href: '#/help' }, 'View →')
-        )
-      )
-    )
+          h('a', { class: 'btn btn-ghost btn-sm', href: '#/help' }, 'View →'),
+        ),
+      ),
+    ),
   );
 
   main.appendChild(page);

@@ -7,7 +7,10 @@
  */
 export function h<K extends keyof HTMLElementTagNameMap>(
   tag: K,
-  props?: Record<string, string | number | boolean | EventListenerOrEventListenerObject | null> & { class?: string; dataset?: Record<string, string> },
+  props?: Record<string, string | number | boolean | EventListenerOrEventListenerObject | null> & {
+    class?: string;
+    dataset?: Record<string, string>;
+  },
   ...children: (Node | string)[]
 ): HTMLElementTagNameMap[K] {
   const el = document.createElement(tag);
@@ -47,8 +50,10 @@ export function h<K extends keyof HTMLElementTagNameMap>(
 /**
  * Shorthand for creating a div
  */
-export const div = (props?: Parameters<typeof h<'div'>>[1], ...children: Parameters<typeof h<'div'>>[2]) =>
-  h('div', props, ...children);
+export const div = (
+  props?: Parameters<typeof h<'div'>>[1],
+  ...children: Parameters<typeof h<'div'>>[2]
+) => h('div', props, ...children);
 
 /**
  * Shorthand for creating an <img> element
@@ -77,7 +82,7 @@ export function clearChildren(el: Element): void {
  */
 export function debounce<T extends (...args: unknown[]) => unknown>(
   fn: T,
-  delay: number
+  delay: number,
 ): (...args: Parameters<T>) => void {
   let timeoutId: ReturnType<typeof setTimeout>;
   return (...args: Parameters<T>) => {
@@ -91,7 +96,7 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
  */
 export function throttle<T extends (...args: unknown[]) => unknown>(
   fn: T,
-  limit: number
+  limit: number,
 ): (...args: Parameters<T>) => void {
   let inThrottle = false;
   return (...args: Parameters<T>) => {
@@ -153,7 +158,7 @@ export function uid(): string {
  */
 export function tmdbImage(
   path: string | null | undefined,
-  size: 'w92' | 'w154' | 'w185' | 'w342' | 'w500' | 'w780' | 'original' = 'w500'
+  size: 'w92' | 'w154' | 'w185' | 'w342' | 'w500' | 'w780' | 'original' = 'w500',
 ): string {
   if (!path) return '/placeholder-poster.svg';
   return `https://image.tmdb.org/t/p/${size}${path}`;
@@ -162,11 +167,7 @@ export function tmdbImage(
 /**
  * Lazy-load an image with IntersectionObserver
  */
-export function lazyImage(
-  imgEl: HTMLImageElement,
-  src: string,
-  rootMargin = '200px'
-): void {
+export function lazyImage(imgEl: HTMLImageElement, src: string, rootMargin = '200px'): void {
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -176,7 +177,7 @@ export function lazyImage(
         }
       });
     },
-    { rootMargin }
+    { rootMargin },
   );
   observer.observe(imgEl);
 }
@@ -196,14 +197,18 @@ export async function copyToClipboard(text: string): Promise<boolean> {
 /**
  * Simple CSS query selector
  */
-export const $ = <T extends Element = Element>(selector: string, root: Element | Document = document): T | null =>
-  root.querySelector<T>(selector);
+export const $ = <T extends Element = Element>(
+  selector: string,
+  root: Element | Document = document,
+): T | null => root.querySelector<T>(selector);
 
 /**
  * Query selector all
  */
-export const $$ = <T extends Element = Element>(selector: string, root: Element | Document = document): T[] =>
-  Array.from(root.querySelectorAll<T>(selector));
+export const $$ = <T extends Element = Element>(
+  selector: string,
+  root: Element | Document = document,
+): T[] => Array.from(root.querySelectorAll<T>(selector));
 
 /**
  * Sleep / delay

@@ -12,17 +12,21 @@ export function renderHeader(container: Element): void {
   const inner = h('div', { class: 'header__inner container' });
 
   // Logo
-  const logo = h('a', {
-    class: 'header__logo',
-    href: '#/',
-  },
+  const logo = h(
+    'a',
+    {
+      class: 'header__logo',
+      href: '#/',
+    },
     h('span', { class: 'header__logo-icon' }, '▶'),
-    h('span', { class: 'header__logo-text' }, 'MVStream')
+    h('span', { class: 'header__logo-text' }, 'MVStream'),
   );
   inner.appendChild(logo);
 
   // Desktop Navigation
-  const nav = h('nav', { class: 'header__nav hide-sm' }, 'nav', { 'aria-label': 'Main navigation' });
+  const nav = h('nav', { class: 'header__nav hide-sm' }, 'nav', {
+    'aria-label': 'Main navigation',
+  });
   const navLinks = [
     { href: '#/', label: 'Home', page: 'home' },
     { href: '#/movies', label: 'Movies', page: 'movies' },
@@ -30,11 +34,15 @@ export function renderHeader(container: Element): void {
   ];
 
   for (const link of navLinks) {
-    const a = h('a', {
-      class: 'header__nav-link',
-      href: link.href,
-      'data-page': link.page,
-    }, link.label);
+    const a = h(
+      'a',
+      {
+        class: 'header__nav-link',
+        href: link.href,
+        'data-page': link.page,
+      },
+      link.label,
+    );
     nav.appendChild(a);
   }
   inner.appendChild(nav);
@@ -43,64 +51,94 @@ export function renderHeader(container: Element): void {
   const actions = h('div', { class: 'header__actions' });
 
   // Search button
-  const searchBtn = h('button', {
-    class: 'btn btn-ghost btn-icon header__search-btn',
-    'aria-label': 'Search',
-    onClick: () => {
-      window.location.hash = '#/search';
+  const searchBtn = h(
+    'button',
+    {
+      class: 'btn btn-ghost btn-icon header__search-btn',
+      'aria-label': 'Search',
+      onClick: () => {
+        window.location.hash = '#/search';
+      },
     },
-  }, '🔍');
+    '🔍',
+  );
   actions.appendChild(searchBtn);
 
   // Profile dropdown
-  const profileBtn = h('button', {
-    class: 'header__profile-btn',
-    'aria-label': 'Profile menu',
-    onClick: () => toggleProfileMenu(),
-  },
-    h('div', { class: 'header__avatar' }, '👤')
+  const profileBtn = h(
+    'button',
+    {
+      class: 'header__profile-btn',
+      'aria-label': 'Profile menu',
+      onClick: () => toggleProfileMenu(),
+    },
+    h('div', { class: 'header__avatar' }, '👤'),
   );
   actions.appendChild(profileBtn);
 
   // Mobile menu toggle
-  const menuBtn = h('button', {
-    class: 'btn btn-ghost btn-icon header__menu-btn show-sm',
-    'aria-label': 'Menu',
-    onClick: () => toggleMobileMenu(),
-  }, '☰');
+  const menuBtn = h(
+    'button',
+    {
+      class: 'btn btn-ghost btn-icon header__menu-btn show-sm',
+      'aria-label': 'Menu',
+      onClick: () => toggleMobileMenu(),
+    },
+    '☰',
+  );
   actions.appendChild(menuBtn);
 
   inner.appendChild(actions);
   header.appendChild(inner);
 
   // Profile dropdown menu
-  const profileMenu = h('div', { class: 'header__dropdown' },
+  const profileMenu = h(
+    'div',
+    { class: 'header__dropdown' },
     h('a', { class: 'header__dropdown-item', href: '#/profile' }, '👤 Profile'),
     h('a', { class: 'header__dropdown-item', href: '#/settings' }, '⚙️ Settings'),
     h('div', { class: 'divider' }),
-    h('button', {
-      class: 'header__dropdown-item header__dropdown-item--danger',
-      onClick: async () => {
-        const { logout } = await import('@services/auth');
-        await logout();
-        window.location.hash = '#/';
+    h(
+      'button',
+      {
+        class: 'header__dropdown-item header__dropdown-item--danger',
+        onClick: async () => {
+          const { logout } = await import('@services/auth');
+          await logout();
+          window.location.hash = '#/';
+        },
       },
-    }, '🚪 Logout')
+      '🚪 Logout',
+    ),
   );
   profileBtn.appendChild(profileMenu);
 
   // Mobile menu
-  const mobileMenu = h('div', { class: 'header__mobile-menu glass-strong' },
+  const mobileMenu = h(
+    'div',
+    { class: 'header__mobile-menu glass-strong' },
     ...navLinks.map((link) =>
-      h('a', {
-        class: 'header__mobile-menu-link',
-        href: link.href,
-        onClick: () => closeMobileMenu(),
-      }, link.label)
+      h(
+        'a',
+        {
+          class: 'header__mobile-menu-link',
+          href: link.href,
+          onClick: () => closeMobileMenu(),
+        },
+        link.label,
+      ),
     ),
     h('div', { class: 'divider' }),
-    h('a', { class: 'header__mobile-menu-link', href: '#/profile', onClick: () => closeMobileMenu() }, '👤 Profile'),
-    h('a', { class: 'header__mobile-menu-link', href: '#/settings', onClick: () => closeMobileMenu() }, '⚙️ Settings'),
+    h(
+      'a',
+      { class: 'header__mobile-menu-link', href: '#/profile', onClick: () => closeMobileMenu() },
+      '👤 Profile',
+    ),
+    h(
+      'a',
+      { class: 'header__mobile-menu-link', href: '#/settings', onClick: () => closeMobileMenu() },
+      '⚙️ Settings',
+    ),
   );
   header.appendChild(mobileMenu);
 
@@ -115,10 +153,14 @@ export function renderHeader(container: Element): void {
   });
 
   // Handle scroll for header styling
-  window.addEventListener('scroll', () => {
-    const currentScroll = window.scrollY;
-    header.classList.toggle('header--scrolled', currentScroll > 50);
-  }, { passive: true });
+  window.addEventListener(
+    'scroll',
+    () => {
+      const currentScroll = window.scrollY;
+      header.classList.toggle('header--scrolled', currentScroll > 50);
+    },
+    { passive: true },
+  );
 }
 
 function toggleProfileMenu(): void {

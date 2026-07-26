@@ -10,12 +10,20 @@ export function renderFooter(container: Element): void {
   const inner = h('div', { class: 'footer__inner container' });
 
   // Logo & description
-  const brand = h('div', { class: 'footer__brand' },
-    h('a', { class: 'footer__logo', href: '#/' },
+  const brand = h(
+    'div',
+    { class: 'footer__brand' },
+    h(
+      'a',
+      { class: 'footer__logo', href: '#/' },
       h('span', { class: 'header__logo-icon' }, '▶'),
-      h('span', { class: 'header__logo-text' }, 'MVStream')
+      h('span', { class: 'header__logo-text' }, 'MVStream'),
     ),
-    h('p', { class: 'footer__description' }, 'Watch your favorite movies and series online for free.')
+    h(
+      'p',
+      { class: 'footer__description' },
+      'Watch your favorite movies and series online for free.',
+    ),
   );
   inner.appendChild(brand);
 
@@ -49,22 +57,30 @@ export function renderFooter(container: Element): void {
   ];
 
   for (const group of linkGroups) {
-    const groupEl = h('div', { class: 'footer__link-group' },
+    const groupEl = h(
+      'div',
+      { class: 'footer__link-group' },
       h('h4', { class: 'footer__link-group-title' }, group.title),
-      ...group.items.map((item) =>
-        h('a', { class: 'footer__link', href: item.href }, item.label)
-      )
+      ...group.items.map((item) => h('a', { class: 'footer__link', href: item.href }, item.label)),
     );
     links.appendChild(groupEl);
   }
   inner.appendChild(links);
 
   // Copyright
-  const copyright = h('div', { class: 'footer__bottom' },
-    h('p', { class: 'footer__copyright' }, `© ${new Date().getFullYear()} MVStream. All rights reserved.`),
-    h('p', { class: 'footer__disclaimer' },
-      'This site does not store any files on its server. All contents are provided by non-affiliated third parties.'
-    )
+  const copyright = h(
+    'div',
+    { class: 'footer__bottom' },
+    h(
+      'p',
+      { class: 'footer__copyright' },
+      `© ${new Date().getFullYear()} MVStream. All rights reserved.`,
+    ),
+    h(
+      'p',
+      { class: 'footer__disclaimer' },
+      'This site does not store any files on its server. All contents are provided by non-affiliated third parties.',
+    ),
   );
   inner.appendChild(copyright);
 

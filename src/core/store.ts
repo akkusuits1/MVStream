@@ -50,7 +50,7 @@ export class Store<T> {
 type StoresMap = Record<string, Store<unknown>>;
 
 export function combineStores<T extends StoresMap>(
-  stores: T
+  stores: T,
 ): Store<{ [K in keyof T]: T[K] extends Store<infer V> ? V : never }> {
   const getValue = () => {
     const result = {} as { [K in keyof T]: T[K] extends Store<infer V> ? V : never };
@@ -73,10 +73,7 @@ export function combineStores<T extends StoresMap>(
 
 // ---- Derived Store (computed value) ----
 
-export function derived<A, B>(
-  store: Store<A>,
-  fn: (value: A) => B
-): Store<B> {
+export function derived<A, B>(store: Store<A>, fn: (value: A) => B): Store<B> {
   const derivedStore = new Store<B>(fn(store.get()));
 
   store.subscribe((value) => {
@@ -88,7 +85,15 @@ export function derived<A, B>(
 
 // ---- App-wide stores (initialized once) ----
 
-import type { Movie, Series, Category, User, ContinueWatchingItem, WatchlistItem, AppSettings } from '@types';
+import type {
+  Movie,
+  Series,
+  Category,
+  User,
+  ContinueWatchingItem,
+  WatchlistItem,
+  AppSettings,
+} from '@types';
 
 export const stores = {
   // Auth

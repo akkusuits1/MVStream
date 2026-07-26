@@ -17,8 +17,12 @@ export async function renderSearchPage(): Promise<void> {
   const page = h('div', { class: 'search-page animate-page-enter container' });
 
   // Search input
-  const searchBox = h('div', { class: 'search-page__box' },
-    h('div', { class: 'search-page__input-wrapper glass-card' },
+  const searchBox = h(
+    'div',
+    { class: 'search-page__box' },
+    h(
+      'div',
+      { class: 'search-page__input-wrapper glass-card' },
       h('span', { class: 'search-page__icon' }, '🔍'),
       h('input', {
         class: 'search-page__input',
@@ -27,11 +31,15 @@ export async function renderSearchPage(): Promise<void> {
         'aria-label': 'Search',
         autofocus: true,
       } as Record<string, string | boolean>),
-      h('button', {
-        class: 'search-page__clear btn btn-ghost btn-icon',
-        'aria-label': 'Clear search',
-      }, '✕')
-    )
+      h(
+        'button',
+        {
+          class: 'search-page__clear btn btn-ghost btn-icon',
+          'aria-label': 'Clear search',
+        },
+        '✕',
+      ),
+    ),
   );
   page.appendChild(searchBox);
 
@@ -59,10 +67,12 @@ export async function renderSearchPage(): Promise<void> {
 
     results.innerHTML = '';
     results.appendChild(
-      h('div', { class: 'search-page__loading' },
+      h(
+        'div',
+        { class: 'search-page__loading' },
         h('div', { class: 'app-loader__spinner' }),
-        h('p', {}, 'Searching...')
-      )
+        h('p', {}, 'Searching...'),
+      ),
     );
 
     try {
@@ -70,15 +80,19 @@ export async function renderSearchPage(): Promise<void> {
       results.innerHTML = '';
 
       const movies = data.results.filter((r) => 'title' in r && 'release_date' in r) as TMDBMovie[];
-      const series = data.results.filter((r) => 'name' in r && 'first_air_date' in r) as TMDBSeries[];
+      const series = data.results.filter(
+        (r) => 'name' in r && 'first_air_date' in r,
+      ) as TMDBSeries[];
 
       if (movies.length === 0 && series.length === 0) {
         results.appendChild(
-          h('div', { class: 'empty-state' },
+          h(
+            'div',
+            { class: 'empty-state' },
             h('div', { class: 'empty-state__icon' }, '🔍'),
             h('h3', { class: 'empty-state__title' }, 'No results found'),
-            h('p', { class: 'empty-state__description' }, `No results for "${query}"`)
-          )
+            h('p', { class: 'empty-state__description' }, `No results for "${query}"`),
+          ),
         );
         return;
       }
@@ -97,9 +111,11 @@ export async function renderSearchPage(): Promise<void> {
     } catch (_error) {
       results.innerHTML = '';
       results.appendChild(
-        h('div', { class: 'empty-state' },
-          h('p', { class: 'empty-state__description' }, 'Search failed. Please try again.')
-        )
+        h(
+          'div',
+          { class: 'empty-state' },
+          h('p', { class: 'empty-state__description' }, 'Search failed. Please try again.'),
+        ),
       );
     }
   }, 400);
@@ -119,31 +135,45 @@ function renderRecentSearches(container: Element): void {
 
   if (history.length === 0) return;
 
-  const wrapper = h('div', { class: 'search-page__recent-inner' },
-    h('div', { class: 'search-page__recent-header' },
+  const wrapper = h(
+    'div',
+    { class: 'search-page__recent-inner' },
+    h(
+      'div',
+      { class: 'search-page__recent-header' },
       h('h3', {}, 'Recent Searches'),
-      h('button', {
-        class: 'btn btn-ghost btn-sm',
-        onClick: () => {
-          clearSearchHistory();
-          container.innerHTML = '';
-        },
-      }, 'Clear All')
-    ),
-    h('div', { class: 'search-page__recent-chips' },
-      ...history.slice(0, 10).map((q) =>
-        h('button', {
-          class: 'chip',
+      h(
+        'button',
+        {
+          class: 'btn btn-ghost btn-sm',
           onClick: () => {
-            const input = document.querySelector('.search-page__input') as HTMLInputElement;
-            if (input) {
-              input.value = q;
-              input.dispatchEvent(new Event('input'));
-            }
+            clearSearchHistory();
+            container.innerHTML = '';
           },
-        }, q)
-      )
-    )
+        },
+        'Clear All',
+      ),
+    ),
+    h(
+      'div',
+      { class: 'search-page__recent-chips' },
+      ...history.slice(0, 10).map((q) =>
+        h(
+          'button',
+          {
+            class: 'chip',
+            onClick: () => {
+              const input = document.querySelector('.search-page__input') as HTMLInputElement;
+              if (input) {
+                input.value = q;
+                input.dispatchEvent(new Event('input'));
+              }
+            },
+          },
+          q,
+        ),
+      ),
+    ),
   );
 
   container.appendChild(wrapper);
@@ -152,11 +182,13 @@ function renderRecentSearches(container: Element): void {
 function renderResultSection(
   title: string,
   items: (TMDBMovie | TMDBSeries)[],
-  type: 'movie' | 'series'
+  type: 'movie' | 'series',
 ): HTMLElement {
-  const section = h('div', { class: 'search-page__section' },
+  const section = h(
+    'div',
+    { class: 'search-page__section' },
     h('h2', { class: 'search-page__section-title' }, title),
-    h('div', { class: 'movie-grid' })
+    h('div', { class: 'movie-grid' }),
   );
 
   const grid = section.querySelector('.movie-grid')!;
@@ -165,14 +197,19 @@ function renderResultSection(
     const title = 'title' in item ? item.title : (item as TMDBSeries).name;
     const poster = 'poster_path' in item ? item.poster_path : null;
     const rating = item.vote_average;
-    const year = ('release_date' in item ? item.release_date : (item as TMDBSeries).first_air_date) || '';
+    const year =
+      ('release_date' in item ? item.release_date : (item as TMDBSeries).first_air_date) || '';
 
-    const card = h('a', {
-      class: 'movie-card animate-card-enter',
-      href: `#/details/${type}/${item.id}`,
-      style: `--stagger-index: ${index % 20}`,
-    },
-      h('div', { class: 'movie-card__poster card-3d card-shine' },
+    const card = h(
+      'a',
+      {
+        class: 'movie-card animate-card-enter',
+        href: `#/details/${type}/${item.id}`,
+        style: `--stagger-index: ${index % 20}`,
+      },
+      h(
+        'div',
+        { class: 'movie-card__poster card-3d card-shine' },
         h('img', {
           class: 'movie-card__image',
           src: posterURL(poster, 'w342'),
@@ -181,10 +218,12 @@ function renderResultSection(
         } as Record<string, string>),
         h('div', { class: 'movie-card__rating' }, '★ ' + String(rating)),
       ),
-      h('div', { class: 'movie-card__info' },
+      h(
+        'div',
+        { class: 'movie-card__info' },
         h('h3', { class: 'movie-card__title' }, title),
-        h('p', { class: 'movie-card__meta' }, year.slice(0, 4) || 'N/A')
-      )
+        h('p', { class: 'movie-card__meta' }, year.slice(0, 4) || 'N/A'),
+      ),
     );
 
     grid.appendChild(card);

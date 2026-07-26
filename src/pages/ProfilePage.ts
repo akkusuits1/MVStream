@@ -17,24 +17,36 @@ export async function renderProfilePage(): Promise<void> {
 
   // Profile header
   page.appendChild(
-    h('div', { class: 'profile-page__header glass-card' },
-      h('div', { class: 'profile-page__avatar' },
-        h('div', { class: 'profile-page__avatar-circle' },
-          h('span', {}, user?.displayName?.charAt(0)?.toUpperCase() || '👤')
-        )
+    h(
+      'div',
+      { class: 'profile-page__header glass-card' },
+      h(
+        'div',
+        { class: 'profile-page__avatar' },
+        h(
+          'div',
+          { class: 'profile-page__avatar-circle' },
+          h('span', {}, user?.displayName?.charAt(0)?.toUpperCase() || '👤'),
+        ),
       ),
-      h('div', { class: 'profile-page__info' },
+      h(
+        'div',
+        { class: 'profile-page__info' },
         h('h1', { class: 'profile-page__name' }, user?.displayName || 'Guest'),
-        h('p', { class: 'profile-page__email' }, user?.email || 'Sign in to save your progress')
+        h('p', { class: 'profile-page__email' }, user?.email || 'Sign in to save your progress'),
       ),
-      h('div', { class: 'profile-page__actions' },
-        h('a', { class: 'btn btn-secondary', href: '#/settings' }, '⚙️ Settings')
-      )
-    )
+      h(
+        'div',
+        { class: 'profile-page__actions' },
+        h('a', { class: 'btn btn-secondary', href: '#/settings' }, '⚙️ Settings'),
+      ),
+    ),
   );
 
   // Tabs
-  const tabs = h('div', { class: 'tabs' },
+  const tabs = h(
+    'div',
+    { class: 'tabs' },
     h('button', { class: 'tab tab--active', 'data-tab': 'watchlist' }, 'Watchlist'),
     h('button', { class: 'tab', 'data-tab': 'history' }, 'History'),
     h('button', { class: 'tab', 'data-tab': 'continue' }, 'Continue Watching'),
@@ -79,24 +91,30 @@ function renderWatchlistTab(container: Element): void {
 
   if (items.length === 0) {
     container.appendChild(
-      h('div', { class: 'empty-state' },
+      h(
+        'div',
+        { class: 'empty-state' },
         h('div', { class: 'empty-state__icon' }, '🎬'),
         h('h3', { class: 'empty-state__title' }, 'No watchlist yet'),
         h('p', { class: 'empty-state__description' }, 'Add movies and series to your watchlist.'),
-        h('a', { class: 'btn btn-primary', href: '#/movies' }, 'Browse Content')
-      )
+        h('a', { class: 'btn btn-primary', href: '#/movies' }, 'Browse Content'),
+      ),
     );
     return;
   }
 
   const grid = h('div', { class: 'movie-grid' });
   items.forEach((item, index) => {
-    const card = h('a', {
-      class: 'movie-card animate-card-enter',
-      href: `#/details/${item.type}/${item.id}`,
-      style: `--stagger-index: ${index % 20}`,
-    },
-      h('div', { class: 'movie-card__poster card-3d card-shine' },
+    const card = h(
+      'a',
+      {
+        class: 'movie-card animate-card-enter',
+        href: `#/details/${item.type}/${item.id}`,
+        style: `--stagger-index: ${index % 20}`,
+      },
+      h(
+        'div',
+        { class: 'movie-card__poster card-3d card-shine' },
         h('img', {
           src: item.poster,
           alt: item.title,
@@ -104,9 +122,7 @@ function renderWatchlistTab(container: Element): void {
           loading: 'lazy',
         } as Record<string, string>),
       ),
-      h('div', { class: 'movie-card__info' },
-        h('h3', { class: 'movie-card__title' }, item.title),
-      )
+      h('div', { class: 'movie-card__info' }, h('h3', { class: 'movie-card__title' }, item.title)),
     );
     grid.appendChild(card);
   });
@@ -119,11 +135,13 @@ function renderHistoryTab(container: Element): void {
 
   if (items.length === 0) {
     container.appendChild(
-      h('div', { class: 'empty-state' },
+      h(
+        'div',
+        { class: 'empty-state' },
         h('div', { class: 'empty-state__icon' }, '📜'),
         h('h3', { class: 'empty-state__title' }, 'No watch history'),
-        h('p', { class: 'empty-state__description' }, 'Start watching to build your history.')
-      )
+        h('p', { class: 'empty-state__description' }, 'Start watching to build your history.'),
+      ),
     );
     return;
   }
@@ -131,21 +149,25 @@ function renderHistoryTab(container: Element): void {
   const list = h('div', { class: 'history-list' });
   items.forEach((item) => {
     list.appendChild(
-      h('a', {
-        class: 'history-item',
-        href: `#/details/${item.type}/${item.id}`,
-      },
+      h(
+        'a',
+        {
+          class: 'history-item',
+          href: `#/details/${item.type}/${item.id}`,
+        },
         h('img', {
           src: item.poster,
           alt: item.title,
           class: 'history-item__poster',
           loading: 'lazy',
         } as Record<string, string>),
-        h('div', { class: 'history-item__info' },
+        h(
+          'div',
+          { class: 'history-item__info' },
           h('h4', { class: 'history-item__title' }, item.title),
-          h('p', { class: 'history-item__time' }, new Date(item.timestamp).toLocaleDateString())
-        )
-      )
+          h('p', { class: 'history-item__time' }, new Date(item.timestamp).toLocaleDateString()),
+        ),
+      ),
     );
   });
 
@@ -157,11 +179,13 @@ function renderContinueTab(container: Element): void {
 
   if (items.length === 0) {
     container.appendChild(
-      h('div', { class: 'empty-state' },
+      h(
+        'div',
+        { class: 'empty-state' },
         h('div', { class: 'empty-state__icon' }, '⏩'),
         h('h3', { class: 'empty-state__title' }, 'Nothing to continue'),
-        h('p', { class: 'empty-state__description' }, 'Start watching something!')
-      )
+        h('p', { class: 'empty-state__description' }, 'Start watching something!'),
+      ),
     );
     return;
   }
@@ -169,27 +193,33 @@ function renderContinueTab(container: Element): void {
   const list = h('div', { class: 'continue-list' });
   items.forEach((item) => {
     list.appendChild(
-      h('a', {
-        class: 'continue-item',
-        href: `#/player/${item.type}/${item.id}`,
-      },
+      h(
+        'a',
+        {
+          class: 'continue-item',
+          href: `#/player/${item.type}/${item.id}`,
+        },
         h('img', {
           src: item.poster,
           alt: item.title,
           class: 'continue-item__poster',
           loading: 'lazy',
         } as Record<string, string>),
-        h('div', { class: 'continue-item__info' },
+        h(
+          'div',
+          { class: 'continue-item__info' },
           h('h4', { class: 'continue-item__title' }, item.title),
-          h('div', { class: 'progress-bar' },
+          h(
+            'div',
+            { class: 'progress-bar' },
             h('div', {
               class: 'progress-bar__fill',
               style: `width: ${item.progress}%`,
-            })
+            }),
           ),
-          h('p', { class: 'continue-item__progress' }, `${item.progress}% watched`)
-        )
-      )
+          h('p', { class: 'continue-item__progress' }, `${item.progress}% watched`),
+        ),
+      ),
     );
   });
 

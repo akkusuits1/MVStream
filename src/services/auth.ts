@@ -93,7 +93,7 @@ export async function login(email: string, password: string): Promise<void> {
 export async function register(
   email: string,
   password: string,
-  displayName: string
+  displayName: string,
 ): Promise<void> {
   try {
     const result = await createUserWithEmailAndPassword(auth, email, password);
@@ -147,7 +147,7 @@ export async function resetPassword(email: string): Promise<void> {
 
 // ---- Update Profile ----
 export async function updateUserProfile(
-  data: Partial<{ displayName: string; photoURL: string }>
+  data: Partial<{ displayName: string; photoURL: string }>,
 ): Promise<void> {
   const user = auth.currentUser;
   if (!user) throw new Error('Not authenticated');
