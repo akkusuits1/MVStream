@@ -107,7 +107,7 @@ export function useMovies(): UseMoviesReturn {
       stores.watchlist.set(getWatchlist());
     },
 
-    async playContent(type: 'movie' | 'series', id: string) {
+    async playContent(_type: 'movie' | 'series', _id: string) {
       // TODO: implement play logic
     },
 
