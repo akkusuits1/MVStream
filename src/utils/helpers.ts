@@ -9,7 +9,11 @@ import { db } from '@services/firebase';
 // ---- Firebase Data Helpers ----
 
 function requireDb(): NonNullable<typeof db> {
-  if (!db) throw new Error('Firebase is not configured. Please set VITE_FIREBASE_* environment variables.');
+  if (!db) {
+    throw new Error(
+      'Firebase is not configured. Please set VITE_FIREBASE_* environment variables.',
+    );
+  }
   return db;
 }
 
