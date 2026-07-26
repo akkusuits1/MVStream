@@ -131,7 +131,7 @@ function renderFilterBar(_type: string): HTMLElement {
         onChange: (e) => {
           const select = e.target as HTMLSelectElement;
           // TODO: implement sorting
-          console.log('Sort:', select.value);
+          console.warn('Sort:', select.value);
         },
       },
       h('option', { value: 'popular' }, 'Most Popular'),
@@ -157,5 +157,5 @@ function handleFilterClick(e: Event, filterType: string): void {
   target.classList.add('chip--active');
 
   // TODO: filter grid items
-  console.log(`${filterType} filter:`, target.dataset.filter);
+  console.warn(`${filterType} filter:`, target.dataset.filter);
 }
