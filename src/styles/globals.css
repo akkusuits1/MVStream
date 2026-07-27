@@ -1898,3 +1898,161 @@ a:hover {
   animation: spin 0.8s linear infinite;
   margin: var(--space-8) auto;
 }
+
+/* ============================================
+   Home Page
+   ============================================ */
+.home-page {
+  min-height: 100vh;
+}
+
+/* ============================================
+   Details Page
+   ============================================ */
+.details-page {
+  padding-bottom: var(--space-16);
+}
+
+/* ============================================
+   Browse Page (Complete)
+   ============================================ */
+.browse-page {
+  padding: var(--space-8) var(--space-4);
+}
+
+.browse-page__header {
+  margin-bottom: var(--space-6);
+}
+
+.browse-page__title {
+  font-size: var(--text-3xl);
+  margin-bottom: var(--space-2);
+}
+
+.browse-page__subtitle {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-4);
+}
+
+.browse-page__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--space-4);
+}
+
+/* ============================================
+   Search Page (Additional)
+   ============================================ */
+.search-page__icon {
+  position: absolute;
+  left: var(--space-4);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: var(--text-xl);
+}
+
+.search-page__results {
+  margin-top: var(--space-6);
+}
+
+.search-page__recent-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* ============================================
+   Header Menu Button
+   ============================================ */
+.header__menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: var(--space-2);
+}
+
+@media (max-width: 767px) {
+  .header__menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* ============================================
+   Toast Notifications
+   ============================================ */
+.toast {
+  position: fixed;
+  bottom: var(--space-6);
+  right: var(--space-6);
+  z-index: 9999;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  max-width: 400px;
+  min-width: 300px;
+  animation: slideUp 0.3s ease-out;
+}
+
+.toast__icon {
+  flex-shrink: 0;
+  font-size: var(--text-xl);
+}
+
+.toast__content {
+  flex: 1;
+}
+
+.toast__message {
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+}
+
+.toast__close {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: var(--space-1);
+  font-size: var(--text-lg);
+  line-height: 1;
+}
+
+.toast__close:hover {
+  color: var(--text-primary);
+}
+
+.toast--success {
+  border-left: 4px solid #22c55e;
+}
+
+.toast--error {
+  border-left: 4px solid #ef4444;
+}
+
+.toast--warning {
+  border-left: 4px solid #f59e0b;
+}
+
+.toast--info {
+  border-left: 4px solid var(--brand-primary);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
