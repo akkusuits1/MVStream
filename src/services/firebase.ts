@@ -27,7 +27,7 @@ const missingKey = Object.entries(firebaseConfig).find(([, v]) => !v);
 
 if (missingKey) {
   console.error(
-    `Firebase config missing: ${missingKey[0]}. Set VITE_FIREBASE_* env vars in your Netlify site settings.`,
+    `Firebase config missing: ${missingKey[0]}. Set VITE_FIREBASE_* env vars in your deployment settings.`,
   );
 } else {
   try {

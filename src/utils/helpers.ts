@@ -8,11 +8,10 @@ import { db } from '@services/firebase';
 
 // ---- Firebase Data Helpers ----
 
-function requireDb(): NonNullable<typeof db> {
+function requireDb(): NonNullable<typeof db> | null {
   if (!db) {
-    throw new Error(
-      'Firebase is not configured. Please set VITE_FIREBASE_* environment variables.',
-    );
+    console.warn('Firebase is not configured. Some features may be unavailable.');
+    return null;
   }
   return db;
 }
@@ -22,6 +21,7 @@ function requireDb(): NonNullable<typeof db> {
  */
 export async function fetchMovies(): Promise<Movie[]> {
   const database = requireDb();
+  if (!database) return [];
   const moviesRef = ref(database, 'movies');
   const snapshot = await get(moviesRef);
 
@@ -39,6 +39,7 @@ export async function fetchMovies(): Promise<Movie[]> {
  */
 export async function fetchSeries(): Promise<Series[]> {
   const database = requireDb();
+  if (!database) return [];
   const seriesRef = ref(database, 'series');
   const snapshot = await get(seriesRef);
 
@@ -56,6 +57,7 @@ export async function fetchSeries(): Promise<Series[]> {
  */
 export async function fetchMovieById(id: string): Promise<Movie | null> {
   const database = requireDb();
+  if (!database) return null;
   const movieRef = ref(database, `movies/${id}`);
   const snapshot = await get(movieRef);
 
@@ -69,6 +71,7 @@ export async function fetchMovieById(id: string): Promise<Movie | null> {
  */
 export async function fetchSeriesById(id: string): Promise<Series | null> {
   const database = requireDb();
+  if (!database) return null;
   const seriesRef = ref(database, `series/${id}`);
   const snapshot = await get(seriesRef);
 
@@ -84,6 +87,7 @@ export async function fetchCategories(): Promise<
   { id: string; name: string; slug: string; icon?: string; order?: number }[]
 > {
   const database = requireDb();
+  if (!database) return [];
   const catRef = ref(database, 'categories');
   const snapshot = await get(catRef);
 
@@ -103,6 +107,7 @@ export async function fetchCategories(): Promise<
  */
 export async function fetchSettings(): Promise<Record<string, unknown> | null> {
   const database = requireDb();
+  if (!database) return null;
   const settingsRef = ref(database, 'settings');
   const snapshot = await get(settingsRef);
   return snapshot.exists() ? snapshot.val() : null;
@@ -113,6 +118,7 @@ export async function fetchSettings(): Promise<Record<string, unknown> | null> {
  */
 export async function incrementViews(type: 'movies' | 'series', id: string): Promise<void> {
   const database = requireDb();
+  if (!database) return;
   const itemRef = ref(database, `${type}/${id}/views`);
   const snapshot = await get(itemRef);
   const currentViews = snapshot.val() || 0;
@@ -131,6 +137,7 @@ export async function submitReport(report: {
   contactEmail?: string;
 }): Promise<string> {
   const database = requireDb();
+  if (!database) throw new Error('Firebase is not configured.');
   const reportsRef = ref(database, 'reports');
   const newRef = push(reportsRef);
   await set(newRef, {

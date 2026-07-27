@@ -22,19 +22,29 @@ let unsubAuth: (() => void) | null = null;
 let unsubUser: (() => void) | null = null;
 
 // ---- Null guards ----
-function requireAuth(): NonNullable<typeof auth> {
-  if (!auth) throw new Error('Firebase Auth is not configured.');
+function requireAuth(): NonNullable<typeof auth> | null {
+  if (!auth) {
+    console.warn('Firebase Auth is not configured. Auth features may be unavailable.');
+    return null;
+  }
   return auth;
 }
 
-function requireDb(): NonNullable<typeof db> {
-  if (!db) throw new Error('Firebase Database is not configured.');
+function requireDb(): NonNullable<typeof db> | null {
+  if (!db) {
+    console.warn('Firebase Database is not configured. Some features may be unavailable.');
+    return null;
+  }
   return db;
 }
 
 // ---- Initialize auth listener ----
 export function initAuth(): void {
   const firebaseAuth = requireAuth();
+  if (!firebaseAuth) {
+    stores.authLoading.set(false);
+    return;
+  }
   stores.authLoading.set(true);
 
   unsubAuth = onAuthStateChanged(firebaseAuth, (firebaseUser: FirebaseUser | null) => {
@@ -54,6 +64,7 @@ function listenToUserProfile(uid: string): void {
 
   const firebaseAuth = requireAuth();
   const database = requireDb();
+  if (!firebaseAuth || !database) return;
   const userRef = ref(database, `users/${uid}`);
   unsubUser = onValue(userRef, (snapshot) => {
     if (snapshot.exists()) {
@@ -93,6 +104,7 @@ function listenToUserProfile(uid: string): void {
 export async function login(email: string, password: string): Promise<void> {
   const firebaseAuth = requireAuth();
   const database = requireDb();
+  if (!firebaseAuth || !database) throw new Error('Firebase is not configured.');
   try {
     const result = await signInWithEmailAndPassword(firebaseAuth, email, password);
     // Update last login
@@ -113,6 +125,7 @@ export async function register(
 ): Promise<void> {
   const firebaseAuth = requireAuth();
   const database = requireDb();
+  if (!firebaseAuth || !database) throw new Error('Firebase is not configured.');
   try {
     const result = await createUserWithEmailAndPassword(firebaseAuth, email, password);
 
@@ -143,6 +156,7 @@ export async function register(
 // ---- Logout ----
 export async function logout(): Promise<void> {
   const firebaseAuth = requireAuth();
+  if (!firebaseAuth) return;
   try {
     unsubUser?.();
     await signOut(firebaseAuth);
@@ -157,6 +171,7 @@ export async function logout(): Promise<void> {
 // ---- Reset Password ----
 export async function resetPassword(email: string): Promise<void> {
   const firebaseAuth = requireAuth();
+  if (!firebaseAuth) throw new Error('Firebase is not configured.');
   try {
     await sendPasswordResetEmail(firebaseAuth, email);
   } catch (error: unknown) {
@@ -171,6 +186,7 @@ export async function updateUserProfile(
 ): Promise<void> {
   const firebaseAuth = requireAuth();
   const database = requireDb();
+  if (!firebaseAuth || !database) throw new Error('Firebase is not configured.');
   const user = firebaseAuth.currentUser;
   if (!user) throw new Error('Not authenticated');
 
