@@ -112,14 +112,22 @@ function renderHero(movies: Movie[], series: Series[]): HTMLElement {
   );
 
   // Store refs to action buttons for slide switching
-  const playBtn = h('a', {
-    class: 'btn btn-primary btn-lg',
-    href: `#/player/${'seasons' in firstItem ? 'series' : 'movie'}/${firstItem.id}`,
-  }, '▶ Play');
-  const infoBtn = h('a', {
-    class: 'btn btn-secondary btn-lg',
-    href: `#/details/${'seasons' in firstItem ? 'series' : 'movie'}/${firstItem.id}`,
-  }, 'ℹ More Info');
+  const playBtn = h(
+    'a',
+    {
+      class: 'btn btn-primary btn-lg',
+      href: `#/player/${'seasons' in firstItem ? 'series' : 'movie'}/${firstItem.id}`,
+    },
+    '▶ Play',
+  );
+  const infoBtn = h(
+    'a',
+    {
+      class: 'btn btn-secondary btn-lg',
+      href: `#/details/${'seasons' in firstItem ? 'series' : 'movie'}/${firstItem.id}`,
+    },
+    'ℹ More Info',
+  );
 
   // Action buttons
   const actions = h('div', { class: 'hero__actions' }, playBtn, infoBtn);

@@ -115,10 +115,18 @@ export function renderHeader(container: Element): void {
   const profileMenu = h(
     'div',
     { class: 'header__dropdown' },
-    h('a', { class: 'header__dropdown-item', href: '#/profile' },
-      h('i', { class: 'lucide lucide-user' }), ' Profile'),
-    h('a', { class: 'header__dropdown-item', href: '#/settings' },
-      h('i', { class: 'lucide lucide-settings' }), ' Settings'),
+    h(
+      'a',
+      { class: 'header__dropdown-item', href: '#/profile' },
+      h('i', { class: 'lucide lucide-user' }),
+      ' Profile',
+    ),
+    h(
+      'a',
+      { class: 'header__dropdown-item', href: '#/settings' },
+      h('i', { class: 'lucide lucide-settings' }),
+      ' Settings',
+    ),
     h('div', { class: 'divider' }),
     h(
       'button',
@@ -130,7 +138,8 @@ export function renderHeader(container: Element): void {
           window.location.hash = '#/';
         },
       },
-      h('i', { class: 'lucide lucide-log-out' }), ' Logout',
+      h('i', { class: 'lucide lucide-log-out' }),
+      ' Logout',
     ),
   );
   profileBtn.appendChild(profileMenu);
