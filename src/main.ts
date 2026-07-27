@@ -24,6 +24,9 @@ let renderDetailsPage: ((params: Record<string, string>) => Promise<void>) | nul
 let renderPlayerPage: ((params: Record<string, string>) => Promise<void>) | null = null;
 let renderProfilePage: (() => Promise<void>) | null = null;
 let renderSettingsPage: (() => Promise<void>) | null = null;
+let renderPrivacyPage: (() => void | Promise<void>) | null = null;
+let renderAboutPage: (() => void | Promise<void>) | null = null;
+let renderHelpPage: (() => void | Promise<void>) | null = null;
 
 // ---- App State ----
 const appState = {
@@ -210,6 +213,39 @@ function setupRouter(): void {
     renderSettingsPage?.();
   });
 
+  router.on('/privacy', async () => {
+    await loadPageModule('privacy');
+    renderPrivacyPage?.();
+  });
+
+  router.on('/about', async () => {
+    await loadPageModule('about');
+    renderAboutPage?.();
+  });
+
+  router.on('/help', async () => {
+    await loadPageModule('help');
+    renderHelpPage?.();
+  });
+
+  // Fallback for unknown routes
+  router.on('/(.*)', () => {
+    const main = $('#main-content');
+    if (main) {
+      main.innerHTML = '';
+      main.appendChild(
+        h('div', { class: 'error-page' },
+          h('div', { class: 'error-page__inner' },
+            h('div', { class: 'error-page__icon' }, '404'),
+            h('h1', { class: 'error-page__title' }, 'Page Not Found'),
+            h('p', { class: 'error-page__message' }, 'The page you\'re looking for doesn\'t exist.'),
+            h('a', { href: '#/', class: 'btn btn-primary' }, 'Back to Home'),
+          ),
+        ),
+      );
+    }
+  });
+
   router.start();
 }
 
@@ -256,6 +292,24 @@ async function loadPageModule(page: string): Promise<void> {
       if (!renderSettingsPage) {
         const mod = await import('@pages/SettingsPage');
         renderSettingsPage = mod.renderSettingsPage;
+      }
+      break;
+    case 'privacy':
+      if (!renderPrivacyPage) {
+        const mod = await import('@pages/PrivacyPage');
+        renderPrivacyPage = mod.renderPrivacyPage;
+      }
+      break;
+    case 'about':
+      if (!renderAboutPage) {
+        const mod = await import('@pages/AboutPage');
+        renderAboutPage = mod.renderAboutPage;
+      }
+      break;
+    case 'help':
+      if (!renderHelpPage) {
+        const mod = await import('@pages/HelpPage');
+        renderHelpPage = mod.renderHelpPage;
       }
       break;
   }
