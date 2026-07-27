@@ -234,11 +234,19 @@ function setupRouter(): void {
     if (main) {
       main.innerHTML = '';
       main.appendChild(
-        h('div', { class: 'error-page' },
-          h('div', { class: 'error-page__inner' },
+        h(
+          'div',
+          { class: 'error-page' },
+          h(
+            'div',
+            { class: 'error-page__inner' },
             h('div', { class: 'error-page__icon' }, '404'),
             h('h1', { class: 'error-page__title' }, 'Page Not Found'),
-            h('p', { class: 'error-page__message' }, 'The page you\'re looking for doesn\'t exist.'),
+            h(
+              'p',
+              { class: 'error-page__message' },
+              "The page you're looking for doesn't exist.",
+            ),
             h('a', { href: '#/', class: 'btn btn-primary' }, 'Back to Home'),
           ),
         ),

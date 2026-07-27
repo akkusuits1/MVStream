@@ -33,21 +33,39 @@ export function renderHelpPage(): void {
   ];
 
   main.appendChild(
-    h('div', { class: 'legal-page container' },
-      h('div', { class: 'legal-page__header' },
+    h(
+      'div',
+      { class: 'legal-page container' },
+      h(
+        'div',
+        { class: 'legal-page__header' },
         h('h1', { class: 'legal-page__title' }, 'Help Center'),
-        h('p', { class: 'legal-page__updated' }, 'Frequently asked questions and support'),
+        h(
+          'p',
+          { class: 'legal-page__updated' },
+          'Frequently asked questions and support',
+        ),
       ),
-      h('div', { class: 'legal-page__content' },
+      h(
+        'div',
+        { class: 'legal-page__content' },
         ...faqItems.map((item) =>
-          h('section', { class: 'legal-page__section legal-page__faq' },
+          h(
+            'section',
+            { class: 'legal-page__section legal-page__faq' },
             h('h2', { class: 'legal-page__faq-question' }, item.q),
             h('p', { class: 'legal-page__faq-answer' }, item.a),
           ),
         ),
-        h('section', { class: 'legal-page__section' },
+        h(
+          'section',
+          { class: 'legal-page__section' },
           h('h2', {}, 'Still need help?'),
-          h('p', {}, 'If you couldn\'t find what you were looking for, please reach out to us through our social channels or leave a report from the app.'),
+          h(
+            'p',
+            {},
+            "If you couldn't find what you were looking for, please reach out to us through our social channels or leave a report from the app.",
+          ),
         ),
       ),
     ),
