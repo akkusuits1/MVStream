@@ -596,13 +596,16 @@ a:hover {
   border-color: var(--brand-primary);
 }
 
-.header__profile-avatar {
+.header__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  font-size: var(--text-xl);
 }
 
-.header__profile-menu {
+.header__dropdown {
   position: absolute;
   top: calc(100% + var(--space-2));
   right: 0;
@@ -615,10 +618,19 @@ a:hover {
   box-shadow: var(--shadow-xl);
   padding: var(--space-2);
   z-index: var(--z-dropdown);
-  animation: fade-in-down 200ms var(--ease-out) forwards;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all var(--transition-fast);
 }
 
-.header__profile-menu-item {
+.header__dropdown.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.header__dropdown-item {
   display: flex;
   align-items: center;
   gap: var(--space-2);
@@ -630,9 +642,60 @@ a:hover {
   transition: all var(--transition-fast);
 }
 
-.header__profile-menu-item:hover {
+.header__dropdown-item:hover {
   background: rgba(255, 255, 255, 0.06);
   color: var(--text-primary);
+}
+
+.header__dropdown-item--danger {
+  color: var(--color-error);
+}
+
+.header__dropdown-item--danger:hover {
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.1);
+}
+
+.header__mobile-menu {
+  display: none;
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--glass-bg-strong);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  flex-direction: column;
+  padding: var(--space-8) var(--space-6);
+  gap: var(--space-2);
+  z-index: var(--z-header);
+}
+
+.header__mobile-menu.open {
+  display: flex;
+}
+
+.header__mobile-menu-link {
+  display: block;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-lg);
+  font-weight: var(--font-medium);
+  color: var(--text-secondary);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.header__mobile-menu-link:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+}
+
+.header--scrolled {
+  background: var(--glass-bg-strong);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--glass-border);
 }
 
 /* ============================================
@@ -665,6 +728,8 @@ a:hover {
   position: absolute;
   inset: 0;
   opacity: 0;
+  background-size: cover;
+  background-position: center top;
   transition: opacity var(--duration-slower) var(--ease-in-out);
 }
 
@@ -772,6 +837,14 @@ a:hover {
 .hero__indicator.active {
   background: var(--brand-primary);
   width: 48px;
+}
+
+.hero__subtitle {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin-bottom: var(--space-3);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
 }
 
 .hero--empty {
@@ -931,12 +1004,21 @@ a:hover {
   color: var(--text-primary);
 }
 
-.footer__copy {
+.footer__bottom {
   text-align: center;
-  font-size: var(--text-xs);
-  color: var(--text-muted);
   padding-top: var(--space-6);
   border-top: 1px solid var(--border-subtle);
+}
+
+.footer__copyright {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.footer__disclaimer {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-top: var(--space-2);
 }
 
 /* ============================================
