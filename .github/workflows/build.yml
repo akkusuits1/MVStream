@@ -75,11 +75,10 @@ jobs:
           VITE_FIREBASE_DATABASE_URL: ${{ secrets.FIREBASE_DATABASE_URL }}
           VITE_FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
 
-      - name: Merge admin build into main dist
+      - name: Copy admin build to dist/admin/
         run: |
-          cp dist-admin/admin.html dist/
-          mkdir -p dist/assets
-          cp dist-admin/assets/* dist/assets/
+          mkdir -p dist/admin
+          cp -r dist-admin/* dist/admin/
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
