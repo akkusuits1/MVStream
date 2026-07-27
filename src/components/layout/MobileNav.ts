@@ -12,11 +12,11 @@ export function renderMobileNav(container: Element): void {
   });
 
   const links = [
-    { href: '#/', icon: '🏠', label: 'Home', page: 'home' },
-    { href: '#/movies', icon: '🎬', label: 'Movies', page: 'movies' },
-    { href: '#/series', icon: '📺', label: 'Series', page: 'series' },
-    { href: '#/search', icon: '🔍', label: 'Search', page: 'search' },
-    { href: '#/profile', icon: '👤', label: 'Profile', page: 'profile' },
+    { href: '#/', icon: 'lucide lucide-home', label: 'Home', page: 'home' },
+    { href: '#/movies', icon: 'lucide lucide-film', label: 'Movies', page: 'movies' },
+    { href: '#/series', icon: 'lucide lucide-tv', label: 'Series', page: 'series' },
+    { href: '#/search', icon: 'lucide lucide-search', label: 'Search', page: 'search' },
+    { href: '#/profile', icon: 'lucide lucide-user', label: 'Profile', page: 'profile' },
   ];
 
   for (const link of links) {
@@ -28,7 +28,7 @@ export function renderMobileNav(container: Element): void {
         'data-page': link.page,
         'aria-label': link.label,
       },
-      h('span', { class: 'mobile-nav__icon' }, link.icon),
+      h('i', { class: `mobile-nav__icon ${link.icon}` }),
       h('span', { class: 'mobile-nav__label' }, link.label),
     );
     nav.appendChild(a);

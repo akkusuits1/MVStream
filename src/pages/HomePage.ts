@@ -111,27 +111,18 @@ function renderHero(movies: Movie[], series: Series[]): HTMLElement {
     ...((firstItem as Movie).genres || []).slice(0, 3).map((g) => h('span', { class: 'chip' }, g)),
   );
 
+  // Store refs to action buttons for slide switching
+  const playBtn = h('a', {
+    class: 'btn btn-primary btn-lg',
+    href: `#/player/${'seasons' in firstItem ? 'series' : 'movie'}/${firstItem.id}`,
+  }, '▶ Play');
+  const infoBtn = h('a', {
+    class: 'btn btn-secondary btn-lg',
+    href: `#/details/${'seasons' in firstItem ? 'series' : 'movie'}/${firstItem.id}`,
+  }, 'ℹ More Info');
+
   // Action buttons
-  const actions = h(
-    'div',
-    { class: 'hero__actions' },
-    h(
-      'a',
-      {
-        class: 'btn btn-primary btn-lg',
-        href: `#/player/${'seasons' in firstItem ? 'series' : 'movie'}/${firstItem.id}`,
-      },
-      '▶ Play',
-    ),
-    h(
-      'a',
-      {
-        class: 'btn btn-secondary btn-lg',
-        href: `#/details/${'seasons' in firstItem ? 'series' : 'movie'}/${firstItem.id}`,
-      },
-      'ℹ More Info',
-    ),
-  );
+  const actions = h('div', { class: 'hero__actions' }, playBtn, infoBtn);
 
   content.appendChild(title);
   content.appendChild(badges);
@@ -184,6 +175,16 @@ function switchHeroSlide(index: number, items: (Movie | Series)[]): void {
   const descEl = document.querySelector('.hero__description');
   if (titleEl) titleEl.textContent = item.title;
   if (descEl) descEl.textContent = item.description || '';
+
+  // Update action button hrefs
+  const isSeries = 'seasons' in item;
+  const type = isSeries ? 'series' : 'movie';
+  const actionsEl = document.querySelector('.hero__actions');
+  if (actionsEl) {
+    const links = actionsEl.querySelectorAll('a');
+    if (links[0]) links[0].setAttribute('href', `#/player/${type}/${item.id}`);
+    if (links[1]) links[1].setAttribute('href', `#/details/${type}/${item.id}`);
+  }
 }
 
 // ---- Section Row ----

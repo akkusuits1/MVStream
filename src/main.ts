@@ -41,6 +41,12 @@ async function initApp(): Promise<void> {
   const app = $('#app');
   if (!app) return;
 
+  // Restore theme from localStorage
+  const savedTheme = localStorage.getItem('mvstream-theme');
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  }
+
   try {
     // Load settings first (to check maintenance mode)
     const settings = await fetchSettings();
@@ -148,8 +154,10 @@ function renderShell(container: Element): void {
   });
   container.appendChild(main);
 
-  // Footer
-  renderFooter(container);
+  // Footer (hidden by default, shown only on home)
+  const footerWrap = h('div', { id: 'app-footer', style: 'display:none;' });
+  container.appendChild(footerWrap);
+  renderFooter(footerWrap);
 
   // Toast container
   const toastContainer = h('div', { class: 'toast-container', id: 'toast-container' });
@@ -166,6 +174,12 @@ function setupRouter(): void {
       // Update active page in store
       const page = path.split('/')[1] || 'home';
       stores.activePage.set(page);
+
+      // Show footer only on home page
+      const footerEl = document.getElementById('app-footer');
+      if (footerEl) {
+        footerEl.style.display = path === '/' ? '' : 'none';
+      }
     },
     onNotFound: () => {
       renderNotFound();
