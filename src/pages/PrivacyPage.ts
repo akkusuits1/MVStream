@@ -13,11 +13,7 @@ export function renderPrivacyPage(): void {
         'div',
         { class: 'legal-page__header' },
         h('h1', { class: 'legal-page__title' }, 'Privacy Policy'),
-        h(
-          'p',
-          { class: 'legal-page__updated' },
-          'Last updated: January 1, 2024',
-        ),
+        h('p', { class: 'legal-page__updated' }, 'Last updated: January 1, 2024'),
       ),
       h(
         'div',

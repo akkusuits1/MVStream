@@ -13,11 +13,7 @@ export function renderAboutPage(): void {
         'div',
         { class: 'legal-page__header' },
         h('h1', { class: 'legal-page__title' }, 'About MVStream'),
-        h(
-          'p',
-          { class: 'legal-page__updated' },
-          'Your destination for movies and series',
-        ),
+        h('p', { class: 'legal-page__updated' }, 'Your destination for movies and series'),
       ),
       h(
         'div',
@@ -66,11 +62,7 @@ export function renderAboutPage(): void {
           'section',
           { class: 'legal-page__section' },
           h('h2', {}, 'Contact'),
-          h(
-            'p',
-            {},
-            'Have questions or feedback? Visit our Help page for support.',
-          ),
+          h('p', {}, 'Have questions or feedback? Visit our Help page for support.'),
         ),
       ),
     ),

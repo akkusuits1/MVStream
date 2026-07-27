@@ -40,11 +40,7 @@ export function renderHelpPage(): void {
         'div',
         { class: 'legal-page__header' },
         h('h1', { class: 'legal-page__title' }, 'Help Center'),
-        h(
-          'p',
-          { class: 'legal-page__updated' },
-          'Frequently asked questions and support',
-        ),
+        h('p', { class: 'legal-page__updated' }, 'Frequently asked questions and support'),
       ),
       h(
         'div',
