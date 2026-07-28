@@ -12,11 +12,11 @@ export function renderMobileNav(container: Element): void {
   });
 
   const links = [
-    { href: '#/', icon: 'lucide lucide-home', label: 'Home', page: 'home' },
-    { href: '#/movies', icon: 'lucide lucide-film', label: 'Movies', page: 'movies' },
-    { href: '#/series', icon: 'lucide lucide-tv', label: 'Series', page: 'series' },
-    { href: '#/search', icon: 'lucide lucide-search', label: 'Search', page: 'search' },
-    { href: '#/profile', icon: 'lucide lucide-user', label: 'Profile', page: 'profile' },
+    { href: '#/', icon: 'icon-home', label: 'Home', page: 'home' },
+    { href: '#/movies', icon: 'icon-film', label: 'Movies', page: 'movies' },
+    { href: '#/series', icon: 'icon-tv', label: 'Series', page: 'series' },
+    { href: '#/search', icon: 'icon-search', label: 'Search', page: 'search' },
+    { href: '#/profile', icon: 'icon-user', label: 'Profile', page: 'profile' },
   ];
 
   for (const link of links) {

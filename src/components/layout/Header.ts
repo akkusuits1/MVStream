@@ -51,7 +51,7 @@ export function renderHeader(container: Element): void {
   // Theme toggle
   const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
   const themeIcon = h('i', {
-    class: currentTheme === 'dark' ? 'lucide lucide-moon' : 'lucide lucide-sun',
+    class: currentTheme === 'dark' ? 'icon-moon' : 'icon-sun',
   });
   const themeBtn = h(
     'button',
@@ -63,7 +63,7 @@ export function renderHeader(container: Element): void {
         const newTheme = isDark ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', newTheme);
         localStorage.setItem('mvstream-theme', newTheme);
-        themeIcon.className = isDark ? 'lucide lucide-sun' : 'lucide lucide-moon';
+        themeIcon.className = isDark ? 'icon-sun' : 'icon-moon';
       },
     },
     themeIcon,
@@ -80,7 +80,7 @@ export function renderHeader(container: Element): void {
         window.location.hash = '#/search';
       },
     },
-    h('i', { class: 'lucide lucide-search' }),
+    h('i', { class: 'icon-search' }),
   );
   actions.appendChild(searchBtn);
 
@@ -92,7 +92,7 @@ export function renderHeader(container: Element): void {
       'aria-label': 'Profile menu',
       onClick: () => toggleProfileMenu(),
     },
-    h('div', { class: 'header__avatar' }, h('i', { class: 'lucide lucide-user' })),
+    h('div', { class: 'header__avatar' }, h('i', { class: 'icon-user' })),
   );
   actions.appendChild(profileBtn);
 
@@ -104,7 +104,7 @@ export function renderHeader(container: Element): void {
       'aria-label': 'Menu',
       onClick: () => toggleMobileMenu(),
     },
-    h('i', { class: 'lucide lucide-menu' }),
+    h('i', { class: 'icon-menu' }),
   );
   actions.appendChild(menuBtn);
 
@@ -118,13 +118,13 @@ export function renderHeader(container: Element): void {
     h(
       'a',
       { class: 'header__dropdown-item', href: '#/profile' },
-      h('i', { class: 'lucide lucide-user' }),
+      h('i', { class: 'icon-user' }),
       ' Profile',
     ),
     h(
       'a',
       { class: 'header__dropdown-item', href: '#/settings' },
-      h('i', { class: 'lucide lucide-settings' }),
+      h('i', { class: 'icon-settings' }),
       ' Settings',
     ),
     h('div', { class: 'divider' }),
@@ -138,7 +138,7 @@ export function renderHeader(container: Element): void {
           window.location.hash = '#/';
         },
       },
-      h('i', { class: 'lucide lucide-log-out' }),
+      h('i', { class: 'icon-log-out' }),
       ' Logout',
     ),
   );

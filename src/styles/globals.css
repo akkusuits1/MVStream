@@ -594,7 +594,7 @@ a:hover {
   color: var(--text-primary);
 }
 
-.header__theme-btn .lucide {
+.header__theme-btn [class^="icon-"] {
   font-size: 1.1rem;
   color: var(--text-primary);
 }
@@ -633,7 +633,7 @@ a:hover {
   color: var(--text-primary);
 }
 
-.header__avatar .lucide {
+.header__avatar [class^="icon-"] {
   color: var(--text-primary);
 }
 
