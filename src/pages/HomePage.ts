@@ -101,7 +101,9 @@ function renderHero(movies: Movie[], series: Series[]): HTMLElement {
     { class: 'hero__badges' },
     h('span', { class: 'badge badge--primary' }, '★ ' + String(firstItem.rating)),
     h('span', { class: 'badge' }, String(firstItem.year)),
-    h('span', { class: 'badge' }, (firstItem as Movie).duration || 'Series'),
+    (firstItem as Movie).duration
+      ? h('span', { class: 'badge' }, (firstItem as Movie).duration)
+      : h('span', { class: 'badge' }, 'Series'),
   );
 
   // Genre chips

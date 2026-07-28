@@ -15,6 +15,7 @@ import { fetchMovies, fetchSeries, fetchCategories, fetchSettings } from '@utils
 // ---- Components ----
 import { renderHeader } from '@components/layout/Header';
 import { renderFooter } from '@components/layout/Footer';
+import { renderMobileNav } from '@components/layout/MobileNav';
 
 // ---- Pages (lazy-loaded) ----
 let renderHomePage: (() => Promise<void>) | null = null;
@@ -158,6 +159,9 @@ function renderShell(container: Element): void {
   const footerWrap = h('div', { id: 'app-footer', style: 'display:none;' });
   container.appendChild(footerWrap);
   renderFooter(footerWrap);
+
+  // Mobile bottom navigation
+  renderMobileNav(container);
 
   // Toast container
   const toastContainer = h('div', { class: 'toast-container', id: 'toast-container' });
