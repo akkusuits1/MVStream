@@ -520,6 +520,10 @@ a:hover {
   height: var(--header-height);
   display: flex;
   align-items: center;
+  background: var(--glass-bg-strong);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--glass-border);
 }
 
 .header__inner {
@@ -537,6 +541,13 @@ a:hover {
   font-size: var(--text-xl);
   font-weight: var(--font-bold);
   color: var(--text-primary);
+  text-decoration: none;
+  flex-shrink: 0;
+  margin-right: var(--space-4);
+}
+
+.header__logo:hover {
+  color: var(--brand-primary);
 }
 
 .header__logo-icon {
@@ -580,10 +591,16 @@ a:hover {
 
 .header__search-btn {
   font-size: var(--text-lg);
+  color: var(--text-primary);
 }
 
 .header__theme-btn .lucide {
   font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.header__actions .btn-ghost {
+  color: var(--text-primary);
 }
 
 [data-theme="light"] .header__avatar {
@@ -612,6 +629,12 @@ a:hover {
   width: 100%;
   height: 100%;
   font-size: var(--text-xl);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.header__avatar .lucide {
+  color: var(--text-primary);
 }
 
 .header__dropdown {
@@ -619,10 +642,8 @@ a:hover {
   top: calc(100% + var(--space-2));
   right: 0;
   min-width: 180px;
-  background: var(--glass-bg-strong);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-default);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-xl);
   padding: var(--space-2);
@@ -672,9 +693,7 @@ a:hover {
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--glass-bg-strong);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
+  background: var(--bg-primary);
   flex-direction: column;
   padding: var(--space-8) var(--space-6);
   gap: var(--space-2);
@@ -701,10 +720,7 @@ a:hover {
 }
 
 .header--scrolled {
-  background: var(--glass-bg-strong);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border-bottom: 1px solid var(--glass-border);
+  border-bottom-color: var(--border-default);
 }
 
 /* ============================================
