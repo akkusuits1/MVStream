@@ -38,10 +38,22 @@ export async function renderDetailsPage(params: Record<string, string>): Promise
     try {
       if (type === 'movie') {
         const tmdbData = await getMovieDetails(Number(id));
-        item = { ...tmdbToMovie(tmdbData), servers: [], views: 0, createdAt: 0, updatedAt: 0 } as Movie;
+        item = {
+          ...tmdbToMovie(tmdbData),
+          servers: [],
+          views: 0,
+          createdAt: 0,
+          updatedAt: 0,
+        } as Movie;
       } else {
         const tmdbData = await getSeriesDetails(Number(id));
-        item = { ...tmdbToSeries(tmdbData), servers: [], views: 0, createdAt: 0, updatedAt: 0 } as Series;
+        item = {
+          ...tmdbToSeries(tmdbData),
+          servers: [],
+          views: 0,
+          createdAt: 0,
+          updatedAt: 0,
+        } as Series;
       }
       fromTMDB = true;
     } catch {
