@@ -5,6 +5,7 @@
 import { h, $ } from '@core/utils';
 import { stores } from '@core/store';
 import { tmdbImage } from '@core/utils';
+import { getMovieDetails, getSeriesDetails, tmdbToMovie, tmdbToSeries } from '@services/tmdb';
 import type { Movie, Series } from '@types';
 
 export async function renderDetailsPage(params: Record<string, string>): Promise<void> {
@@ -23,12 +24,29 @@ export async function renderDetailsPage(params: Record<string, string>): Promise
     ),
   );
 
-  // Find content
+  // Find content — first try local stores, then fall back to TMDB API
   let item: Movie | Series | undefined;
+  let fromTMDB = false;
   if (type === 'movie') {
     item = stores.movies.get().find((m) => m.id === id);
   } else {
     item = stores.series.get().find((s) => s.id === id);
+  }
+
+  // Fallback: fetch from TMDB if not in local stores
+  if (!item) {
+    try {
+      if (type === 'movie') {
+        const tmdbData = await getMovieDetails(Number(id));
+        item = { ...tmdbToMovie(tmdbData), servers: [], views: 0, createdAt: 0, updatedAt: 0 } as Movie;
+      } else {
+        const tmdbData = await getSeriesDetails(Number(id));
+        item = { ...tmdbToSeries(tmdbData), servers: [], views: 0, createdAt: 0, updatedAt: 0 } as Series;
+      }
+      fromTMDB = true;
+    } catch {
+      // TMDB fetch failed
+    }
   }
 
   if (!item) {
@@ -107,14 +125,20 @@ export async function renderDetailsPage(params: Record<string, string>): Promise
         h(
           'div',
           { class: 'details-hero__actions' },
-          h(
-            'a',
-            {
-              class: 'btn btn-primary btn-lg',
-              href: `#/player/${type}/${item.id}`,
-            },
-            '▶ Play Now',
-          ),
+          fromTMDB
+            ? h(
+                'button',
+                { class: 'btn btn-primary btn-lg', disabled: true },
+                '▶ No Streams Available',
+              )
+            : h(
+                'a',
+                {
+                  class: 'btn btn-primary btn-lg',
+                  href: `#/player/${type}/${item.id}`,
+                },
+                '▶ Play Now',
+              ),
           h(
             'button',
             {
