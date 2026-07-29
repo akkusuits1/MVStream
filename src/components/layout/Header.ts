@@ -84,7 +84,18 @@ export function renderHeader(container: Element): void {
   );
   actions.appendChild(searchBtn);
 
-  // Profile dropdown
+  // Sign In button (shown when not logged in)
+  const signInBtn = h(
+    'a',
+    {
+      class: 'btn btn-primary btn-sm header__signin-btn',
+      href: '#/login',
+    },
+    'Sign In',
+  );
+  actions.appendChild(signInBtn);
+
+  // Profile dropdown (shown when logged in)
   const profileBtn = h(
     'button',
     {
@@ -145,10 +156,10 @@ export function renderHeader(container: Element): void {
   profileBtn.appendChild(profileMenu);
 
   // Mobile menu
-  const mobileMenu = h(
-    'div',
-    { class: 'header__mobile-menu glass-strong' },
-    ...navLinks.map((link) =>
+  const mobileMenu = h('div', { class: 'header__mobile-menu glass-strong' });
+  // Nav links
+  for (const link of navLinks) {
+    mobileMenu.appendChild(
       h(
         'a',
         {
@@ -158,19 +169,28 @@ export function renderHeader(container: Element): void {
         },
         link.label,
       ),
-    ),
-    h('div', { class: 'divider' }),
-    h(
-      'a',
-      { class: 'header__mobile-menu-link', href: '#/profile', onClick: () => closeMobileMenu() },
-      '👤 Profile',
-    ),
-    h(
-      'a',
-      { class: 'header__mobile-menu-link', href: '#/settings', onClick: () => closeMobileMenu() },
-      '⚙️ Settings',
-    ),
+    );
+  }
+  mobileMenu.appendChild(h('div', { class: 'divider' }));
+  // Auth-aware mobile menu items
+  const mobileSignIn = h(
+    'a',
+    { class: 'header__mobile-menu-link', href: '#/login', onClick: () => closeMobileMenu() },
+    '\uD83D\uDD11 Sign In',
   );
+  const mobileProfile = h(
+    'a',
+    { class: 'header__mobile-menu-link', href: '#/profile', onClick: () => closeMobileMenu() },
+    '\uD83D\uDC64 Profile',
+  );
+  const mobileSettings = h(
+    'a',
+    { class: 'header__mobile-menu-link', href: '#/settings', onClick: () => closeMobileMenu() },
+    '\u2699\uFE0F Settings',
+  );
+  mobileMenu.appendChild(mobileSignIn);
+  mobileMenu.appendChild(mobileProfile);
+  mobileMenu.appendChild(mobileSettings);
   header.appendChild(mobileMenu);
 
   container.appendChild(header);
@@ -182,6 +202,18 @@ export function renderHeader(container: Element): void {
       el.classList.toggle('active', el.dataset.page === page);
     });
   });
+
+  // Auth-reactive: show sign-in button or profile based on login state
+  function updateAuthUI(user: unknown): void {
+    const isLoggedIn = !!user;
+    signInBtn.style.display = isLoggedIn ? 'none' : '';
+    profileBtn.style.display = isLoggedIn ? '' : 'none';
+    mobileSignIn.style.display = isLoggedIn ? 'none' : '';
+    mobileProfile.style.display = isLoggedIn ? '' : 'none';
+    mobileSettings.style.display = isLoggedIn ? '' : 'none';
+  }
+  updateAuthUI(stores.user.get());
+  stores.user.subscribe((user) => updateAuthUI(user));
 
   // Handle scroll for header styling
   window.addEventListener(

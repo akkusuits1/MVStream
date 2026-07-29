@@ -85,7 +85,7 @@ function renderLoginRequired(container: Element): void {
           'a',
           {
             class: 'btn btn-primary btn-lg',
-            href: '#/',
+            href: '/MVStream/#/login',
           },
           'Go to Login',
         ),

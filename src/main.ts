@@ -28,6 +28,7 @@ let renderSettingsPage: (() => Promise<void>) | null = null;
 let renderPrivacyPage: (() => void | Promise<void>) | null = null;
 let renderAboutPage: (() => void | Promise<void>) | null = null;
 let renderHelpPage: (() => void | Promise<void>) | null = null;
+let renderLoginPage: (() => void | Promise<void>) | null = null;
 
 // ---- App State ----
 const appState = {
@@ -206,6 +207,15 @@ function setupRouter(): void {
     renderBrowsePage?.({ type: 'series' });
   });
 
+  router.on('/login', async () => {
+    if (stores.user.get()) {
+      window.location.hash = '#/';
+      return;
+    }
+    await loadPageModule('login');
+    renderLoginPage?.();
+  });
+
   router.on('/search', async () => {
     await loadPageModule('search');
     renderSearchPage?.();
@@ -216,10 +226,20 @@ function setupRouter(): void {
     renderDetailsPage?.(params);
   });
 
-  router.on('/player/:type/:id', async (params) => {
-    await loadPageModule('player');
-    renderPlayerPage?.(params);
-  });
+  router.on(
+    '/player/:type/:id',
+    async (params) => {
+      await loadPageModule('player');
+      renderPlayerPage?.(params);
+    },
+    () => {
+      if (!stores.user.get()) {
+        window.location.hash = `#/login?redirect=${encodeURIComponent(window.location.hash)}`;
+        return false;
+      }
+      return true;
+    },
+  );
 
   router.on('/profile', async () => {
     await loadPageModule('profile');
@@ -332,6 +352,12 @@ async function loadPageModule(page: string): Promise<void> {
       if (!renderHelpPage) {
         const mod = await import('@pages/HelpPage');
         renderHelpPage = mod.renderHelpPage;
+      }
+      break;
+    case 'login':
+      if (!renderLoginPage) {
+        const mod = await import('@pages/LoginPage');
+        renderLoginPage = mod.renderLoginPage;
       }
       break;
   }
