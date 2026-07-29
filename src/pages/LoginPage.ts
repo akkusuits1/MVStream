@@ -38,11 +38,7 @@ export function renderLoginPage(): void {
   const title = h('h1', { class: 'auth-page__title' }, 'Welcome Back');
   card.appendChild(title);
 
-  const subtitle = h(
-    'p',
-    { class: 'auth-page__subtitle' },
-    'Sign in to continue watching',
-  );
+  const subtitle = h('p', { class: 'auth-page__subtitle' }, 'Sign in to continue watching');
   card.appendChild(subtitle);
 
   // Error message
@@ -107,7 +103,14 @@ export function renderLoginPage(): void {
   // Forgot password link (login only)
   const forgotLink = h(
     'a',
-    { class: 'auth-page__forgot', href: '#', onClick: (e: Event) => { e.preventDefault(); handleForgotPassword(emailInput.value, errorEl); } },
+    {
+      class: 'auth-page__forgot',
+      href: '#',
+      onClick: (e: Event) => {
+        e.preventDefault();
+        handleForgotPassword(emailInput.value, errorEl);
+      },
+    },
     'Forgot password?',
   );
 
@@ -143,7 +146,9 @@ export function renderLoginPage(): void {
     submitBtn.textContent = isLogin ? 'Sign In' : 'Sign Up';
     nameGroup.style.display = isLogin ? 'none' : 'block';
     toggleLink.textContent = isLogin ? 'Create an account' : 'Sign in instead';
-    toggleText.childNodes[0].textContent = isLogin ? "Don't have an account? " : 'Already have an account? ';
+    toggleText.childNodes[0].textContent = isLogin
+      ? "Don't have an account? "
+      : 'Already have an account? ';
     forgotLink.style.display = isLogin ? 'block' : 'none';
     errorEl.style.display = 'none';
     pwInput.placeholder = isLogin ? 'Password' : 'Create password';
