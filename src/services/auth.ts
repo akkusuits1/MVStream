@@ -1,17 +1,15 @@
 // ============================================
-// Auth Service — Firebase Auth wrapper
+// Auth Service — Firebase Auth wrapper (Google Sign-In)
 // ============================================
 
 import {
   onAuthStateChanged,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
   signOut,
-  updateProfile,
-  sendPasswordResetEmail,
   type User as FirebaseUser,
 } from 'firebase/auth';
-import { ref, set, update, onValue } from 'firebase/database';
+import { ref, set, update, onValue, get } from 'firebase/database';
 import { auth, db } from './firebase';
 import { stores } from '@core/store';
 import { events, EVENTS } from '@core/events';
@@ -100,54 +98,19 @@ function listenToUserProfile(uid: string): void {
   });
 }
 
-// ---- Login ----
-export async function login(email: string, password: string): Promise<void> {
+// ---- Google Sign-In ----
+export async function signInWithGoogle(): Promise<void> {
   const firebaseAuth = requireAuth();
   const database = requireDb();
   if (!firebaseAuth || !database) throw new Error('Firebase is not configured.');
   try {
-    const result = await signInWithEmailAndPassword(firebaseAuth, email, password);
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(firebaseAuth, provider);
     // Update last login
     const userRef = ref(database, `users/${result.user.uid}/lastLogin`);
     await set(userRef, Date.now());
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : 'Login failed';
-    events.emit(EVENTS.AUTH_ERROR, message);
-    throw error;
-  }
-}
-
-// ---- Register ----
-export async function register(
-  email: string,
-  password: string,
-  displayName: string,
-): Promise<void> {
-  const firebaseAuth = requireAuth();
-  const database = requireDb();
-  if (!firebaseAuth || !database) throw new Error('Firebase is not configured.');
-  try {
-    const result = await createUserWithEmailAndPassword(firebaseAuth, email, password);
-
-    // Update profile
-    await updateProfile(result.user, { displayName });
-
-    // Create user profile in DB
-    const userRef = ref(database, `users/${result.user.uid}`);
-    const newUser: User = {
-      uid: result.user.uid,
-      email,
-      displayName,
-      role: 'user',
-      status: 'active',
-      createdAt: Date.now(),
-      lastLogin: Date.now(),
-    };
-    await set(userRef, newUser);
-
-    events.emit(EVENTS.AUTH_REGISTER, newUser);
-  } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : 'Registration failed';
+    const message = error instanceof Error ? error.message : 'Google sign-in failed';
     events.emit(EVENTS.AUTH_ERROR, message);
     throw error;
   }
@@ -168,16 +131,52 @@ export async function logout(): Promise<void> {
   }
 }
 
-// ---- Reset Password ----
-export async function resetPassword(email: string): Promise<void> {
-  const firebaseAuth = requireAuth();
-  if (!firebaseAuth) throw new Error('Firebase is not configured.');
-  try {
-    await sendPasswordResetEmail(firebaseAuth, email);
-  } catch (error: unknown) {
-    console.error('Password reset failed:', error);
-    throw error;
-  }
+// ---- Check if user is admin ----
+export function isAdmin(): boolean {
+  const user = stores.user.get();
+  return user?.role === 'admin';
+}
+
+// ---- Admin: Fetch all users ----
+export async function fetchAllUsers(): Promise<User[]> {
+  const database = requireDb();
+  if (!database) throw new Error('Firebase is not configured.');
+  const usersRef = ref(database, 'users');
+  const snapshot = await get(usersRef);
+  if (!snapshot.exists()) return [];
+  const data = snapshot.val();
+  return Object.entries(data).map(([uid, val]) => {
+    const u = val as Record<string, unknown>;
+    return {
+      uid,
+      email: (u.email as string) || '',
+      displayName: (u.displayName as string) || 'User',
+      photoURL: (u.photoURL as string) || undefined,
+      role: (u.role as 'user' | 'admin') || 'user',
+      status: (u.status as 'active' | 'pending' | 'banned') || 'active',
+      createdAt: (u.createdAt as number) || 0,
+      lastLogin: (u.lastLogin as number) || 0,
+    };
+  });
+}
+
+// ---- Admin: Update user role ----
+export async function updateUserRole(uid: string, role: 'user' | 'admin'): Promise<void> {
+  const database = requireDb();
+  if (!database) throw new Error('Firebase is not configured.');
+  const userRef = ref(database, `users/${uid}/role`);
+  await set(userRef, role);
+}
+
+// ---- Admin: Update user status ----
+export async function updateUserStatus(
+  uid: string,
+  status: 'active' | 'pending' | 'banned',
+): Promise<void> {
+  const database = requireDb();
+  if (!database) throw new Error('Firebase is not configured.');
+  const userRef = ref(database, `users/${uid}/status`);
+  await set(userRef, status);
 }
 
 // ---- Update Profile ----
@@ -190,18 +189,8 @@ export async function updateUserProfile(
   const user = firebaseAuth.currentUser;
   if (!user) throw new Error('Not authenticated');
 
-  if (data.displayName || data.photoURL) {
-    await updateProfile(user, data);
-  }
-
   const userRef = ref(database, `users/${user.uid}`);
   await update(userRef, data);
-}
-
-// ---- Check if user is admin ----
-export function isAdmin(): boolean {
-  const user = stores.user.get();
-  return user?.role === 'admin';
 }
 
 // ---- Cleanup ----

@@ -3,7 +3,7 @@
 // ============================================
 
 import '../styles/globals.css';
-import { initAuth, isAdmin } from '@services/auth';
+import { initAuth, isAdmin, fetchAllUsers, updateUserRole, updateUserStatus } from '@services/auth';
 import { stores } from '@core/store';
 import { $, h } from '@core/utils';
 import { fetchMovies, fetchSeries, fetchCategories } from '@utils/helpers';
@@ -14,6 +14,7 @@ const adminState = {
   movies: [] as unknown[],
   series: [] as unknown[],
   categories: [] as { id: string; name: string }[],
+  users: [] as { uid: string; email: string; displayName: string; role: string; status: string; lastLogin: number }[],
   initialized: false,
 };
 
@@ -43,15 +44,17 @@ async function initAdmin(): Promise<void> {
 
   // Load data
   try {
-    const [movies, series, categories] = await Promise.all([
+    const [movies, series, categories, users] = await Promise.all([
       fetchMovies(),
       fetchSeries(),
       fetchCategories(),
+      fetchAllUsers(),
     ]);
 
     adminState.movies = movies;
     adminState.series = series;
     adminState.categories = categories;
+    adminState.users = users;
     adminState.initialized = true;
 
     stores.movies.set(movies);
@@ -268,7 +271,7 @@ function renderDashboard(container: Element): void {
     { label: 'Total Movies', value: adminState.movies.length, icon: '🎬', color: '#E50914' },
     { label: 'Total Series', value: adminState.series.length, icon: '📺', color: '#FF6B35' },
     { label: 'Categories', value: adminState.categories.length, icon: '📁', color: '#00D4AA' },
-    { label: 'Reports', value: 0, icon: '📋', color: '#FFB800' },
+    { label: 'Users', value: adminState.users.length, icon: '👥', color: '#FFB800' },
   ];
 
   for (const stat of stats) {
@@ -419,15 +422,87 @@ function renderCategories(container: Element): void {
 
 function renderUsers(container: Element): void {
   container.innerHTML = '';
-  container.appendChild(
-    h(
-      'div',
-      { class: 'empty-state' },
-      h('div', { class: 'empty-state__icon' }, '👥'),
-      h('h3', { class: 'empty-state__title' }, 'User Management'),
-      h('p', { class: 'empty-state__description' }, 'Coming soon'),
-    ),
+
+  const header = h(
+    'div',
+    { class: 'admin-content-header' },
+    h('h2', {}, `${adminState.users.length} Users`),
   );
+  container.appendChild(header);
+
+  if (adminState.users.length === 0) {
+    container.appendChild(
+      h(
+        'div',
+        { class: 'empty-state' },
+        h('div', { class: 'empty-state__icon' }, '👥'),
+        h('h3', { class: 'empty-state__title' }, 'No users yet'),
+        h('p', { class: 'empty-state__description' }, 'No users have signed up yet.'),
+      ),
+    );
+    return;
+  }
+
+  const table = h('div', { class: 'admin-table glass-card' });
+  const thead = h(
+    'div',
+    { class: 'admin-table__header' },
+    h('div', { class: 'admin-table__cell admin-table__cell--title' }, 'User'),
+    h('div', { class: 'admin-table__cell' }, 'Role'),
+    h('div', { class: 'admin-table__cell' }, 'Status'),
+    h('div', { class: 'admin-table__cell' }, 'Actions'),
+  );
+  table.appendChild(thead);
+
+  for (const user of adminState.users) {
+    const isCurrentUser = user.uid === stores.user.get()?.uid;
+
+    const actionsCell = h('div', { class: 'admin-table__cell admin-table__cell--actions' });
+    if (isCurrentUser) {
+      actionsCell.appendChild(h('span', { style: 'color: var(--text-secondary); font-size: 0.85rem;' }, 'You'));
+    } else {
+      actionsCell.appendChild(
+        h('button', {
+          class: 'btn btn-ghost btn-sm',
+          onClick: async () => {
+            const newRole = user.role === 'admin' ? 'user' : 'admin';
+            await updateUserRole(user.uid, newRole as 'user' | 'admin');
+            user.role = newRole;
+            renderUsers(container);
+          },
+        }, user.role === 'admin' ? 'Demote' : 'Promote'),
+      );
+      actionsCell.appendChild(
+        h('button', {
+          class: 'btn btn-ghost btn-sm',
+          style: user.status === 'banned' ? 'color: var(--status-success);' : 'color: var(--status-error);',
+          onClick: async () => {
+            const newStatus = user.status === 'banned' ? 'active' : 'banned';
+            await updateUserStatus(user.uid, newStatus as 'active' | 'banned');
+            user.status = newStatus;
+            renderUsers(container);
+          },
+        }, user.status === 'banned' ? 'Unban' : 'Ban'),
+      );
+    }
+
+    const row = h(
+      'div',
+      { class: 'admin-table__row' },
+      h(
+        'div',
+        { class: 'admin-table__cell admin-table__cell--title' },
+        h('div', { class: 'admin-table__title' }, user.displayName || 'User'),
+        h('div', { class: 'admin-table__subtitle' }, user.email),
+      ),
+      h('div', { class: 'admin-table__cell' }, user.role),
+      h('div', { class: 'admin-table__cell' }, user.status),
+      actionsCell,
+    );
+    table.appendChild(row);
+  }
+
+  container.appendChild(table);
 }
 
 function renderReports(container: Element): void {

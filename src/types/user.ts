@@ -19,22 +19,6 @@ export interface AuthState {
   error: string | null;
 }
 
-export interface LoginCredentials {
-  email: string;
-  password: string;
-}
-
-export interface RegisterCredentials {
-  email: string;
-  password: string;
-  displayName: string;
-}
-
-export interface AuthError {
-  code: string;
-  message: string;
-}
-
 // ---- Firebase User DB Schema ----
 // /users/{uid}
 //   displayName: string

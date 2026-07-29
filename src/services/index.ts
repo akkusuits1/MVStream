@@ -6,12 +6,13 @@ export { auth, db, getAnalyticsInstance } from './firebase';
 
 export {
   initAuth,
-  login,
-  register,
+  signInWithGoogle,
   logout,
-  resetPassword,
   updateUserProfile,
   isAdmin,
+  fetchAllUsers,
+  updateUserRole,
+  updateUserStatus,
   cleanupAuth,
 } from './auth';
 

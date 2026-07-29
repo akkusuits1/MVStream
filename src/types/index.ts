@@ -17,9 +17,6 @@ export type {
 export type {
   User,
   AuthState,
-  LoginCredentials,
-  RegisterCredentials,
-  AuthError,
   Report,
 } from './user';
 
