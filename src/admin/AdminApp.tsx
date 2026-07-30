@@ -39,8 +39,9 @@ export default function AdminApp() {
   const [activeTab, setActiveTab] = useState<Tab>('dashboard');
   const user = useStore((s) => s.user);
   const setUser = useStore((s) => s.setUser);
+  const authLoading = useStore((s) => s.authLoading);
   const setAuthLoading = useStore((s) => s.setAuthLoading);
-  const [loading, setLoading] = useState(true);
+  const theme = useStore((s) => s.theme);
 
   useEffect(() => {
     const unsub = initAuth(
@@ -50,11 +51,13 @@ export default function AdminApp() {
     return unsub;
   }, [setUser, setAuthLoading]);
 
+  // Apply theme class
   useEffect(() => {
-    if (user !== undefined) setLoading(false);
-  }, [user]);
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    document.documentElement.classList.toggle('light', theme === 'light');
+  }, [theme]);
 
-  if (loading) {
+  if (authLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-black">
         <div className="w-8 h-8 border-2 border-white/20 border-t-brand-primary rounded-full animate-spin" />
