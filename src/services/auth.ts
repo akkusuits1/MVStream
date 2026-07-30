@@ -11,13 +11,7 @@ import {
 } from 'firebase/auth';
 import { ref, set, update, onValue, get } from 'firebase/database';
 import { auth, db } from './firebase';
-import { stores } from '@core/store';
-import { events, EVENTS } from '@core/events';
-import type { User } from '@types';
-
-// ---- State ----
-let unsubAuth: (() => void) | null = null;
-let unsubUser: (() => void) | null = null;
+import type { User } from '@/types';
 
 // ---- Null guards ----
 function requireAuth(): NonNullable<typeof auth> | null {
@@ -37,65 +31,68 @@ function requireDb(): NonNullable<typeof db> | null {
 }
 
 // ---- Initialize auth listener ----
-export function initAuth(): void {
+// Returns an unsubscribe function and accepts callbacks for state changes
+export function initAuth(
+  onUser: (user: User | null) => void,
+  onLoading: (loading: boolean) => void,
+): () => void {
   const firebaseAuth = requireAuth();
   if (!firebaseAuth) {
-    stores.authLoading.set(false);
-    return;
+    onLoading(false);
+    return () => {};
   }
-  stores.authLoading.set(true);
+  onLoading(true);
 
-  unsubAuth = onAuthStateChanged(firebaseAuth, (firebaseUser: FirebaseUser | null) => {
+  let unsubUser: (() => void) | null = null;
+
+  const unsubAuth = onAuthStateChanged(firebaseAuth, (firebaseUser: FirebaseUser | null) => {
     if (firebaseUser) {
-      listenToUserProfile(firebaseUser.uid);
+      // Listen to user profile in DB
+      unsubUser?.();
+      const database = requireDb();
+      if (!database) return;
+      const userRef = ref(database, `users/${firebaseUser.uid}`);
+      unsubUser = onValue(userRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          const user: User = {
+            uid: firebaseUser.uid,
+            email: data.email || firebaseUser.email || '',
+            displayName: data.displayName || firebaseUser.displayName || 'User',
+            photoURL: data.photoURL || firebaseUser.photoURL || undefined,
+            role: data.role || 'user',
+            status: data.status || 'active',
+            createdAt: data.createdAt || Date.now(),
+            lastLogin: Date.now(),
+          };
+          onUser(user);
+        } else {
+          const newUser: User = {
+            uid: firebaseUser.uid,
+            email: firebaseUser.email || '',
+            displayName: firebaseUser.displayName || 'User',
+            photoURL: firebaseUser.photoURL || undefined,
+            role: 'user',
+            status: 'active',
+            createdAt: Date.now(),
+            lastLogin: Date.now(),
+          };
+          set(userRef, newUser);
+          onUser(newUser);
+        }
+        onLoading(false);
+      });
     } else {
-      stores.user.set(null);
-      stores.authLoading.set(false);
+      onUser(null);
+      onLoading(false);
       unsubUser?.();
     }
   });
-}
 
-// ---- Listen to user profile in DB ----
-function listenToUserProfile(uid: string): void {
-  unsubUser?.();
-
-  const firebaseAuth = requireAuth();
-  const database = requireDb();
-  if (!firebaseAuth || !database) return;
-  const userRef = ref(database, `users/${uid}`);
-  unsubUser = onValue(userRef, (snapshot) => {
-    if (snapshot.exists()) {
-      const data = snapshot.val();
-      const user: User = {
-        uid,
-        email: data.email || firebaseAuth.currentUser?.email || '',
-        displayName: data.displayName || firebaseAuth.currentUser?.displayName || 'User',
-        photoURL: data.photoURL || firebaseAuth.currentUser?.photoURL || undefined,
-        role: data.role || 'user',
-        status: data.status || 'active',
-        createdAt: data.createdAt || Date.now(),
-        lastLogin: Date.now(),
-      };
-      stores.user.set(user);
-    } else {
-      // Create user profile if doesn't exist
-      const newUser: User = {
-        uid,
-        email: firebaseAuth.currentUser?.email || '',
-        displayName: firebaseAuth.currentUser?.displayName || 'User',
-        photoURL: firebaseAuth.currentUser?.photoURL || undefined,
-        role: 'user',
-        status: 'active',
-        createdAt: Date.now(),
-        lastLogin: Date.now(),
-      };
-      set(userRef, newUser);
-      stores.user.set(newUser);
-    }
-    stores.authLoading.set(false);
-    events.emit(EVENTS.AUTH_LOGIN, stores.user.get());
-  });
+  return () => {
+    unsubAuth();
+    unsubUser?.();
+  };
 }
 
 // ---- Google Sign-In ----
@@ -103,37 +100,21 @@ export async function signInWithGoogle(): Promise<void> {
   const firebaseAuth = requireAuth();
   const database = requireDb();
   if (!firebaseAuth || !database) throw new Error('Firebase is not configured.');
-  try {
-    const provider = new GoogleAuthProvider();
-    const result = await signInWithPopup(firebaseAuth, provider);
-    // Update last login
-    const userRef = ref(database, `users/${result.user.uid}/lastLogin`);
-    await set(userRef, Date.now());
-  } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : 'Google sign-in failed';
-    events.emit(EVENTS.AUTH_ERROR, message);
-    throw error;
-  }
+  const provider = new GoogleAuthProvider();
+  const result = await signInWithPopup(firebaseAuth, provider);
+  const userRef = ref(database, `users/${result.user.uid}/lastLogin`);
+  await set(userRef, Date.now());
 }
 
 // ---- Logout ----
 export async function logout(): Promise<void> {
   const firebaseAuth = requireAuth();
   if (!firebaseAuth) return;
-  try {
-    unsubUser?.();
-    await signOut(firebaseAuth);
-    stores.user.set(null);
-    events.emit(EVENTS.AUTH_LOGOUT);
-  } catch (error: unknown) {
-    console.error('Logout failed:', error);
-    throw error;
-  }
+  await signOut(firebaseAuth);
 }
 
 // ---- Check if user is admin ----
-export function isAdmin(): boolean {
-  const user = stores.user.get();
+export function isAdmin(user: User | null): boolean {
   return user?.role === 'admin';
 }
 
@@ -188,13 +169,6 @@ export async function updateUserProfile(
   if (!firebaseAuth || !database) throw new Error('Firebase is not configured.');
   const user = firebaseAuth.currentUser;
   if (!user) throw new Error('Not authenticated');
-
   const userRef = ref(database, `users/${user.uid}`);
   await update(userRef, data);
-}
-
-// ---- Cleanup ----
-export function cleanupAuth(): void {
-  unsubAuth?.();
-  unsubUser?.();
 }

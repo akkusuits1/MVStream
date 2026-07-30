@@ -1,124 +1,60 @@
 // ============================================
-// Movie & Series Type Definitions
+// Movie Types
 // ============================================
 
 export interface Movie {
-  id: string;
+  id: number;
   title: string;
-  description: string;
-  backdrop: string;
-  poster: string;
-  year: number;
-  rating: number;
-  duration: string;
-  genres: string[];
-  category: string;
-  servers: ServerLink[];
-  trailer?: string;
-  cast?: string[];
-  director?: string;
-  tmdbId?: number;
-  views: number;
-  createdAt: number;
-  updatedAt: number;
+  original_title: string;
+  overview: string;
+  poster_path: string | null;
+  backdrop_path: string | null;
+  release_date: string;
+  vote_average: number;
+  vote_count: number;
+  genre_ids: number[];
+  popularity: number;
+  adult: boolean;
+  original_language: string;
 }
 
-export interface Series {
-  id: string;
-  title: string;
-  description: string;
-  backdrop: string;
-  poster: string;
-  year: number;
-  rating: number;
-  seasons: Season[];
-  genres: string[];
-  category: string;
-  trailer?: string;
-  cast?: string[];
-  creator?: string;
-  tmdbId?: number;
-  views: number;
-  status: 'ongoing' | 'completed';
-  createdAt: number;
-  updatedAt: number;
+export interface MovieDetails extends Movie {
+  runtime: number;
+  genres: { id: number; name: string }[];
+  production_companies: { id: number; name: string; logo_path: string | null }[];
+  status: string;
+  tagline: string;
+  budget: number;
+  revenue: number;
+  homepage: string | null;
+  imdb_id: string | null;
+  videos?: { results: { key: string; site: string; type: string }[] };
+  credits?: { cast: TMDBCastMember[] };
 }
 
-export interface Season {
-  id: string;
-  seasonNumber: number;
-  title: string;
-  description?: string;
-  poster?: string;
-  episodes: Episode[];
+export interface MovieDiscoverResponse {
+  page: number;
+  results: Movie[];
+  total_pages: number;
+  total_results: number;
 }
 
-export interface Episode {
-  id: string;
-  episodeNumber: number;
-  title: string;
-  description?: string;
-  duration: string;
-  thumbnail?: string;
-  servers: ServerLink[];
-  views: number;
+export interface TrendingResponse {
+  page: number;
+  results: (Movie | Series)[];
+  total_pages: number;
+  total_results: number;
 }
 
-export interface ServerLink {
-  id: string;
+export interface TMDBCastMember {
+  id: number;
   name: string;
-  url: string;
-  quality?: 'SD' | 'HD' | 'FHD' | '4K';
+  character: string;
+  profile_path: string | null;
+  order: number;
 }
 
-export interface Category {
-  id: string;
-  name: string;
-  slug: string;
-  icon?: string;
-  order?: number;
-}
+// Re-export Series for use in TrendingResponse
+import type { Series } from './series';
 
-// ---- View/Watch State ----
-
-export interface WatchHistoryItem {
-  id: string;
-  type: 'movie' | 'series';
-  title: string;
-  poster: string;
-  backdrop?: string;
-  seasonId?: string;
-  episodeId?: string;
-  episodeNumber?: number;
-  seasonNumber?: number;
-  progress: number; // 0-100 percentage
-  timestamp: number;
-}
-
-export interface WatchlistItem {
-  id: string;
-  type: 'movie' | 'series';
-  title: string;
-  poster: string;
-  backdrop?: string;
-  year?: number;
-  rating?: number;
-  addedAt: number;
-}
-
-export interface ContinueWatchingItem {
-  id: string;
-  type: 'movie' | 'series';
-  title: string;
-  poster: string;
-  backdrop?: string;
-  serverId?: string;
-  serverName?: string;
-  seasonId?: string;
-  episodeId?: string;
-  episodeNumber?: number;
-  seasonNumber?: number;
-  progress: number;
-  duration: number;
-  timestamp: number;
-}
+export type TrendingItem = (Movie & { media_type?: 'movie' }) | (Series & { media_type?: 'tv' });

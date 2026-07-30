@@ -20,9 +20,6 @@
     rel="stylesheet"
   />
 
-  <!-- Icons: Lucide -->
-  <link rel="stylesheet" href="https://unpkg.com/lucide-static@0.447.0/font/lucide.css" />
-
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -39,7 +36,7 @@
       -moz-osx-font-smoothing: grayscale;
       overflow-x: hidden;
     }
-    #app {
+    #root {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -67,11 +64,11 @@
   </style>
 </head>
 <body>
-  <div id="app">
+  <div id="root">
     <div class="app-loader">
       <div class="app-loader__spinner"></div>
     </div>
   </div>
-  <script type="module" src="/src/main.ts"></script>
+  <script type="module" src="/src/main.tsx"></script>
 </body>
 </html>

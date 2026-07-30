@@ -1,12 +1,11 @@
 {
   "name": "mvstream",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "MVStream - Modern Movie & Series Streaming Platform",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "build:admin": "tsc && vite build --mode admin",
+    "build": "tsc -b && vite build",
     "preview": "vite preview",
     "lint": "eslint src --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint src --fix",
@@ -16,19 +15,30 @@
   },
   "dependencies": {
     "chart.js": "^4.4.3",
+    "clsx": "^2.1.1",
     "firebase": "^10.12.0",
-    "plyr": "^3.7.8"
+    "lucide-react": "^0.447.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.0",
+    "zustand": "^4.5.4"
   },
   "devDependencies": {
-    "typescript-eslint": "^8.0.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.20",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.9",
+    "postcss": "^8.4.41",
     "prettier": "^3.3.2",
+    "tailwindcss": "^3.4.10",
     "typescript": "^5.5.0",
-    "vite": "^5.3.4",
-    "vite-plugin-pwa": "^0.20.0",
-    "workbox-window": "^7.1.0"
+    "typescript-eslint": "^8.0.0",
+    "vite": "^5.3.4"
   },
   "engines": {
     "node": ">=20.0.0"

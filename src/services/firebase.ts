@@ -1,60 +1,33 @@
 // ============================================
-// Firebase Service — Init & Config
+// Firebase Configuration & Initialization
 // ============================================
 
 import { initializeApp, type FirebaseApp } from 'firebase/app';
-import { getAuth, connectAuthEmulator, type Auth } from 'firebase/auth';
-import { getDatabase, connectDatabaseEmulator, type Database } from 'firebase/database';
-import { getAnalytics, isSupported } from 'firebase/analytics';
+import { getAuth, type Auth } from 'firebase/auth';
+import { getDatabase, type Database } from 'firebase/database';
 
-// Environment variables (via Vite .env)
+// Firebase configuration from environment variables
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY as string,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN as string,
+  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL as string,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID as string,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET as string,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID as string,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID as string,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID as string,
 };
 
-// Initialize Firebase — gracefully handle missing env vars
 let app: FirebaseApp | null = null;
 let auth: Auth | null = null;
 let db: Database | null = null;
 
-const missingKey = Object.entries(firebaseConfig).find(([, v]) => !v);
-
-if (missingKey) {
-  console.error(
-    `Firebase config missing: ${missingKey[0]}. Set VITE_FIREBASE_* env vars in your deployment settings.`,
-  );
-} else {
-  try {
-    app = initializeApp(firebaseConfig);
-    auth = getAuth(app);
-    db = getDatabase(app);
-
-    // Emulator support (for development)
-    if (import.meta.env.DEV && import.meta.env.VITE_USE_EMULATORS === 'true') {
-      connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
-      connectDatabaseEmulator(db, 'localhost', 9000);
-    }
-  } catch (error) {
-    console.error('Firebase initialization failed:', error);
-  }
+try {
+  app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getDatabase(app);
+} catch (error) {
+  console.warn('Firebase initialization failed:', error);
 }
 
-// Analytics (conditional — fails gracefully if not supported)
-let analyticsInstance: ReturnType<typeof getAnalytics> | null = null;
-if (app) {
-  isSupported()
-    .then((supported) => {
-      if (supported) analyticsInstance = getAnalytics(app!);
-    })
-    .catch(() => {});
-}
-export const getAnalyticsInstance = () => analyticsInstance;
-
-export { auth, db };
-export default app;
+export { app, auth, db };

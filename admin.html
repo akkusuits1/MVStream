@@ -18,9 +18,6 @@
     rel="stylesheet"
   />
 
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
-
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
@@ -35,7 +32,7 @@
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
-    #admin-app {
+    #admin-root {
       min-height: 100vh;
       display: flex;
     }
@@ -62,11 +59,11 @@
   </style>
 </head>
 <body>
-  <div id="admin-app">
+  <div id="admin-root">
     <div class="admin-loader">
       <div class="admin-loader__spinner"></div>
     </div>
   </div>
-  <script type="module" src="/src/admin/main.ts"></script>
+  <script type="module" src="/src/admin/main.tsx"></script>
 </body>
 </html>

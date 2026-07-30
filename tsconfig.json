@@ -15,24 +15,12 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@components/*": ["src/components/*"],
-      "@pages/*": ["src/pages/*"],
-      "@admin/*": ["src/admin/*"],
-      "@core/*": ["src/core/*"],
-      "@services/*": ["src/services/*"],
-      "@styles/*": ["src/styles/*"],
-      "@types": ["src/types/index.ts"],
-      "@types/*": ["src/types/*"],
-      "@hooks/*": ["src/hooks/*"],
-      "@utils/*": ["src/utils/*"]
-    },
-    "types": ["vite/client", "vite-plugin-pwa/client"]
+      "@/*": ["src/*"]
+    }
   },
   "include": ["src", "vite.config.ts"],
-  "exclude": ["node_modules", "dist", "dist-admin"]
+  "exclude": ["node_modules", "dist"]
 }

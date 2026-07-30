@@ -1,140 +1,70 @@
-// ============================================
-// useMovies Hook — Movie/Series data management
-// ============================================
-
-import { stores } from '@core/store';
-import type { Movie, Series, ContinueWatchingItem, WatchlistItem } from '@types';
+import { useCallback } from 'react';
+import { useStore } from '@/store/useStore';
+import { discoverMovies, discoverSeries, searchMovies, searchSeries } from '@/services/tmdb';
 import {
-  getContinueWatching,
-  isInWatchlist,
+  getWatchlist,
   addToWatchlist,
   removeFromWatchlist,
-  getWatchlist,
-  getWatchHistory,
-} from '@services/storage';
-import { fetchMovies, fetchSeries, fetchCategories } from '@utils/helpers';
+  isInWatchlist,
+} from '@/services/storage';
+import type { Movie, Series } from '@/types';
 
-export interface UseMoviesReturn {
-  // Data
-  movies: Movie[];
-  series: Series[];
-  categories: { id: string; name: string; slug: string }[];
-  continueWatching: ContinueWatchingItem[];
-  watchlist: WatchlistItem[];
-  watchHistory: {
-    id: string;
-    type: 'movie' | 'series';
-    title: string;
-    poster: string;
-    timestamp: number;
-  }[];
+export function useMovies() {
+  const movies = useStore((s) => s.movies);
+  const series = useStore((s) => s.series);
+  const categories = useStore((s) => s.categories);
+  const setMovies = useStore((s) => s.setMovies);
+  const setSeries = useStore((s) => s.setSeries);
+  const setCategories = useStore((s) => s.setCategories);
 
-  // Loading
-  moviesLoading: boolean;
-  seriesLoading: boolean;
+  const loadMovies = useCallback(async (page = 1) => {
+    const data = await discoverMovies(page);
+    setMovies(data.results as Movie[]);
+    return data;
+  }, [setMovies]);
 
-  // Actions
-  loadMovies: () => Promise<void>;
-  loadSeries: () => Promise<void>;
-  loadCategories: () => Promise<void>;
-  loadUserData: () => void;
-  playContent: (type: 'movie' | 'series', id: string) => Promise<void>;
-  toggleWatchlist: (item: WatchlistItem) => void;
-  isWatchlisted: (id: string, type: 'movie' | 'series') => boolean;
-  refreshData: () => Promise<void>;
+  const loadSeries = useCallback(async (page = 1) => {
+    const data = await discoverSeries(page);
+    setSeries(data.results as Series[]);
+    return data;
+  }, [setSeries]);
 
-  // Subscribe
-  subscribeMovies: (cb: (movies: Movie[]) => void) => () => void;
-  subscribeSeries: (cb: (series: Series[]) => void) => () => void;
-}
+  const loadCategories = useCallback(async () => {
+    setCategories([]);
+  }, [setCategories]);
 
-export function useMovies(): UseMoviesReturn {
+  const loadSearch = useCallback(async (query: string) => {
+    if (!query.trim()) return [];
+    const [moviesData, seriesData] = await Promise.all([
+      searchMovies(query),
+      searchSeries(query),
+    ]);
+    return [...moviesData.results, ...seriesData.results];
+  }, []);
+
+  const toggleWatchlist = useCallback((itemOrId: Movie | Series | number) => {
+    const id = typeof itemOrId === 'number' ? itemOrId : itemOrId.id;
+    if (isInWatchlist(id)) {
+      removeFromWatchlist(id);
+    } else {
+      addToWatchlist(id);
+    }
+  }, []);
+
+  const checkWatchlisted = useCallback((id: number) => {
+    return isInWatchlist(id);
+  }, []);
+
   return {
-    get movies() {
-      return stores.movies.get();
-    },
-    get series() {
-      return stores.series.get();
-    },
-    get categories() {
-      return stores.categories.get();
-    },
-    get continueWatching() {
-      return getContinueWatching();
-    },
-    get watchlist() {
-      return getWatchlist();
-    },
-    get watchHistory() {
-      return getWatchHistory();
-    },
-    get moviesLoading() {
-      return false;
-    },
-    get seriesLoading() {
-      return false;
-    },
-
-    async loadMovies() {
-      try {
-        const movies = await fetchMovies();
-        stores.movies.set(movies);
-      } catch (error) {
-        console.error('Failed to load movies:', error);
-      }
-    },
-
-    async loadSeries() {
-      try {
-        const series = await fetchSeries();
-        stores.series.set(series);
-      } catch (error) {
-        console.error('Failed to load series:', error);
-      }
-    },
-
-    async loadCategories() {
-      try {
-        const categories = await fetchCategories();
-        stores.categories.set(categories);
-      } catch (error) {
-        console.error('Failed to load categories:', error);
-      }
-    },
-
-    loadUserData() {
-      stores.continueWatching.set(getContinueWatching());
-      stores.watchlist.set(getWatchlist());
-    },
-
-    async playContent(_type: 'movie' | 'series', _id: string) {
-      // TODO: implement play logic
-    },
-
-    toggleWatchlist(item: WatchlistItem) {
-      if (isInWatchlist(item.id, item.type)) {
-        removeFromWatchlist(item.id, item.type);
-      } else {
-        addToWatchlist(item);
-      }
-      stores.watchlist.set(getWatchlist());
-    },
-
-    isWatchlisted(id: string, type: 'movie' | 'series') {
-      return isInWatchlist(id, type);
-    },
-
-    async refreshData() {
-      await Promise.all([this.loadMovies(), this.loadSeries(), this.loadCategories()]);
-      this.loadUserData();
-    },
-
-    subscribeMovies(cb) {
-      return stores.movies.subscribe(cb);
-    },
-
-    subscribeSeries(cb) {
-      return stores.series.subscribe(cb);
-    },
+    movies,
+    series,
+    categories,
+    loadMovies,
+    loadSeries,
+    loadCategories,
+    loadSearch,
+    toggleWatchlist,
+    isWatchlisted: checkWatchlisted,
+    watchlist: getWatchlist(),
   };
 }

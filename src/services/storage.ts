@@ -1,184 +1,135 @@
 // ============================================
-// Local Storage Service — User data persistence
+// Storage Service — LocalStorage helpers
 // ============================================
-
-import type { ContinueWatchingItem, WatchlistItem } from '@types';
 
 const PREFIX = 'mvstream_';
 
-function getStorageItem<T>(key: string, fallback: T): T {
+function getKey(key: string): string {
+  return `${PREFIX}${key}`;
+}
+
+export function getStorageItem<T>(key: string, defaultValue: T): T {
   try {
-    const item = localStorage.getItem(PREFIX + key);
-    return item ? (JSON.parse(item) as T) : fallback;
+    const item = localStorage.getItem(getKey(key));
+    return item ? (JSON.parse(item) as T) : defaultValue;
   } catch {
-    return fallback;
+    return defaultValue;
   }
 }
 
-function setStorageItem<T>(key: string, value: T): void {
+export function setStorageItem<T>(key: string, value: T): void {
   try {
-    localStorage.setItem(PREFIX + key, JSON.stringify(value));
-  } catch (e) {
-    console.warn(`Failed to save to localStorage: ${key}`, e);
+    localStorage.setItem(getKey(key), JSON.stringify(value));
+  } catch {
+    console.warn('Failed to save to localStorage');
   }
 }
 
-function removeStorageItem(key: string): void {
-  localStorage.removeItem(PREFIX + key);
-}
-
-// ---- Continue Watching ----
-
-export function getContinueWatching(): ContinueWatchingItem[] {
-  return getStorageItem('continue_watching', []);
-}
-
-export function addToContinueWatching(item: ContinueWatchingItem): void {
-  const items = getContinueWatching();
-  const existing = items.findIndex(
-    (i) =>
-      i.id === item.id &&
-      i.type === item.type &&
-      i.seasonId === item.seasonId &&
-      i.episodeId === item.episodeId,
-  );
-
-  if (existing >= 0) {
-    items[existing] = { ...items[existing], ...item, timestamp: Date.now() };
-  } else {
-    items.unshift(item);
-  }
-
-  // Keep max 50 items
-  setStorageItem('continue_watching', items.slice(0, 50));
-}
-
-export function removeFromContinueWatching(id: string, type: string): void {
-  const items = getContinueWatching().filter((i) => !(i.id === id && i.type === type));
-  setStorageItem('continue_watching', items);
-}
-
-export function clearContinueWatching(): void {
-  setStorageItem('continue_watching', []);
-}
-
-// ---- Watch History ----
-
-export interface HistoryItem {
-  id: string;
-  type: 'movie' | 'series';
-  title: string;
-  poster: string;
-  timestamp: number;
-}
-
-export function getWatchHistory(): HistoryItem[] {
-  return getStorageItem('watch_history', []);
-}
-
-export function addToWatchHistory(item: HistoryItem): void {
-  const items = getWatchHistory();
-  const existing = items.findIndex((i) => i.id === item.id && i.type === item.type);
-
-  if (existing >= 0) {
-    items[existing] = { ...items[existing], timestamp: Date.now() };
-  } else {
-    items.unshift(item);
-  }
-
-  setStorageItem('watch_history', items.slice(0, 200));
-}
-
-export function clearWatchHistory(): void {
-  setStorageItem('watch_history', []);
+export function removeStorageItem(key: string): void {
+  localStorage.removeItem(getKey(key));
 }
 
 // ---- Watchlist ----
-
-export function getWatchlist(): WatchlistItem[] {
-  return getStorageItem('watchlist', []);
+export function getWatchlist(): number[] {
+  return getStorageItem<number[]>('watchlist', []);
 }
 
-export function addToWatchlist(item: WatchlistItem): void {
-  const items = getWatchlist();
-  if (!items.find((i) => i.id === item.id && i.type === item.type)) {
-    items.unshift(item);
-    setStorageItem('watchlist', items);
+export function addToWatchlist(id: number): void {
+  const list = getWatchlist();
+  if (!list.includes(id)) {
+    list.push(id);
+    setStorageItem('watchlist', list);
+    notifyWatchlistListeners();
   }
 }
 
-export function removeFromWatchlist(id: string, type: string): boolean {
-  const items = getWatchHistory().filter((i) => !(i.id === id && i.type === type));
-  setStorageItem('watch_history', items);
-
-  const watchlist = getWatchlist().filter((i) => !(i.id === id && i.type === type));
-  setStorageItem('watchlist', watchlist);
-
-  return true;
+export function removeFromWatchlist(id: number): void {
+  const list = getWatchlist().filter((i) => i !== id);
+  setStorageItem('watchlist', list);
+  notifyWatchlistListeners();
 }
 
-export function isInWatchlist(id: string, type: string): boolean {
-  return getWatchlist().some((i) => i.id === id && i.type === type);
+export function isInWatchlist(id: number): boolean {
+  return getWatchlist().includes(id);
 }
 
-// ---- Settings ----
+// ---- Watchlist Listener ----
+type WatchlistListener = () => void;
+const watchlistListeners: Set<WatchlistListener> = new Set();
 
+export function onWatchlistChange(callback: WatchlistListener): () => void {
+  watchlistListeners.add(callback);
+  return () => { watchlistListeners.delete(callback); };
+}
+
+function notifyWatchlistListeners() {
+  watchlistListeners.forEach((cb) => cb());
+}
+
+// ---- Watch History ----
+export interface WatchHistoryItem {
+  id: number;
+  type: 'movie' | 'series';
+  title: string;
+  posterPath: string | null;
+  timestamp: number;
+  season?: number;
+  episode?: number;
+}
+
+export function getWatchHistory(): WatchHistoryItem[] {
+  return getStorageItem<WatchHistoryItem[]>('history', []);
+}
+
+export function addToWatchHistory(item: WatchHistoryItem): void {
+  const history = getWatchHistory().filter((h) => !(h.id === item.id && h.type === item.type));
+  history.unshift(item);
+  if (history.length > 50) history.pop();
+  setStorageItem('history', history);
+}
+
+export function clearWatchHistory(): void {
+  setStorageItem('history', []);
+}
+
+// ---- Player Settings ----
 export interface PlayerSettings {
-  defaultQuality: 'auto' | '1080' | '720' | '480';
-  autoPlay: boolean;
   defaultServer: string;
-  externalPlayer: boolean;
+  autoPlay: boolean;
+  autoplayNext: boolean;
+  defaultQuality: string;
+  externalPlayer: string;
 }
 
 export function getPlayerSettings(): PlayerSettings {
-  return getStorageItem('player_settings', {
-    defaultQuality: 'auto',
+  return getStorageItem<PlayerSettings>('player_settings', {
+    defaultServer: 'server-1',
     autoPlay: true,
-    defaultServer: '',
-    externalPlayer: false,
+    autoplayNext: true,
+    defaultQuality: 'auto',
+    externalPlayer: '',
   });
 }
 
-export function setPlayerSettings(settings: Partial<PlayerSettings>): void {
-  const current = getPlayerSettings();
-  setStorageItem('player_settings', { ...current, ...settings });
+export function setPlayerSettings(settings: PlayerSettings): void {
+  setStorageItem('player_settings', settings);
 }
 
-// ---- Search History ----
-
-export function getSearchHistory(): string[] {
-  return getStorageItem('search_history', []);
+// ---- User Settings ----
+export interface UserSettings {
+  theme: 'dark' | 'light';
+  language: string;
+  notifications: boolean;
 }
 
-export function addSearchHistory(query: string): void {
-  const history = getSearchHistory().filter((q) => q !== query);
-  history.unshift(query);
-  setStorageItem('search_history', history.slice(0, 20));
+export function getUserSettings(): UserSettings {
+  return getStorageItem<UserSettings>('user_settings', {
+    theme: 'dark',
+    language: 'en',
+    notifications: true,
+  });
 }
 
-export function clearSearchHistory(): void {
-  setStorageItem('search_history', []);
-}
-
-// ---- View Preferences ----
-
-export type ViewMode = 'grid' | 'list';
-
-export function getViewMode(): ViewMode {
-  return getStorageItem('view_mode', 'grid');
-}
-
-export function setViewMode(mode: ViewMode): void {
-  setStorageItem('view_mode', mode);
-}
-
-// ---- Clear all user data ----
-
-export function clearAllUserData(): void {
-  removeStorageItem('continue_watching');
-  removeStorageItem('watch_history');
-  removeStorageItem('watchlist');
-  removeStorageItem('player_settings');
-  removeStorageItem('search_history');
-  removeStorageItem('view_mode');
+export function setUserSettings(settings: UserSettings): void {
+  setStorageItem('user_settings', settings);
 }
