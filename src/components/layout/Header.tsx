@@ -54,14 +54,14 @@ export default function Header() {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
           ? 'bg-black/80 backdrop-blur-xl border-b border-white/10 shadow-lg'
-          : 'bg-transparent'
+          : 'bg-black/70 backdrop-blur-md'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 shrink-0">
           <span className="text-brand-primary text-xl">&#9654;</span>
-          <span className="text-white font-bold text-lg tracking-tight hidden sm:block">
+          <span className="text-white font-bold text-lg tracking-tight">
             MVStream
           </span>
         </Link>

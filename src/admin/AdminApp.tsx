@@ -72,7 +72,7 @@ export default function AdminApp() {
           <h1 className="text-xl font-bold text-white mb-2">Admin Access Required</h1>
           <p className="text-white/50 text-sm mb-6">Please log in with an admin account.</p>
           <a
-            href="../index.html"
+            href="./index.html"
             className="inline-block px-6 py-3 bg-brand-primary hover:bg-brand-hover text-white rounded-lg font-medium transition-colors"
           >
             Go to Login
@@ -120,7 +120,7 @@ export default function AdminApp() {
         {/* Bottom actions */}
         <div className="px-3 py-4 border-t border-white/10 space-y-1">
           <a
-            href="../index.html"
+            href="./index.html"
             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-colors"
           >
             <ExternalLink size={18} />
