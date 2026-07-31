@@ -18,6 +18,7 @@ interface SeasonEpisodeManagerProps {
 export default function SeasonEpisodeManager({
   seasons,
   onChange,
+  tmdbSeasons,
 }: SeasonEpisodeManagerProps) {
   const [expandedSeason, setExpandedSeason] = useState<number | null>(null);
   const [editingEpisode, setEditingEpisode] = useState<{ season: number; episode: number } | null>(null);
