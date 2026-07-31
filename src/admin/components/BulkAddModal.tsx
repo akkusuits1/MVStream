@@ -264,7 +264,7 @@ export default function BulkAddModal({ open, onClose, onComplete, type }: BulkAd
                   <div className="flex-1 min-w-0">
                     <p className="text-sm text-white truncate">{item.title || item.name}</p>
                     <p className="text-xs text-white/30">
-                      {item.release_date || item.first_air_date || 'Unknown'} &middot; {item.vote_average.toFixed(1)}
+                      {item.release_date || item.first_air_date || 'Unknown'} &middot; {item.vote_average?.toFixed(1) ?? 'N/A'}
                     </p>
                   </div>
                   <div className="shrink-0">

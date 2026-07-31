@@ -141,7 +141,7 @@ export default function DetailsPage() {
             <div className="flex flex-wrap items-center gap-3 mb-4 text-sm">
               <span className="flex items-center gap-1 text-yellow-400">
                 <Star size={14} fill="currentColor" />
-                {details.vote_average.toFixed(1)}
+                {details.vote_average?.toFixed(1) ?? 'N/A'}
               </span>
               {releaseDate && (
                 <span className="flex items-center gap-1 text-white/60">

@@ -51,9 +51,15 @@ export default function ActivityLog() {
 
   const load = async () => {
     setLoading(true);
-    const data = await getActivityLog(100);
-    setEntries(data);
-    setLoading(false);
+    try {
+      const data = await getActivityLog(100);
+      setEntries(data);
+    } catch (err) {
+      console.error('Failed to load activity log:', err);
+      setEntries([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {

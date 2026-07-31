@@ -104,7 +104,7 @@ export default function Dashboard() {
                     <p className="text-sm text-white/80 truncate">{m.title}</p>
                     <p className="text-xs text-white/30">{m.releaseDate}</p>
                   </div>
-                  <span className="text-xs text-white/40">{m.rating.toFixed(1)}</span>
+                  <span className="text-xs text-white/40">{m.rating?.toFixed(1) ?? 'N/A'}</span>
                 </div>
               ))}
             </div>
@@ -131,7 +131,7 @@ export default function Dashboard() {
                     <p className="text-sm text-white/80 truncate">{s.name}</p>
                     <p className="text-xs text-white/30">{s.firstAirDate}</p>
                   </div>
-                  <span className="text-xs text-white/40">{s.rating.toFixed(1)}</span>
+                  <span className="text-xs text-white/40">{s.rating?.toFixed(1) ?? 'N/A'}</span>
                 </div>
               ))}
             </div>

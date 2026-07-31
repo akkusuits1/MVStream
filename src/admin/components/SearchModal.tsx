@@ -144,7 +144,7 @@ export default function SearchModal({ open, onClose, onSelect, type }: SearchMod
                     </p>
                     <p className="text-xs text-white/40">
                       {item.release_date || item.first_air_date || 'Unknown'} &middot;{' '}
-                      {item.vote_average.toFixed(1)} / 10
+                      {item.vote_average?.toFixed(1) ?? 'N/A'} / 10
                     </p>
                   </div>
                   <Plus size={16} className="text-white/30 shrink-0" />
