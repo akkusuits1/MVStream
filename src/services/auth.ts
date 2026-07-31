@@ -50,7 +50,11 @@ export function initAuth(
       // Listen to user profile in DB
       unsubUser?.();
       const database = requireDb();
-      if (!database) return;
+      if (!database) {
+        onUser(null);
+        onLoading(false);
+        return;
+      }
       const userRef = ref(database, `users/${firebaseUser.uid}`);
       unsubUser = onValue(userRef, (snapshot) => {
         if (snapshot.exists()) {

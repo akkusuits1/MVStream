@@ -42,11 +42,24 @@ export default function AdminApp() {
 
   // Initialize auth listener
   useEffect(() => {
+    const setAuthLoading = useStore.getState().setAuthLoading;
+
     const unsubscribe = initAuth(
       (user) => useStore.getState().setUser(user),
-      (loading) => useStore.getState().setAuthLoading(loading),
+      (loading) => setAuthLoading(loading),
     );
-    return unsubscribe;
+
+    // Safety: if auth never resolves (e.g. Firebase misconfigured), stop loading after 5s
+    const fallback = setTimeout(() => {
+      if (useStore.getState().authLoading) {
+        setAuthLoading(false);
+      }
+    }, 5000);
+
+    return () => {
+      clearTimeout(fallback);
+      unsubscribe();
+    };
   }, []);
 
   // Apply theme class on mount
