@@ -2,6 +2,8 @@
 // Series Types
 // ============================================
 
+import type { TMDBCastMember } from './movie';
+
 export interface Series {
   id: number;
   name: string;
@@ -27,7 +29,7 @@ export interface SeriesDetails extends Series {
   homepage: string | null;
   created_by: { id: number; name: string }[];
   videos?: { results: { key: string; site: string; type: string }[] };
-  credits?: { cast: import('./movie').TMDBCastMember[] };
+  credits?: { cast: TMDBCastMember[] };
 }
 
 export interface Season {

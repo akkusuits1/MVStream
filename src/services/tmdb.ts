@@ -8,6 +8,7 @@ import type {
   SeriesDetails,
   SeriesDiscoverResponse,
   TrendingResponse,
+  Episode,
 } from '@/types';
 
 const TMDB_BASE = 'https://api.themoviedb.org/3';
@@ -108,7 +109,7 @@ export async function searchSeries(query: string, page = 1): Promise<SeriesDisco
 export async function seasonDetails(
   seriesId: number,
   seasonNumber: number,
-): Promise<{ episodes: import('@/types').Episode[] }> {
+): Promise<{ episodes: Episode[] }> {
   return tmdbFetch(`/tv/${seriesId}/season/${seasonNumber}`);
 }
 
