@@ -10,6 +10,7 @@ import {
 import { useAuth } from '@/hooks/useAuth';
 import { useSettings } from '@/hooks/useSettings';
 import { useStore } from '@/store/useStore';
+import { initAuth } from '@/services/auth';
 
 import Dashboard from './components/Dashboard';
 import ContentManager from './components/ContentManager';
@@ -38,6 +39,15 @@ export default function AdminApp() {
   const authLoading = useStore((s) => s.authLoading);
   const [activeTab, setActiveTab] = useState<Tab>('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Initialize auth listener
+  useEffect(() => {
+    const unsubscribe = initAuth(
+      (user) => useStore.getState().setUser(user),
+      (loading) => useStore.getState().setAuthLoading(loading),
+    );
+    return unsubscribe;
+  }, []);
 
   // Apply theme class on mount
   useEffect(() => {
