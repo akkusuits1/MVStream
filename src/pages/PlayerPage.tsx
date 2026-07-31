@@ -4,19 +4,12 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useSearchParams, Link } from 'react-router-dom';
-import { ArrowLeft, Server, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Server } from 'lucide-react';
 import { buildPlayerURL, SERVERS } from '@/services/player';
 import { getPlayerSettings } from '@/services/storage';
 import { useAuth } from '@/hooks/useAuth';
 import type { PlayerConfig } from '@/services/player';
 
-const EXTERNAL_PLAYER_SCHEMES: Record<string, string> = {
-  vlc: 'vlc://',
-  mx: 'intent://',
-  nplayer: 'nplayer-',
-  infuse: 'infuse://x-callback-url/play?url=',
-  external: '',
-};
 
 export default function PlayerPage() {
   const { type, id } = useParams<{ type: string; id: string }>();

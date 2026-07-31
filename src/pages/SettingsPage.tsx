@@ -4,7 +4,7 @@
 
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { User, Palette, Play, Database, Info, ExternalLink } from 'lucide-react';
+import { User, Palette, Play, Database, Info } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useSettings } from '@/hooks/useSettings';
 import {

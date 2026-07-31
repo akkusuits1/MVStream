@@ -16,7 +16,6 @@ export default function SearchPage() {
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const doSearch = useCallback(
     debounce(async (q: string) => {
       if (!q || q.length < 2) {

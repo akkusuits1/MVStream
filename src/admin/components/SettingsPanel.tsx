@@ -3,7 +3,7 @@
 // ============================================
 
 import { useState, useEffect } from 'react';
-import { Settings, Save, Globe, Shield, Zap, Loader2, Key } from 'lucide-react';
+import { Save, Globe, Shield, Zap, Loader2, Key } from 'lucide-react';
 import { getSettings, updateSettings } from '@/services/content';
 import type { SiteSettings } from '@/services/content';
 

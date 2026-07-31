@@ -3,7 +3,7 @@
 // ============================================
 
 import { useState, useEffect } from 'react';
-import { Activity, RefreshCw, User, Film, Tv, FolderOpen, Settings, Clock, Shield } from 'lucide-react';
+import { Activity, RefreshCw, Film, Tv, FolderOpen, Settings, Clock, Shield } from 'lucide-react';
 import { getActivityLog } from '@/services/activityLog';
 import type { ActivityEntry } from '@/services/activityLog';
 

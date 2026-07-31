@@ -4,7 +4,7 @@
 
 import { useState, useEffect } from 'react';
 import {
-  Film, Tv, Plus, Trash2, Star, StarOff, Link, ChevronDown, ChevronRight, ExternalLink, Search, Package,
+  Film, Tv, Plus, Trash2, Star, StarOff, ChevronDown, ChevronRight, Search, Package,
 } from 'lucide-react';
 import {
   getMovies, addMovie, deleteMovie, updateMovie,

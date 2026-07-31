@@ -2,7 +2,7 @@
 // Content Service — Firebase CRUD for movies, series, categories
 // ============================================
 
-import { ref, push, get, set, remove, update, query, orderByChild, equalTo } from 'firebase/database';
+import { ref, push, get, remove, update, query, orderByChild, equalTo } from 'firebase/database';
 import { db } from './firebase';
 import type { StreamLink } from './player';
 
