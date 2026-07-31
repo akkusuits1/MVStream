@@ -45,8 +45,10 @@ export default function App() {
     document.documentElement.classList.toggle('light', theme === 'light');
   }, [theme]);
 
+  const basename = window.location.pathname.startsWith('/MVStream') ? '/MVStream' : '';
+
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <div className="min-h-screen flex flex-col bg-black">
         <Header />
         <main className="flex-1 pt-16">

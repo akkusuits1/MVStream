@@ -36,11 +36,13 @@ class ErrorBoundary extends Component<
   }
 }
 
+const basename = window.location.pathname.startsWith('/MVStream') ? '/MVStream' : '';
+
 const root = createRoot(document.getElementById('admin-root')!);
 root.render(
   <StrictMode>
     <ErrorBoundary>
-      <BrowserRouter>
+      <BrowserRouter basename={basename}>
         <AdminApp />
       </BrowserRouter>
     </ErrorBoundary>
