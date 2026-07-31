@@ -311,7 +311,7 @@ export default function ContentManager() {
                     <p className="text-xs text-white/40">
                       {tab === 'movies' ? (item as FirebaseMovie).releaseDate : (item as FirebaseSeries).firstAirDate} &middot;{' '}
                       {item.rating?.toFixed(1) ?? 'N/A'} &middot;{' '}
-                      {item.genres.slice(0, 3).join(', ')}
+                      {(Array.isArray(item.genres) ? item.genres : []).slice(0, 3).join(', ')}
                     </p>
                     {tab === 'movies' && (
                       <p className="text-xs text-white/30 mt-0.5">
