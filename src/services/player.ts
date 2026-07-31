@@ -2,6 +2,13 @@
 // Player Service — Player initialization and management
 // ============================================
 
+export interface StreamLink {
+  name: string;
+  url: string;
+  quality: string;
+  enabled: boolean;
+}
+
 export interface PlayerConfig {
   movieId: number;
   type: 'movie' | 'series';

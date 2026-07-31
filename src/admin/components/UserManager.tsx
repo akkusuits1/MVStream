@@ -1,11 +1,12 @@
 // ============================================
-// User Manager — User list with role/status actions
+// User Manager — User list with search, filter, role/status actions
 // ============================================
 
 import { useState, useEffect } from 'react';
-import { Users, Shield, Ban, UserCheck } from 'lucide-react';
+import { Users, Shield, Ban, UserCheck, Search, RefreshCw } from 'lucide-react';
 import { fetchAllUsers, updateUserRole, updateUserStatus } from '@/services/auth';
 import { useStore } from '@/store/useStore';
+import ConfirmDialog from './ConfirmDialog';
 
 interface AdminUser {
   uid: string;
@@ -16,14 +17,19 @@ interface AdminUser {
   lastLogin: number;
 }
 
+type RoleFilter = 'all' | 'admin' | 'user';
+
 export default function UserManager() {
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const [roleFilter, setRoleFilter] = useState<RoleFilter>('all');
+  const [confirmAction, setConfirmAction] = useState<{
+    type: 'promote' | 'demote' | 'ban' | 'unban';
+    uid: string;
+    label: string;
+  } | null>(null);
   const currentUser = useStore((s) => s.user);
-
-  useEffect(() => {
-    loadUsers();
-  }, []);
 
   const loadUsers = async () => {
     setLoading(true);
@@ -36,6 +42,10 @@ export default function UserManager() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    loadUsers();
+  }, []);
 
   const handleRoleToggle = async (uid: string, currentRole: string) => {
     const newRole = currentRole === 'admin' ? 'user' : 'admin';
@@ -61,26 +71,83 @@ export default function UserManager() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <div className="w-8 h-8 border-2 border-white/20 border-t-brand-primary rounded-full animate-spin" />
-      </div>
-    );
-  }
+  const filtered = users.filter((u) => {
+    if (roleFilter !== 'all' && u.role !== roleFilter) return false;
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      return (
+        u.displayName?.toLowerCase().includes(q) ||
+        u.email?.toLowerCase().includes(q)
+      );
+    }
+    return true;
+  });
+
+  const roleCounts = {
+    all: users.length,
+    admin: users.filter((u) => u.role === 'admin').length,
+    user: users.filter((u) => u.role === 'user').length,
+  };
 
   return (
     <div>
-      <div className="mb-4 text-sm text-white/50">{users.length} users total</div>
+      {/* Controls */}
+      <div className="flex flex-wrap items-center gap-3 mb-6">
+        {/* Search */}
+        <div className="relative flex-1 min-w-[200px]">
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search users..."
+            className="w-full bg-white/5 border border-white/10 rounded-lg pl-9 pr-4 py-2 text-sm text-white placeholder:text-white/30 outline-none focus:border-brand-primary/50 transition-colors"
+          />
+        </div>
 
-      {users.length === 0 ? (
+        {/* Role Filter */}
+        <div className="flex gap-1">
+          {(['all', 'admin', 'user'] as RoleFilter[]).map((f) => (
+            <button
+              key={f}
+              onClick={() => setRoleFilter(f)}
+              className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                roleFilter === f
+                  ? 'bg-brand-primary text-white'
+                  : 'bg-white/5 text-white/50 hover:bg-white/10'
+              }`}
+            >
+              {f.charAt(0).toUpperCase() + f.slice(1)}
+              <span className="ml-1 opacity-70">({roleCounts[f]})</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Refresh */}
+        <button
+          onClick={loadUsers}
+          disabled={loading}
+          className="p-2 rounded-lg text-white/40 hover:text-white hover:bg-white/10 transition-colors disabled:opacity-50"
+          title="Refresh"
+        >
+          <RefreshCw size={16} className={loading ? 'animate-spin' : ''} />
+        </button>
+      </div>
+
+      {/* Users Table */}
+      {loading ? (
+        <div className="flex items-center justify-center py-20">
+          <div className="w-8 h-8 border-2 border-white/20 border-t-brand-primary rounded-full animate-spin" />
+        </div>
+      ) : filtered.length === 0 ? (
         <div className="bg-white/5 border border-white/10 rounded-xl p-8 text-center">
           <Users size={48} className="mx-auto text-white/20 mb-4" />
-          <p className="text-white/40">No users yet</p>
+          <p className="text-white/40">
+            {search || roleFilter !== 'all' ? 'No matching users' : 'No users yet'}
+          </p>
         </div>
       ) : (
         <div className="bg-white/5 border border-white/10 rounded-xl overflow-hidden">
-          {/* Header */}
           <div className="grid grid-cols-[1fr_auto_auto_auto] gap-4 px-4 py-3 border-b border-white/10 text-sm text-white/50 font-medium">
             <div>User</div>
             <div>Role</div>
@@ -88,8 +155,7 @@ export default function UserManager() {
             <div>Actions</div>
           </div>
 
-          {/* Rows */}
-          {users.map((u) => {
+          {filtered.map((u) => {
             const isCurrentUser = u.uid === currentUser?.uid;
             return (
               <div
@@ -120,14 +186,22 @@ export default function UserManager() {
                   ) : (
                     <>
                       <button
-                        onClick={() => handleRoleToggle(u.uid, u.role)}
+                        onClick={() => setConfirmAction({
+                          type: u.role === 'admin' ? 'demote' : 'promote',
+                          uid: u.uid,
+                          label: u.displayName || u.email,
+                        })}
                         className="flex items-center gap-1 px-2.5 py-1.5 bg-white/5 border border-white/10 rounded-lg text-xs text-white/60 hover:bg-white/10 hover:text-white transition-colors"
                       >
                         <Shield size={12} />
                         {u.role === 'admin' ? 'Demote' : 'Promote'}
                       </button>
                       <button
-                        onClick={() => handleStatusToggle(u.uid, u.status)}
+                        onClick={() => setConfirmAction({
+                          type: u.status === 'banned' ? 'unban' : 'ban',
+                          uid: u.uid,
+                          label: u.displayName || u.email,
+                        })}
                         className={`flex items-center gap-1 px-2.5 py-1.5 border rounded-lg text-xs transition-colors ${
                           u.status === 'banned'
                             ? 'bg-green-500/10 border-green-500/20 text-green-400 hover:bg-green-500/20'
@@ -145,6 +219,43 @@ export default function UserManager() {
           })}
         </div>
       )}
+
+      {/* Confirmation Dialog */}
+      <ConfirmDialog
+        open={!!confirmAction}
+        title={
+          confirmAction?.type === 'promote' ? 'Promote to Admin' :
+          confirmAction?.type === 'demote' ? 'Demote from Admin' :
+          confirmAction?.type === 'ban' ? 'Ban User' : 'Unban User'
+        }
+        message={
+          confirmAction?.type === 'promote'
+            ? `Give ${confirmAction?.label} admin privileges? They will have full access to the admin panel.`
+            : confirmAction?.type === 'demote'
+            ? `Remove admin privileges from ${confirmAction?.label}?`
+            : confirmAction?.type === 'ban'
+            ? `Ban ${confirmAction?.label}? They will not be able to access the site.`
+            : `Unban ${confirmAction?.label}? They will regain access to the site.`
+        }
+        confirmLabel={
+          confirmAction?.type === 'promote' ? 'Promote' :
+          confirmAction?.type === 'demote' ? 'Demote' :
+          confirmAction?.type === 'ban' ? 'Ban' : 'Unban'
+        }
+        danger={confirmAction?.type === 'ban'}
+        onConfirm={() => {
+          if (!confirmAction) return;
+          if (confirmAction.type === 'promote' || confirmAction.type === 'demote') {
+            const user = users.find((u) => u.uid === confirmAction.uid);
+            if (user) handleRoleToggle(confirmAction.uid, user.role);
+          } else {
+            const user = users.find((u) => u.uid === confirmAction.uid);
+            if (user) handleStatusToggle(confirmAction.uid, user.status);
+          }
+          setConfirmAction(null);
+        }}
+        onCancel={() => setConfirmAction(null)}
+      />
     </div>
   );
 }
