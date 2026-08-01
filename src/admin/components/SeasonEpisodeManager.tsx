@@ -44,7 +44,7 @@ export default function SeasonEpisodeManager({
   const addEpisode = (seasonNumber: number) => {
     const season = seasons.find((s) => s.number === seasonNumber);
     if (!season) return;
-    const nextEpNum = season.episodes.length + 1;
+    const nextEpNum = (season.episodes ?? []).length + 1;
     const newEpisode: SeasonEpisode = {
       number: nextEpNum,
       name: `Episode ${nextEpNum}`,
@@ -128,7 +128,7 @@ export default function SeasonEpisodeManager({
               )}
               <div className="flex-1 min-w-0">
                 <p className="text-white text-sm font-medium">{season.name}</p>
-                <p className="text-xs text-white/30">{season.episodes.length} episodes</p>
+                <p className="text-xs text-white/30">{(season.episodes ?? []).length} episodes</p>
               </div>
               <button
                 onClick={(e) => {
@@ -144,7 +144,7 @@ export default function SeasonEpisodeManager({
             {/* Episodes (expanded) */}
             {expandedSeason === season.number && (
               <div className="border-t border-white/10 px-4 py-3">
-                {season.episodes.length === 0 ? (
+                {(season.episodes ?? []).length === 0 ? (
                   <p className="text-xs text-white/30 mb-3">No episodes yet</p>
                 ) : (
                   <div className="space-y-2 mb-3">
@@ -188,7 +188,7 @@ export default function SeasonEpisodeManager({
                         </div>
                         {/* Stream Links for this episode */}
                         <StreamLinkManager
-                          links={ep.streamLinks}
+                          links={ep.streamLinks ?? []}
                           onChange={(links) => updateEpisodeLinks(season.number, ep.number, links)}
                         />
                       </div>

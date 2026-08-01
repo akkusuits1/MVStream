@@ -315,7 +315,7 @@ export default function ContentManager() {
                     </p>
                     {tab === 'movies' && (
                       <p className="text-xs text-white/30 mt-0.5">
-                        {(item as FirebaseMovie).streamLinks.length} stream links
+                        {((item as FirebaseMovie).streamLinks ?? []).length} stream links
                       </p>
                     )}
                   </div>
@@ -351,7 +351,7 @@ export default function ContentManager() {
                       <div>
                         <h4 className="text-xs font-medium text-white/60 uppercase tracking-wide mb-2">Stream Links</h4>
                         <StreamLinkManager
-                          links={(item as FirebaseMovie).streamLinks}
+                          links={(item as FirebaseMovie).streamLinks ?? []}
                           onChange={(links) => updateMovieLinks(id, links)}
                         />
                       </div>
@@ -359,7 +359,7 @@ export default function ContentManager() {
                       <div>
                         <h4 className="text-xs font-medium text-white/60 uppercase tracking-wide mb-2">Seasons & Episodes</h4>
                         <SeasonEpisodeManager
-                          seasons={(item as FirebaseSeries).seasons}
+                          seasons={(item as FirebaseSeries).seasons ?? []}
                           onChange={(seasons) => updateSeriesSeasons(id, seasons)}
                         />
                       </div>

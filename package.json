@@ -11,7 +11,9 @@
     "lint:fix": "eslint src --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx,css,html}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css,html}\"",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "cleanup:db": "node scripts/cleanup-firebase.mjs",
+    "cleanup:db:fix": "node scripts/cleanup-firebase.mjs --fix"
   },
   "dependencies": {
     "chart.js": "^4.4.3",
