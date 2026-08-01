@@ -3,7 +3,6 @@
 // ============================================
 
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import {
   LayoutDashboard, Film, Tv, FolderOpen, Users, Clock, Settings, LogOut, Moon, Sun, Menu, Lock, Activity,
 } from 'lucide-react';
@@ -130,7 +129,7 @@ export default function AdminApp() {
           >
             <Menu size={18} />
           </button>
-          <Link to="/" className="text-brand-primary text-lg">&#9654;</Link>
+          <a href="/MVStream/" className="text-brand-primary text-lg">&#9654;</a>
           <span className="font-bold text-white">Admin Panel</span>
         </div>
         <div className="flex items-center gap-2">
@@ -140,12 +139,12 @@ export default function AdminApp() {
           >
             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
           </button>
-          <Link
-            to="/"
+          <a
+            href="/MVStream/"
             className="px-3 py-1.5 text-xs font-medium text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
           >
             View Site
-          </Link>
+          </a>
           <div className="w-px h-6 bg-white/10" />
           <span className="text-xs text-white/40 max-w-[120px] truncate">{user.displayName || user.email}</span>
           <button
