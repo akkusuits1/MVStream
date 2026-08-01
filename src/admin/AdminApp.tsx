@@ -94,7 +94,7 @@ export default function AdminApp() {
             </p>
           ) : (
             <a
-              href="./index.html"
+              href="/MVStream/"
               className="inline-block px-6 py-3 bg-brand-primary hover:bg-brand-hover text-white rounded-lg font-medium transition-colors"
             >
               Go to Login

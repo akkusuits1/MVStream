@@ -11,6 +11,15 @@ import Footer from '@/components/layout/Footer';
 import MobileNav from '@/components/layout/MobileNav';
 import AuthGuard from '@/components/ui/AuthGuard';
 
+// GitHub Pages SPA redirect — restore clean URL from 404.html redirect
+(function () {
+  var redirect = sessionStorage.redirect;
+  delete sessionStorage.redirect;
+  if (redirect && redirect !== location.href) {
+    history.replaceState(null, '', redirect);
+  }
+})();
+
 // Pages
 import HomePage from '@/pages/HomePage';
 import LoginPage from '@/pages/LoginPage';

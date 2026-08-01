@@ -8,6 +8,15 @@ import { BrowserRouter } from 'react-router-dom';
 import AdminApp from './AdminApp';
 import '@/index.css';
 
+// GitHub Pages SPA redirect — restore clean URL from 404.html redirect
+(function () {
+  var redirect = sessionStorage.redirect;
+  delete sessionStorage.redirect;
+  if (redirect && redirect !== location.href) {
+    history.replaceState(null, '', redirect);
+  }
+})();
+
 class ErrorBoundary extends Component<
   { children: ReactNode },
   { error: Error | null }
