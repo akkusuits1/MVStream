@@ -13,7 +13,7 @@ import AuthGuard from '@/components/ui/AuthGuard';
 
 // GitHub Pages SPA redirect — restore clean URL from 404.html redirect
 (function () {
-  var redirect = sessionStorage.redirect;
+  const redirect = sessionStorage.redirect;
   delete sessionStorage.redirect;
   if (redirect && redirect !== location.href) {
     history.replaceState(null, '', redirect);
