@@ -124,9 +124,10 @@ export default function ContentManager() {
         });
         await loadSeries();
       }
-    } catch (e) {
-      console.error('Failed to add:', e);
-      alert('Failed to add content. Please try again.');
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : String(e);
+      console.error('Failed to add content:', msg, e);
+      alert(`Failed to add content:\n${msg}`);
     } finally {
       setAdding(false);
     }
