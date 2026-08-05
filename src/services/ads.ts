@@ -98,14 +98,19 @@ export async function getPlacements(): Promise<AdPlacement[]> {
 }
 
 export async function addPlacement(data: Omit<AdPlacement, 'id' | 'createdAt' | 'updatedAt' | 'ads'>): Promise<string> {
-  if (!db) throw new Error('Firebase not configured');
+  if (!db) throw new Error('Firebase not configured — check VITE_FIREBASE_DATABASE_URL');
+  console.log('[Ads] Adding placement:', data);
   const placementsRef = ref(db, PLACEMENTS_PATH);
-  const newRef = await push(placementsRef, {
-    ...data,
-    ads: {},
-    createdAt: Date.now(),
-    updatedAt: Date.now(),
-  });
+  const newRef = await Promise.race([
+    push(placementsRef, {
+      ...data,
+      ads: {},
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    }),
+    new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Write timed out — check Firebase security rules for ads/placements')), 15000)),
+  ]);
+  console.log('[Ads] Placement created:', newRef.key);
   return newRef.key!;
 }
 
@@ -113,37 +118,52 @@ export async function updatePlacement(id: string, data: Partial<AdPlacement>): P
   if (!db) throw new Error('Firebase not configured');
   const placementRef = ref(db, `${PLACEMENTS_PATH}/${id}`);
   const { ads: _ads, ...rest } = data;
-  await update(placementRef, { ...rest, updatedAt: Date.now() });
+  await Promise.race([
+    update(placementRef, { ...rest, updatedAt: Date.now() }),
+    new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Write timed out')), 15000)),
+  ]);
 }
 
 export async function deletePlacement(id: string): Promise<void> {
   if (!db) throw new Error('Firebase not configured');
   const placementRef = ref(db, `${PLACEMENTS_PATH}/${id}`);
-  await remove(placementRef);
+  await Promise.race([
+    remove(placementRef),
+    new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Delete timed out')), 15000)),
+  ]);
 }
 
 // ---- Ad Units CRUD (nested under placements) ----
 export async function addAdUnit(placementId: string, data: Omit<AdUnit, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> {
   if (!db) throw new Error('Firebase not configured');
   const adsRef = ref(db, `${PLACEMENTS_PATH}/${placementId}/ads`);
-  const newRef = await push(adsRef, {
-    ...data,
-    createdAt: Date.now(),
-    updatedAt: Date.now(),
-  });
+  const newRef = await Promise.race([
+    push(adsRef, {
+      ...data,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    }),
+    new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Write timed out')), 15000)),
+  ]);
   return newRef.key!;
 }
 
 export async function updateAdUnit(placementId: string, adId: string, data: Partial<AdUnit>): Promise<void> {
   if (!db) throw new Error('Firebase not configured');
   const adRef = ref(db, `${PLACEMENTS_PATH}/${placementId}/ads/${adId}`);
-  await update(adRef, { ...data, updatedAt: Date.now() });
+  await Promise.race([
+    update(adRef, { ...data, updatedAt: Date.now() }),
+    new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Write timed out')), 15000)),
+  ]);
 }
 
 export async function deleteAdUnit(placementId: string, adId: string): Promise<void> {
   if (!db) throw new Error('Firebase not configured');
   const adRef = ref(db, `${PLACEMENTS_PATH}/${placementId}/ads/${adId}`);
-  await remove(adRef);
+  await Promise.race([
+    remove(adRef),
+    new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Delete timed out')), 15000)),
+  ]);
 }
 
 // ---- Helper: Get enabled ads for a position ----
