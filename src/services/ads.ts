@@ -50,10 +50,18 @@ const DEFAULT_CONFIG: AdConfig = {
 // ---- Config CRUD ----
 export async function getAdConfig(): Promise<AdConfig> {
   if (!db) return DEFAULT_CONFIG;
-  const configRef = ref(db, CONFIG_PATH);
-  const snapshot = await get(configRef);
-  if (!snapshot.exists()) return DEFAULT_CONFIG;
-  return { ...DEFAULT_CONFIG, ...(snapshot.val() as Partial<AdConfig>) };
+  try {
+    const configRef = ref(db, CONFIG_PATH);
+    const snapshot = await Promise.race([
+      get(configRef),
+      new Promise<null>((_, reject) => setTimeout(() => reject(new Error('Timeout')), 10000)),
+    ]);
+    if (!snapshot || !snapshot.exists()) return DEFAULT_CONFIG;
+    return { ...DEFAULT_CONFIG, ...(snapshot.val() as Partial<AdConfig>) };
+  } catch (e) {
+    console.warn('Failed to load ad config:', e);
+    return DEFAULT_CONFIG;
+  }
 }
 
 export async function updateAdConfig(data: Partial<AdConfig>): Promise<void> {
@@ -65,20 +73,28 @@ export async function updateAdConfig(data: Partial<AdConfig>): Promise<void> {
 // ---- Placements CRUD ----
 export async function getPlacements(): Promise<AdPlacement[]> {
   if (!db) return [];
-  const placementsRef = ref(db, PLACEMENTS_PATH);
-  const snapshot = await get(placementsRef);
-  if (!snapshot.exists()) return [];
-  const data = snapshot.val();
-  return Object.entries(data).map(([id, val]) => {
-    const placement = val as Omit<AdPlacement, 'id'>;
-    const ads = placement.ads
-      ? Object.entries(placement.ads).map(([adId, adVal]) => ({
-          id: adId,
-          ...(adVal as Omit<AdUnit, 'id'>),
-        }))
-      : [];
-    return { id, ...placement, ads };
-  }).sort((a, b) => b.createdAt - a.createdAt);
+  try {
+    const placementsRef = ref(db, PLACEMENTS_PATH);
+    const snapshot = await Promise.race([
+      get(placementsRef),
+      new Promise<null>((_, reject) => setTimeout(() => reject(new Error('Timeout')), 10000)),
+    ]);
+    if (!snapshot || !snapshot.exists()) return [];
+    const data = snapshot.val();
+    return Object.entries(data).map(([id, val]) => {
+      const placement = val as Omit<AdPlacement, 'id'>;
+      const ads = placement.ads
+        ? Object.entries(placement.ads).map(([adId, adVal]) => ({
+            id: adId,
+            ...(adVal as Omit<AdUnit, 'id'>),
+          }))
+        : [];
+      return { id, ...placement, ads };
+    }).sort((a, b) => b.createdAt - a.createdAt);
+  } catch (e) {
+    console.warn('Failed to load ad placements:', e);
+    return [];
+  }
 }
 
 export async function addPlacement(data: Omit<AdPlacement, 'id' | 'createdAt' | 'updatedAt' | 'ads'>): Promise<string> {
