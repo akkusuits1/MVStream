@@ -88,11 +88,11 @@ export function useAdBlocker() {
     // Method 4: Known ad element checks
     if (!detected) {
       try {
-        const adElements = [
+        const adElements: (HTMLElement | null)[] = [
           document.getElementById('google_ads_iframe'),
-          document.querySelector('.adsbygoogle'),
-          document.querySelector('[data-ad-client]'),
-          document.querySelector('.ad-placement'),
+          document.querySelector('.adsbygoogle') as HTMLElement | null,
+          document.querySelector('[data-ad-client]') as HTMLElement | null,
+          document.querySelector('.ad-placement') as HTMLElement | null,
         ];
         // If these elements exist but are hidden, adblocker is active
         for (const el of adElements) {
