@@ -4,7 +4,7 @@
 
 import { useState, useEffect } from 'react';
 import {
-  LayoutDashboard, Film, Tv, FolderOpen, Users, Clock, Settings, LogOut, Moon, Sun, Menu, Lock, Activity,
+  LayoutDashboard, Film, Tv, FolderOpen, Users, Clock, Settings, LogOut, Moon, Sun, Menu, Lock, Activity, Megaphone,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useSettings } from '@/hooks/useSettings';
@@ -18,8 +18,9 @@ import UserManager from './components/UserManager';
 import MovieRequestsManager from './components/MovieRequestsManager';
 import SettingsPanel from './components/SettingsPanel';
 import ActivityLog from './components/ActivityLog';
+import AdsManager from './components/AdsManager';
 
-type Tab = 'dashboard' | 'movies' | 'series' | 'categories' | 'users' | 'requests' | 'activity' | 'settings';
+type Tab = 'dashboard' | 'movies' | 'series' | 'categories' | 'users' | 'requests' | 'activity' | 'settings' | 'ads';
 
 const navItems: { tab: Tab; label: string; icon: typeof LayoutDashboard }[] = [
   { tab: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -29,6 +30,7 @@ const navItems: { tab: Tab; label: string; icon: typeof LayoutDashboard }[] = [
   { tab: 'users', label: 'Users', icon: Users },
   { tab: 'requests', label: 'Requests', icon: Clock },
   { tab: 'activity', label: 'Activity Log', icon: Activity },
+  { tab: 'ads', label: 'Ads', icon: Megaphone },
   { tab: 'settings', label: 'Settings', icon: Settings },
 ];
 
@@ -113,6 +115,7 @@ export default function AdminApp() {
       case 'users': return <UserManager />;
       case 'requests': return <MovieRequestsManager />;
       case 'activity': return <ActivityLog />;
+      case 'ads': return <AdsManager />;
       case 'settings': return <SettingsPanel />;
       default: return <Dashboard />;
     }

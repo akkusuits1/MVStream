@@ -10,6 +10,10 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import MobileNav from '@/components/layout/MobileNav';
 import AuthGuard from '@/components/ui/AuthGuard';
+import AdBlockerDetector from '@/components/AdBlockerDetector';
+import AdSlot from '@/components/ads/AdSlot';
+import SocialBar from '@/components/ads/SocialBar';
+import InPagePush from '@/components/ads/InPagePush';
 
 // GitHub Pages SPA redirect — restore clean URL from 404.html redirect
 (function () {
@@ -32,6 +36,9 @@ import SettingsPage from '@/pages/SettingsPage';
 import PrivacyPage from '@/pages/PrivacyPage';
 import AboutPage from '@/pages/AboutPage';
 import HelpPage from '@/pages/HelpPage';
+import ContactPage from '@/pages/ContactPage';
+import DisclaimerPage from '@/pages/DisclaimerPage';
+import TermsPage from '@/pages/TermsPage';
 import NotFoundPage from '@/pages/NotFoundPage';
 
 export default function App() {
@@ -59,7 +66,9 @@ export default function App() {
   return (
     <BrowserRouter basename={basename}>
       <div className="min-h-screen flex flex-col bg-black">
+        <AdBlockerDetector />
         <Header />
+        <AdSlot position="header" className="w-full" />
         <main className="flex-1 pt-16">
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -96,11 +105,17 @@ export default function App() {
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/help" element={<HelpPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/disclaimer" element={<DisclaimerPage />} />
+            <Route path="/terms" element={<TermsPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
+        <AdSlot position="footer" className="w-full" />
         <Footer />
         <MobileNav />
+        <SocialBar />
+        <InPagePush />
       </div>
     </BrowserRouter>
   );

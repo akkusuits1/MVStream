@@ -24,6 +24,9 @@ const linkGroups = [
     title: 'Legal',
     links: [
       { to: '/privacy', label: 'Privacy Policy' },
+      { to: '/terms', label: 'Terms & Conditions' },
+      { to: '/disclaimer', label: 'Disclaimer' },
+      { to: '/contact', label: 'Contact Us' },
       { to: '/about', label: 'About' },
       { to: '/help', label: 'Help' },
     ],
