@@ -27,6 +27,7 @@ export default function PlacementEditor({ placement, onClose, onSave }: Placemen
   const [position, setPosition] = useState<PlacementPosition>('header');
   const [enabled, setEnabled] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (placement) {
@@ -39,6 +40,7 @@ export default function PlacementEditor({ placement, onClose, onSave }: Placemen
   const handleSave = async () => {
     if (!name.trim()) return;
     setSaving(true);
+    setError('');
     try {
       if (placement?.id) {
         await updatePlacement(placement.id, { name, position, enabled });
@@ -49,6 +51,7 @@ export default function PlacementEditor({ placement, onClose, onSave }: Placemen
       onClose();
     } catch (e) {
       console.error('Failed to save placement:', e);
+      setError(e instanceof Error ? e.message : 'Failed to save. Check Firebase configuration.');
     } finally {
       setSaving(false);
     }
@@ -69,6 +72,11 @@ export default function PlacementEditor({ placement, onClose, onSave }: Placemen
 
         {/* Form */}
         <div className="p-4 space-y-4">
+          {error && (
+            <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-3 text-sm text-red-400">
+              {error}
+            </div>
+          )}
           <div>
             <label className="block text-white/60 text-sm mb-1.5">Placement Name</label>
             <input

@@ -97,6 +97,7 @@ export default function AdEditor({ placementId, ad, onClose, onSave }: AdEditorP
   const [size, setSize] = useState('728x90');
   const [enabled, setEnabled] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
   const [showPreview, setShowPreview] = useState(false);
   const [showMobileCode, setShowMobileCode] = useState(false);
 
@@ -130,6 +131,7 @@ export default function AdEditor({ placementId, ad, onClose, onSave }: AdEditorP
   const handleSave = async () => {
     if (!name.trim() || !code.trim()) return;
     setSaving(true);
+    setError('');
     try {
       if (ad?.id) {
         await updateAdUnit(placementId, ad.id, {
@@ -144,6 +146,7 @@ export default function AdEditor({ placementId, ad, onClose, onSave }: AdEditorP
       onClose();
     } catch (e) {
       console.error('Failed to save ad:', e);
+      setError(e instanceof Error ? e.message : 'Failed to save. Check Firebase configuration.');
     } finally {
       setSaving(false);
     }
@@ -164,6 +167,11 @@ export default function AdEditor({ placementId, ad, onClose, onSave }: AdEditorP
 
         {/* Form */}
         <div className="p-4 space-y-4">
+          {error && (
+            <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-3 text-sm text-red-400">
+              {error}
+            </div>
+          )}
           {/* Name */}
           <div>
             <label className="block text-white/60 text-sm mb-1.5">Ad Name</label>
