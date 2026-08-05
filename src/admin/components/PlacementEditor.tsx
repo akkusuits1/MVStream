@@ -38,19 +38,22 @@ export default function PlacementEditor({ placement, onClose, onSave }: Placemen
   }, [placement]);
 
   const handleSave = async () => {
+    console.log('[PlacementEditor] handleSave called, name:', name, 'trim:', name.trim());
     if (!name.trim()) return;
     setSaving(true);
     setError('');
     try {
+      console.log('[PlacementEditor] Calling addPlacement...');
       if (placement?.id) {
         await updatePlacement(placement.id, { name, position, enabled });
       } else {
         await addPlacement({ name, position, enabled });
       }
+      console.log('[PlacementEditor] Save successful');
       onSave();
       onClose();
     } catch (e) {
-      console.error('Failed to save placement:', e);
+      console.error('[PlacementEditor] Save failed:', e);
       setError(e instanceof Error ? e.message : 'Failed to save. Check Firebase configuration.');
     } finally {
       setSaving(false);

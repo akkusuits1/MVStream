@@ -98,7 +98,8 @@ export async function getPlacements(): Promise<AdPlacement[]> {
 }
 
 export async function addPlacement(data: Omit<AdPlacement, 'id' | 'createdAt' | 'updatedAt' | 'ads'>): Promise<string> {
-  if (!db) throw new Error('Firebase not configured — check VITE_FIREBASE_DATABASE_URL');
+  console.log('[Ads] addPlacement called, db:', !!db);
+  if (!db) throw new Error('Firebase Realtime Database not initialized — check VITE_FIREBASE_DATABASE_URL env var');
   console.log('[Ads] Adding placement:', data);
   const placementsRef = ref(db, PLACEMENTS_PATH);
   const newRef = await Promise.race([
