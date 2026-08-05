@@ -4,13 +4,16 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Play, Star, Calendar, Clock, Users, ChevronDown, ChevronUp, BookmarkPlus, Send } from 'lucide-react';
+import { Play, Star, Calendar, Clock, Users, ChevronDown, ChevronUp, BookmarkPlus, Send, Download } from 'lucide-react';
 import { movieDetails, seriesDetails, seasonDetails, posterURL, backdropURL, profileURL } from '@/services/tmdb';
 import { getGenreNames } from '@/lib/utils';
 import { useWatchlist } from '@/hooks/useWatchlist';
 import { useAuth } from '@/hooks/useAuth';
 import { requestMovie } from '@/services/movieRequests';
+import { getMovieByTmdbId, getSeriesByTmdbId } from '@/services/content';
+import type { FirebaseMovie, FirebaseSeries } from '@/services/content';
 import type { MovieDetails, SeriesDetails, Episode } from '@/types';
+import type { StreamLink } from '@/services/player';
 
 export default function DetailsPage() {
   const { type, id } = useParams<{ type: string; id: string }>();
@@ -26,6 +29,9 @@ export default function DetailsPage() {
   const movieId = Number(id);
   const [requestSent, setRequestSent] = useState(false);
   const [requestLoading, setRequestLoading] = useState(false);
+  const [firebaseMovie, setFirebaseMovie] = useState<FirebaseMovie | null>(null);
+  const [firebaseSeries, setFirebaseSeries] = useState<FirebaseSeries | null>(null);
+  const [selectedLink, setSelectedLink] = useState<StreamLink | null>(null);
 
   useEffect(() => {
     if (!movieId) return;
@@ -37,6 +43,24 @@ export default function DetailsPage() {
       .then((data) => setDetails(data))
       .catch(() => setError('Failed to load details'))
       .finally(() => setLoading(false));
+  }, [movieId, type]);
+
+  // Load Firebase content for stream links
+  useEffect(() => {
+    if (!movieId) return;
+    if (type === 'movie') {
+      getMovieByTmdbId(movieId).then((m) => {
+        if (m) {
+          setFirebaseMovie(m);
+          const enabled = (m.streamLinks ?? []).filter((l) => l.enabled);
+          if (enabled.length > 0) setSelectedLink(enabled[0]);
+        }
+      });
+    } else {
+      getSeriesByTmdbId(movieId).then((s) => {
+        if (s) setFirebaseSeries(s);
+      });
+    }
   }, [movieId, type]);
 
   // Load season episodes
@@ -191,12 +215,60 @@ export default function DetailsPage() {
                 </a>
               ) : null}
 
-              <Link
-                to={`/player/${type}/${movieId}`}
-                className="flex items-center gap-2 px-6 py-3 bg-brand-primary hover:bg-brand-hover text-white rounded-lg font-medium transition-colors"
-              >
-                <Play size={18} fill="white" /> Watch Now
-              </Link>
+              {/* Stream link dropdown + Play + Download */}
+              {(() => {
+                const links = isMovie
+                  ? (firebaseMovie?.streamLinks ?? []).filter((l) => l.enabled)
+                  : (firebaseSeries?.seasons ?? [])
+                      .find((s) => s.number === selectedSeason)
+                      ?.episodes?.find((e) => e.number === expandedEpisode)
+                      ?.streamLinks?.filter((l) => l.enabled) ?? [];
+
+                if (links.length === 0) {
+                  return (
+                    <Link
+                      to={`/player/${type}/${movieId}`}
+                      className="flex items-center gap-2 px-6 py-3 bg-brand-primary hover:bg-brand-hover text-white rounded-lg font-medium transition-colors"
+                    >
+                      <Play size={18} fill="white" /> Watch Now
+                    </Link>
+                  );
+                }
+
+                return (
+                  <div className="flex items-center gap-2">
+                    <select
+                      value={selectedLink?.url ?? ''}
+                      onChange={(e) => {
+                        const link = links.find((l) => l.url === e.target.value);
+                        setSelectedLink(link ?? null);
+                      }}
+                      className="bg-white/10 text-white border border-white/20 rounded-lg px-3 py-3 text-sm focus:outline-none focus:border-brand-primary appearance-none cursor-pointer min-w-[180px]"
+                    >
+                      {links.map((l) => (
+                        <option key={l.url} value={l.url} className="bg-neutral-900 text-white">
+                          {l.name || l.quality}
+                        </option>
+                      ))}
+                    </select>
+                    <a
+                      href={selectedLink?.url ?? links[0].url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-6 py-3 bg-brand-primary hover:bg-brand-hover text-white rounded-lg font-medium transition-colors"
+                    >
+                      <Play size={18} fill="white" /> Play
+                    </a>
+                    <a
+                      href={selectedLink?.url ?? links[0].url}
+                      download
+                      className="flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition-colors"
+                    >
+                      <Download size={18} /> Download
+                    </a>
+                  </div>
+                );
+              })()}
 
               {isAuthenticated && (
                 <button
@@ -313,12 +385,60 @@ export default function DetailsPage() {
                       {ep.overview && (
                         <p className="text-sm text-white/50 mb-3">{ep.overview}</p>
                       )}
-                      <Link
-                        to={`/player/series/${movieId}?season=${selectedSeason}&episode=${ep.episode_number}`}
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-brand-primary hover:bg-brand-hover text-white rounded-lg text-sm font-medium transition-colors"
-                      >
-                        <Play size={14} fill="white" /> Play Episode
-                      </Link>
+                      {(() => {
+                        const epLinks = (firebaseSeries?.seasons ?? [])
+                          .find((s) => s.number === selectedSeason)
+                          ?.episodes?.find((e) => e.number === ep.episode_number)
+                          ?.streamLinks?.filter((l) => l.enabled) ?? [];
+
+                        if (epLinks.length === 0) {
+                          return (
+                            <Link
+                              to={`/player/series/${movieId}?season=${selectedSeason}&episode=${ep.episode_number}`}
+                              className="inline-flex items-center gap-2 px-4 py-2 bg-brand-primary hover:bg-brand-hover text-white rounded-lg text-sm font-medium transition-colors"
+                            >
+                              <Play size={14} fill="white" /> Play Episode
+                            </Link>
+                          );
+                        }
+
+                        const isActive = expandedEpisode === ep.episode_number;
+                        const currentLink = isActive ? selectedLink : epLinks[0];
+
+                        return (
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <select
+                              value={currentLink?.url ?? ''}
+                              onChange={(e) => {
+                                const link = epLinks.find((l) => l.url === e.target.value);
+                                setSelectedLink(link ?? null);
+                              }}
+                              className="bg-white/10 text-white border border-white/20 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-brand-primary appearance-none cursor-pointer min-w-[140px]"
+                            >
+                              {epLinks.map((l) => (
+                                <option key={l.url} value={l.url} className="bg-neutral-900 text-white">
+                                  {l.name || l.quality}
+                                </option>
+                              ))}
+                            </select>
+                            <a
+                              href={currentLink?.url ?? epLinks[0].url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-2 px-4 py-2 bg-brand-primary hover:bg-brand-hover text-white rounded-lg text-sm font-medium transition-colors"
+                            >
+                              <Play size={14} fill="white" /> Play
+                            </a>
+                            <a
+                              href={currentLink?.url ?? epLinks[0].url}
+                              download
+                              className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm font-medium transition-colors"
+                            >
+                              <Download size={14} /> Download
+                            </a>
+                          </div>
+                        );
+                      })()}
                     </div>
                   )}
                 </div>
