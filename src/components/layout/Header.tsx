@@ -14,6 +14,10 @@ import {
   LogOut,
   Settings,
   ChevronDown,
+  Shield,
+  FileText,
+  AlertTriangle,
+  Info,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useSettings } from '@/hooks/useSettings';
@@ -25,6 +29,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [legalOpen, setLegalOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -36,6 +41,7 @@ export default function Header() {
   useEffect(() => {
     setMenuOpen(false);
     setProfileOpen(false);
+    setLegalOpen(false);
   }, [location.pathname]);
 
   const isActive = (path: string) => {
@@ -47,6 +53,13 @@ export default function Header() {
     { to: '/', label: 'Home' },
     { to: '/movies', label: 'Movies' },
     { to: '/series', label: 'Series' },
+  ];
+
+  const legalLinks = [
+    { to: '/about', label: 'About', icon: Info },
+    { to: '/privacy', label: 'Privacy Policy', icon: Shield },
+    { to: '/terms', label: 'Terms & Conditions', icon: FileText },
+    { to: '/disclaimer', label: 'Disclaimer', icon: AlertTriangle },
   ];
 
   return (
@@ -81,6 +94,42 @@ export default function Header() {
               {link.label}
             </Link>
           ))}
+
+          {/* Legal Dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => setLegalOpen(!legalOpen)}
+              className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                legalLinks.some((l) => isActive(l.to))
+                  ? 'text-white bg-white/10'
+                  : 'text-white/60 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              Legal
+              <ChevronDown size={14} className={`transition-transform ${legalOpen ? 'rotate-180' : ''}`} />
+            </button>
+            {legalOpen && (
+              <>
+                <div className="fixed inset-0 z-40" onClick={() => setLegalOpen(false)} />
+                <div className="absolute left-0 top-full mt-2 w-52 bg-neutral-900 border border-white/10 rounded-xl shadow-2xl z-50 py-1 overflow-hidden">
+                  {legalLinks.map((link) => (
+                    <Link
+                      key={link.to}
+                      to={link.to}
+                      className={`flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
+                        isActive(link.to)
+                          ? 'text-white bg-white/10'
+                          : 'text-white/70 hover:bg-white/10 hover:text-white'
+                      }`}
+                    >
+                      <link.icon size={15} />
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
         </nav>
 
         {/* Right Actions */}
@@ -200,6 +249,22 @@ export default function Header() {
                     : 'text-white/60 hover:text-white hover:bg-white/5'
                 }`}
               >
+                {link.label}
+              </Link>
+            ))}
+            <div className="my-1 border-t border-white/10" />
+            <p className="px-3 py-1 text-xs text-white/30 uppercase tracking-wide">Legal</p>
+            {legalLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  isActive(link.to)
+                    ? 'text-white bg-white/10'
+                    : 'text-white/60 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <link.icon size={15} />
                 {link.label}
               </Link>
             ))}

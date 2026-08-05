@@ -14,6 +14,7 @@ import AdBlockerDetector from '@/components/AdBlockerDetector';
 import AdSlot from '@/components/ads/AdSlot';
 import SocialBar from '@/components/ads/SocialBar';
 import InPagePush from '@/components/ads/InPagePush';
+import ScrollToTop from '@/components/ScrollToTop';
 
 // GitHub Pages SPA redirect — restore clean URL from 404.html redirect
 (function () {
@@ -116,6 +117,7 @@ export default function App() {
         <MobileNav />
         <SocialBar />
         <InPagePush />
+        <ScrollToTop />
       </div>
     </BrowserRouter>
   );
