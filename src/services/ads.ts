@@ -39,7 +39,6 @@ export interface AdUnit {
 }
 
 // ---- Constants ----
-const ADS_PATH = 'ads';
 const CONFIG_PATH = 'ads/config';
 const PLACEMENTS_PATH = 'ads/placements';
 
