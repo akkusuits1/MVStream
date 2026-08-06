@@ -90,7 +90,7 @@ export default function AdSlot({ position, className = '' }: AdSlotProps) {
   return (
     <div
       ref={containerRef}
-      className={`ad-slot ad-slot-${position} ${className}`}
+      className={`ad-slot ad-slot-${position} flex justify-center items-center overflow-hidden ${className}`}
       data-position={position}
     />
   );

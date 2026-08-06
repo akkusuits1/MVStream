@@ -10,6 +10,7 @@ import { trendingAll } from '@/services/tmdb';
 import { posterURL, backdropURL } from '@/services/tmdb';
 import { getWatchHistory } from '@/services/storage';
 import { formatRating } from '@/lib/utils';
+import AdSlot from '@/components/ads/AdSlot';
 import type { Movie, Series, TrendingItem } from '@/types';
 
 export default function HomePage() {
@@ -154,6 +155,8 @@ export default function HomePage() {
           ))}
         </Section>
       )}
+
+      <AdSlot position="in-content" className="max-w-7xl mx-auto px-4" />
 
       {/* Top Rated Movies */}
       {movies.length > 0 && (

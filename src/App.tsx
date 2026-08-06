@@ -70,7 +70,9 @@ export default function App() {
         <AdBlockerDetector />
         <Header />
         <div className="pt-16">
-          <AdSlot position="header" className="w-full" />
+          <div className="max-w-7xl mx-auto">
+            <AdSlot position="header" className="w-full" />
+          </div>
         </div>
         <main className="flex-1">
           <Routes>
@@ -114,7 +116,9 @@ export default function App() {
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
-        <AdSlot position="footer" className="w-full" />
+        <div className="max-w-7xl mx-auto">
+          <AdSlot position="footer" className="w-full" />
+        </div>
         <Footer />
         <MobileNav />
         <SocialBar />

@@ -14,6 +14,7 @@ import { getMovieByTmdbId, getSeriesByTmdbId } from '@/services/content';
 import type { FirebaseMovie, FirebaseSeries } from '@/services/content';
 import type { MovieDetails, SeriesDetails, Episode } from '@/types';
 import type { StreamLink } from '@/services/player';
+import AdSlot from '@/components/ads/AdSlot';
 
 export default function DetailsPage() {
   const { type, id } = useParams<{ type: string; id: string }>();
@@ -201,6 +202,8 @@ export default function DetailsPage() {
 
             {/* Overview */}
             <p className="text-white/70 leading-relaxed mb-6">{details.overview}</p>
+
+            <AdSlot position="in-content" className="mb-6" />
 
             {/* Actions */}
             <div className="flex flex-wrap gap-3 mb-6">
