@@ -98,9 +98,7 @@ export async function getPlacements(): Promise<AdPlacement[]> {
 }
 
 export async function addPlacement(data: Omit<AdPlacement, 'id' | 'createdAt' | 'updatedAt' | 'ads'>): Promise<string> {
-  console.log('[Ads] addPlacement called, db:', !!db);
   if (!db) throw new Error('Firebase Realtime Database not initialized — check VITE_FIREBASE_DATABASE_URL env var');
-  console.log('[Ads] Adding placement:', data);
   const placementsRef = ref(db, PLACEMENTS_PATH);
   const newRef = await Promise.race([
     push(placementsRef, {
@@ -111,7 +109,6 @@ export async function addPlacement(data: Omit<AdPlacement, 'id' | 'createdAt' | 
     }),
     new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Write timed out — check Firebase security rules for ads/placements')), 15000)),
   ]);
-  console.log('[Ads] Placement created:', newRef.key);
   return newRef.key!;
 }
 

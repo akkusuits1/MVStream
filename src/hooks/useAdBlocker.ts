@@ -149,7 +149,7 @@ export function useAdBlocker() {
       cancelled = true;
       observerRef.current?.disconnect();
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   return { isBlocked, config, checking };
 }
