@@ -3,7 +3,7 @@
 // ============================================
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useEffect } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 import { initAuth } from '@/services/auth';
 import { useStore } from '@/store/useStore';
 import Header from '@/components/layout/Header';
@@ -14,7 +14,9 @@ import AdBlockerDetector from '@/components/AdBlockerDetector';
 import AdSlot from '@/components/ads/AdSlot';
 import SocialBar from '@/components/ads/SocialBar';
 import InPagePush from '@/components/ads/InPagePush';
+import InterstitialAd from '@/components/ads/InterstitialAd';
 import ScrollToTop from '@/components/ScrollToTop';
+import { usePageView } from '@/hooks/usePageView';
 
 // GitHub Pages SPA redirect — restore clean URL from 404.html redirect
 (function () {
@@ -25,56 +27,38 @@ import ScrollToTop from '@/components/ScrollToTop';
   }
 })();
 
-// Pages
-import HomePage from '@/pages/HomePage';
-import LoginPage from '@/pages/LoginPage';
-import BrowsePage from '@/pages/BrowsePage';
-import SearchPage from '@/pages/SearchPage';
-import DetailsPage from '@/pages/DetailsPage';
-import PlayerPage from '@/pages/PlayerPage';
-import ProfilePage from '@/pages/ProfilePage';
-import SettingsPage from '@/pages/SettingsPage';
-import PrivacyPage from '@/pages/PrivacyPage';
-import AboutPage from '@/pages/AboutPage';
-import HelpPage from '@/pages/HelpPage';
-import ContactPage from '@/pages/ContactPage';
-import DisclaimerPage from '@/pages/DisclaimerPage';
-import TermsPage from '@/pages/TermsPage';
-import NotFoundPage from '@/pages/NotFoundPage';
+// Lazy-loaded pages for code splitting
+const HomePage = lazy(() => import('@/pages/HomePage'));
+const LoginPage = lazy(() => import('@/pages/LoginPage'));
+const BrowsePage = lazy(() => import('@/pages/BrowsePage'));
+const SearchPage = lazy(() => import('@/pages/SearchPage'));
+const DetailsPage = lazy(() => import('@/pages/DetailsPage'));
+const PlayerPage = lazy(() => import('@/pages/PlayerPage'));
+const ProfilePage = lazy(() => import('@/pages/ProfilePage'));
+const SettingsPage = lazy(() => import('@/pages/SettingsPage'));
+const PrivacyPage = lazy(() => import('@/pages/PrivacyPage'));
+const AboutPage = lazy(() => import('@/pages/AboutPage'));
+const HelpPage = lazy(() => import('@/pages/HelpPage'));
+const ContactPage = lazy(() => import('@/pages/ContactPage'));
+const DisclaimerPage = lazy(() => import('@/pages/DisclaimerPage'));
+const TermsPage = lazy(() => import('@/pages/TermsPage'));
+const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'));
 
-export default function App() {
-  const setUser = useStore((s) => s.setUser);
-  const setAuthLoading = useStore((s) => s.setAuthLoading);
-  const theme = useStore((s) => s.theme);
-
-  // Initialize auth listener
-  useEffect(() => {
-    const unsubscribe = initAuth(
-      (user) => setUser(user),
-      (loading) => setAuthLoading(loading),
-    );
-    return unsubscribe;
-  }, [setUser, setAuthLoading]);
-
-  // Apply theme class
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-    document.documentElement.classList.toggle('light', theme === 'light');
-  }, [theme]);
-
-  const basename = window.location.pathname.startsWith('/MVStream') ? '/MVStream' : '';
+function AppInner() {
+  usePageView();
 
   return (
-    <BrowserRouter basename={basename}>
-      <div className="min-h-screen flex flex-col bg-black">
-        <AdBlockerDetector />
-        <Header />
-        <div className="pt-16">
-          <div className="max-w-7xl mx-auto">
-            <AdSlot position="header" className="w-full" />
-          </div>
+    <div className="min-h-screen flex flex-col bg-black">
+      <AdBlockerDetector />
+      <InterstitialAd />
+      <Header />
+      <div className="pt-16">
+        <div className="max-w-7xl mx-auto">
+          <AdSlot position="header" className="w-full" />
         </div>
-        <main className="flex-1">
+      </div>
+      <main className="flex-1">
+        <Suspense>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
@@ -115,16 +99,43 @@ export default function App() {
             <Route path="/terms" element={<TermsPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
-        </main>
-        <div className="max-w-7xl mx-auto">
-          <AdSlot position="footer" className="w-full" />
-        </div>
-        <Footer />
-        <MobileNav />
-        <SocialBar />
-        <InPagePush />
-        <ScrollToTop />
+        </Suspense>
+      </main>
+      <div className="max-w-7xl mx-auto">
+        <AdSlot position="footer" className="w-full" />
       </div>
+      <Footer />
+      <MobileNav />
+      <SocialBar />
+      <InPagePush />
+      <ScrollToTop />
+    </div>
+  );
+}
+
+export default function App() {
+  const setUser = useStore((s) => s.setUser);
+  const setAuthLoading = useStore((s) => s.setAuthLoading);
+  const theme = useStore((s) => s.theme);
+
+  useEffect(() => {
+    const unsubscribe = initAuth(
+      (user) => setUser(user),
+      (loading) => setAuthLoading(loading),
+    );
+    return unsubscribe;
+  }, [setUser, setAuthLoading]);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    document.documentElement.classList.toggle('light', theme === 'light');
+  }, [theme]);
+
+  const basename = window.location.pathname.startsWith('/MVStream') ? '/MVStream' : '';
+
+  return (
+    <BrowserRouter basename={basename}>
+      <AppInner />
     </BrowserRouter>
   );
 }

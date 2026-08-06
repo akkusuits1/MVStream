@@ -93,3 +93,9 @@
 .light .placeholder-white\/50::placeholder { color: rgba(0, 0, 0, 0.5); }
 .light .from-black { --tw-gradient-from: #000000; }
 .light .to-transparent { --tw-gradient-to: transparent; }
+
+/* Interstitial timer bar animation */
+@keyframes shrink {
+  from { width: 100%; }
+  to { width: 0%; }
+}

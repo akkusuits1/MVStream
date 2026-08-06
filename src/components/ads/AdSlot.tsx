@@ -28,6 +28,16 @@ export default function AdSlot({ position, className = '' }: AdSlotProps) {
       const allAds = results.flatMap((r) => r.ads);
       setAds(allAds);
     });
+
+    // Refresh ads every 30 seconds for long sessions
+    const interval = setInterval(() => {
+      getEnabledAdsForPosition(position).then((results) => {
+        const allAds = results.flatMap((r) => r.ads);
+        setAds(allAds);
+      });
+    }, 30_000);
+
+    return () => clearInterval(interval);
   }, [position]);
 
   // Inject ad codes after render
