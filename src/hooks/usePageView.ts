@@ -18,6 +18,6 @@ export function usePageView() {
       referrer: document.referrer || null,
     };
 
-    push(ref(db, 'analytics/pageViews'), pageView).catch(() => {});
+    if (db) push(ref(db, 'analytics/pageViews'), pageView).catch(() => {});
   }, [pathname, search]);
 }
