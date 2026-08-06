@@ -314,14 +314,14 @@ export default function DetailsPage() {
                 </button>
               )}
             </div>
-
-            {/* Sidebar Ad */}
-            <aside className="hidden lg:block w-[300px] shrink-0">
-              <div className="sticky top-20">
-                <AdSlot position="sidebar" />
-              </div>
-            </aside>
           </div>
+
+          {/* Sidebar Ad */}
+          <aside className="hidden lg:block w-[300px] shrink-0">
+            <div className="sticky top-20">
+              <AdSlot position="sidebar" />
+            </div>
+          </aside>
         </div>
 
         {/* Cast */}
