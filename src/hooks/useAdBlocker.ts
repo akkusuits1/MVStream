@@ -2,7 +2,7 @@
 // useAdBlocker — Multi-layered adblocker detection
 // ============================================
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { getAdConfig } from '@/services/ads';
 import type { AdConfig } from '@/services/ads';
 
@@ -10,13 +10,22 @@ export function useAdBlocker() {
   const [isBlocked, setIsBlocked] = useState(false);
   const [config, setConfig] = useState<AdConfig | null>(null);
   const [checking, setChecking] = useState(true);
+  const detectingRef = useRef(false);
+  const observerRef = useRef<MutationObserver | null>(null);
 
   const detect = useCallback(async () => {
-    if (!config?.adBlockerEnabled) {
-      setIsBlocked(false);
-      setChecking(false);
+    // Prevent concurrent runs
+    if (detectingRef.current || !config?.adBlockerEnabled) {
+      if (!config?.adBlockerEnabled) {
+        setIsBlocked(false);
+        setChecking(false);
+      }
       return;
     }
+    detectingRef.current = true;
+
+    // Pause observer during detection to avoid feedback loop
+    observerRef.current?.disconnect();
 
     let detected = false;
 
@@ -51,100 +60,96 @@ export function useAdBlocker() {
         const testUrl = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 2000);
-        const response = await fetch(testUrl, { method: 'HEAD', mode: 'no-cors', signal: controller.signal });
+        const response = await fetch(testUrl, {
+          method: 'HEAD',
+          mode: 'no-cors',
+          signal: controller.signal,
+        });
         clearTimeout(timeout);
-        // In no-cors mode, we can't read the response, but if it throws it's likely blocked
-        void response;
+        // In no-cors mode, opaque response (status 0) means the request went through
+        if (response.type === 'opaque') {
+          // Ad server reachable — not blocked
+        } else if (!response.ok) {
+          detected = true;
+        }
       } catch {
-        // Fetch blocked = likely adblocker (but could be network issue, so don't rely solely on this)
-        // Only flag if bait method was suspicious
+        // Fetch failed — likely blocked
+        detected = true;
       }
     }
 
-    // Method 3: CSS trap detection via style sheet
+    // Method 3: CSS trap detection
     if (!detected) {
       try {
-        const testStyle = document.createElement('style');
-        testStyle.textContent = '.ad_test_class { display: block !important; }';
-        document.head.appendChild(testStyle);
-
         const testEl = document.createElement('div');
-        testEl.className = 'ad_test_class';
-        testEl.style.cssText = 'height:1px;width:1px;';
+        testEl.innerHTML = '&nbsp;';
+        testEl.className = 'adsbox ad-unit ads-banner';
+        testEl.style.cssText = 'position:absolute;top:-10px;left:-10px;height:1px;width:1px;';
         document.body.appendChild(testEl);
 
         await new Promise((r) => setTimeout(r, 50));
 
-        const computed = window.getComputedStyle(testEl);
-        if (computed.display === 'none') {
+        if (
+          testEl.offsetHeight === 0 ||
+          window.getComputedStyle(testEl).display === 'none'
+        ) {
           detected = true;
         }
-
         document.body.removeChild(testEl);
-        document.head.removeChild(testStyle);
-      } catch { /* ignore */ }
-    }
-
-    // Method 4: Known ad element checks
-    if (!detected) {
-      try {
-        const adElements: (HTMLElement | null)[] = [
-          document.getElementById('google_ads_iframe'),
-          document.querySelector('.adsbygoogle') as HTMLElement | null,
-          document.querySelector('[data-ad-client]') as HTMLElement | null,
-          document.querySelector('.ad-placement') as HTMLElement | null,
-        ];
-        // If these elements exist but are hidden, adblocker is active
-        for (const el of adElements) {
-          if (el) {
-            const style = window.getComputedStyle(el);
-            if (style.display === 'none' || style.visibility === 'hidden' || el.offsetHeight === 0) {
-              detected = true;
-              break;
-            }
-          }
-        }
       } catch { /* ignore */ }
     }
 
     setIsBlocked(detected);
     setChecking(false);
+    detectingRef.current = false;
+
+    // Re-attach observer after detection
+    attachObserver();
   }, [config]);
 
-  // Load config
-  useEffect(() => {
-    getAdConfig().then((c) => {
-      setConfig(c);
-    });
-  }, []);
+  const attachObserver = useCallback(() => {
+    observerRef.current?.disconnect();
+    let debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
-  // Run detection when config is loaded
-  useEffect(() => {
-    if (config !== null) {
-      detect();
-      // Re-check periodically
-      const interval = setInterval(detect, 30000);
-      return () => clearInterval(interval);
-    }
-  }, [config, detect]);
-
-  // Listen for DOM mutations (adblockers modify DOM)
-  useEffect(() => {
-    if (!config?.adBlockerEnabled) return;
-
-    const observer = new MutationObserver(() => {
-      detect();
+    observerRef.current = new MutationObserver(() => {
+      if (debounceTimer) clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        detect();
+      }, 1000);
     });
 
-    observer.observe(document.body, {
+    observerRef.current.observe(document.body, {
       childList: true,
       subtree: true,
-      attributes: true,
-      attributeFilter: ['style', 'class'],
+      attributes: false,
     });
+  }, [detect]);
 
-    return () => observer.disconnect();
-  }, [config, detect]);
+  // Load config once, then run detection after page is ready
+  useEffect(() => {
+    let cancelled = false;
 
-  return { isBlocked, checking, config };
+    const init = async () => {
+      const adConfig = await getAdConfig();
+      if (cancelled) return;
+      setConfig(adConfig);
+
+      // Wait for page to finish loading before detecting
+      const runDetection = () => detect();
+      if (document.readyState === 'complete') {
+        // Page already loaded, wait a bit for ad scripts to run
+        setTimeout(runDetection, 3000);
+      } else {
+        window.addEventListener('load', () => setTimeout(runDetection, 3000), { once: true });
+      }
+    };
+
+    init();
+    return () => {
+      cancelled = true;
+      observerRef.current?.disconnect();
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return { isBlocked, config, checking };
 }

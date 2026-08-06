@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import {
   getPlacements, getAdConfig, updateAdConfig, deletePlacement,
-  deleteAdUnit, updateAdUnit,
+  deleteAdUnit, updateAdUnit, updatePlacement,
 } from '@/services/ads';
 import type { AdPlacement, AdUnit, AdConfig } from '@/services/ads';
 import PlacementEditor from './PlacementEditor';
@@ -72,6 +72,14 @@ export default function AdsManager() {
     const updated = { ...config, [key]: value };
     setConfig(updated);
     await updateAdConfig({ [key]: value });
+  };
+
+  const togglePlacementEnabled = async (placement: AdPlacement) => {
+    const newEnabled = !placement.enabled;
+    await updatePlacement(placement.id!, { enabled: newEnabled });
+    setPlacements((prev) =>
+      prev.map((p) => (p.id === placement.id ? { ...p, enabled: newEnabled } : p))
+    );
   };
 
   const toggleAdEnabled = async (placementId: string, ad: AdUnit) => {
@@ -217,7 +225,7 @@ export default function AdsManager() {
 
                     <div className="flex items-center gap-1 shrink-0" onClick={(e) => e.stopPropagation()}>
                       <button
-                        onClick={() => toggleConfig('adBlockerEnabled', !config?.adBlockerEnabled)}
+                        onClick={() => togglePlacementEnabled(placement)}
                         className={`p-1.5 rounded-lg transition-colors ${placement.enabled ? 'text-green-400' : 'text-white/30'}`}
                         title={placement.enabled ? 'Enabled' : 'Disabled'}
                       >

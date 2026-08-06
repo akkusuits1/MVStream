@@ -69,8 +69,10 @@ export default function App() {
       <div className="min-h-screen flex flex-col bg-black">
         <AdBlockerDetector />
         <Header />
-        <AdSlot position="header" className="w-full" />
-        <main className="flex-1 pt-16">
+        <div className="pt-16">
+          <AdSlot position="header" className="w-full" />
+        </div>
+        <main className="flex-1">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
