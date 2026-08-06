@@ -3,6 +3,7 @@
 // ============================================
 
 import { HelpCircle } from 'lucide-react';
+import { useSeoMeta } from '@/hooks/useSeoMeta';
 
 const faqItems = [
   {
@@ -32,6 +33,11 @@ const faqItems = [
 ];
 
 export default function HelpPage() {
+  useSeoMeta({
+    title: 'Help Center',
+    description: 'Find answers to frequently asked questions about MVStream. Learn how to search, play, and use all features.',
+    url: '/help',
+  });
   return (
     <div className="max-w-3xl mx-auto px-4 py-12">
       <div className="flex items-center gap-3 mb-2">

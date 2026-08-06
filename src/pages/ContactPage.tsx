@@ -1,8 +1,14 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, MessageSquare, Send, ExternalLink } from 'lucide-react';
+import { useSeoMeta } from '@/hooks/useSeoMeta';
 
 export default function ContactPage() {
+  useSeoMeta({
+    title: 'Contact Us',
+    description: 'Get in touch with MVStream support team. Send us your questions, suggestions, or feedback.',
+    url: '/contact',
+  });
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
 

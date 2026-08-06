@@ -152,8 +152,10 @@ export default function DetailsPage() {
       </div>
 
       {/* Content */}
-      <div className="max-w-6xl mx-auto px-4 -mt-48 relative z-10">
-        <div className="flex flex-col md:flex-row gap-8">
+      <div className="max-w-7xl mx-auto px-4 -mt-48 relative z-10">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Main content */}
+          <div className="flex-1 flex flex-col md:flex-row gap-8 min-w-0">
           {/* Poster */}
           <div className="shrink-0 w-48 md:w-64">
             {details.poster_path ? (
@@ -312,6 +314,13 @@ export default function DetailsPage() {
                 </button>
               )}
             </div>
+
+            {/* Sidebar Ad */}
+            <aside className="hidden lg:block w-[300px] shrink-0">
+              <div className="sticky top-20">
+                <AdSlot position="sidebar" />
+              </div>
+            </aside>
           </div>
         </div>
 

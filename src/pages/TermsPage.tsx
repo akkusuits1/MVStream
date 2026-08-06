@@ -1,6 +1,12 @@
 import { Link } from 'react-router-dom';
+import { useSeoMeta } from '@/hooks/useSeoMeta';
 
 export default function TermsPage() {
+  useSeoMeta({
+    title: 'Terms & Conditions',
+    description: 'Read the MVStream terms and conditions governing your use of our free streaming platform.',
+    url: '/terms',
+  });
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
       <h1 className="text-3xl font-bold text-white mb-2">Terms & Conditions</h1>

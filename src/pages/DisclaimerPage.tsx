@@ -1,6 +1,12 @@
 import { Link } from 'react-router-dom';
+import { useSeoMeta } from '@/hooks/useSeoMeta';
 
 export default function DisclaimerPage() {
+  useSeoMeta({
+    title: 'Disclaimer',
+    description: 'Read the MVStream disclaimer regarding content ownership, external links, and limitation of liability.',
+    url: '/disclaimer',
+  });
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
       <h1 className="text-3xl font-bold text-white mb-2">Disclaimer</h1>

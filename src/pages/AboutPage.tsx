@@ -3,8 +3,14 @@
 // ============================================
 
 import { Film } from 'lucide-react';
+import { useSeoMeta } from '@/hooks/useSeoMeta';
 
 export default function AboutPage() {
+  useSeoMeta({
+    title: 'About',
+    description: 'Learn about MVStream - a free streaming platform for movies and web series. Browse thousands of titles across multiple genres.',
+    url: '/about',
+  });
   return (
     <div className="max-w-3xl mx-auto px-4 py-12">
       <div className="flex items-center gap-3 mb-2">

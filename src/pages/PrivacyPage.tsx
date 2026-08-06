@@ -3,8 +3,14 @@
 // ============================================
 
 import { Shield } from 'lucide-react';
+import { useSeoMeta } from '@/hooks/useSeoMeta';
 
 export default function PrivacyPage() {
+  useSeoMeta({
+    title: 'Privacy Policy',
+    description: 'Read the MVStream privacy policy. Learn how we collect, use, and protect your personal information.',
+    url: '/privacy',
+  });
   return (
     <div className="max-w-3xl mx-auto px-4 py-12">
       <div className="flex items-center gap-3 mb-2">
