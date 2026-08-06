@@ -15,6 +15,7 @@ import type { FirebaseMovie, FirebaseSeries } from '@/services/content';
 import type { MovieDetails, SeriesDetails, Episode } from '@/types';
 import type { StreamLink } from '@/services/player';
 import AdSlot from '@/components/ads/AdSlot';
+import { useSeoMeta } from '@/hooks/useSeoMeta';
 
 export default function DetailsPage() {
   const { type, id } = useParams<{ type: string; id: string }>();
@@ -97,6 +98,14 @@ export default function DetailsPage() {
   const title = movieDetails_?.title || seriesDetails_?.name || '';
   const releaseDate = movieDetails_?.release_date || seriesDetails_?.first_air_date || '';
   const runtime = movieDetails_?.runtime;
+
+  useSeoMeta({
+    title,
+    description: details.overview?.slice(0, 160) || `Watch ${title} on MVStream`,
+    image: details.poster_path ? `https://image.tmdb.org/t/p/w500${details.poster_path}` : undefined,
+    url: `/details/${type}/${id}`,
+    type: 'video.movie',
+  });
   const seasons = seriesDetails_?.seasons;
   const genres = getGenreNames(details.genres.map((g) => g.id));
   const cast = details.credits?.cast?.slice(0, 10) || [];

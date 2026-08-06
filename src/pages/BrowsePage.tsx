@@ -9,6 +9,7 @@ import { useMovies } from '@/hooks/useMovies';
 import { posterURL } from '@/services/tmdb';
 import { formatRating } from '@/lib/utils';
 import AdSlot from '@/components/ads/AdSlot';
+import { useSeoMeta } from '@/hooks/useSeoMeta';
 import type { Movie, Series } from '@/types';
 
 export default function BrowsePage() {
@@ -19,6 +20,12 @@ export default function BrowsePage() {
 
   const items: (Movie | Series)[] = type === 'movies' ? movies : series;
   const isMovies = type === 'movies';
+
+  useSeoMeta({
+    title: isMovies ? 'Movies' : 'Web Series',
+    description: `Browse and watch ${isMovies ? 'movies' : 'web series'} online for free in HD quality.`,
+    url: `/browse/${type}`,
+  });
 
   useEffect(() => {
     loadMovies(1);

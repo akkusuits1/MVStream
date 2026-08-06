@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { Search, X, Star } from 'lucide-react';
 import { searchMovies, searchSeries, posterURL } from '@/services/tmdb';
 import { debounce, formatRating } from '@/lib/utils';
+import { useSeoMeta } from '@/hooks/useSeoMeta';
 import type { Movie, Series } from '@/types';
 
 export default function SearchPage() {
@@ -15,6 +16,12 @@ export default function SearchPage() {
   const [seriesResults, setSeriesResults] = useState<Series[]>([]);
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useSeoMeta({
+    title: 'Search',
+    description: 'Search for movies and web series to watch online for free.',
+    url: '/search',
+  });
 
   const doSearch = useCallback(
     debounce(async (q: string) => {
