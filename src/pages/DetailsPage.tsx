@@ -73,6 +73,17 @@ export default function DetailsPage() {
       .catch(() => setEpisodes([]));
   }, [movieId, type, selectedSeason, details]);
 
+  const isMovie = type === 'movie';
+  const title = isMovie ? (details as MovieDetails)?.title || '' : (details as SeriesDetails)?.name || '';
+
+  useSeoMeta({
+    title: title || 'Loading...',
+    description: details?.overview?.slice(0, 160) || `Watch ${title || type} on MVStream`,
+    image: details?.poster_path ? `https://image.tmdb.org/t/p/w500${details.poster_path}` : undefined,
+    url: `/details/${type}/${id}`,
+    type: isMovie ? 'video.movie' : 'video.tv',
+  });
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -92,20 +103,10 @@ export default function DetailsPage() {
     );
   }
 
-  const isMovie = type === 'movie';
   const movieDetails_ = isMovie ? details as MovieDetails : null;
   const seriesDetails_ = !isMovie ? details as SeriesDetails : null;
-  const title = movieDetails_?.title || seriesDetails_?.name || '';
   const releaseDate = movieDetails_?.release_date || seriesDetails_?.first_air_date || '';
   const runtime = movieDetails_?.runtime;
-
-  useSeoMeta({
-    title,
-    description: details.overview?.slice(0, 160) || `Watch ${title} on MVStream`,
-    image: details.poster_path ? `https://image.tmdb.org/t/p/w500${details.poster_path}` : undefined,
-    url: `/details/${type}/${id}`,
-    type: 'video.movie',
-  });
   const seasons = seriesDetails_?.seasons;
   const genres = getGenreNames(details.genres.map((g) => g.id));
   const cast = details.credits?.cast?.slice(0, 10) || [];
