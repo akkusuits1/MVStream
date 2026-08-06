@@ -4,8 +4,26 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Play, Star, Calendar, Clock, Users, ChevronDown, ChevronUp, BookmarkPlus, Send, Download } from 'lucide-react';
-import { movieDetails, seriesDetails, seasonDetails, posterURL, backdropURL, profileURL } from '@/services/tmdb';
+import {
+  Play,
+  Star,
+  Calendar,
+  Clock,
+  Users,
+  ChevronDown,
+  ChevronUp,
+  BookmarkPlus,
+  Send,
+  Download,
+} from 'lucide-react';
+import {
+  movieDetails,
+  seriesDetails,
+  seasonDetails,
+  posterURL,
+  backdropURL,
+  profileURL,
+} from '@/services/tmdb';
 import { getGenreNames } from '@/lib/utils';
 import { useWatchlist } from '@/hooks/useWatchlist';
 import { useAuth } from '@/hooks/useAuth';
@@ -74,12 +92,16 @@ export default function DetailsPage() {
   }, [movieId, type, selectedSeason, details]);
 
   const isMovie = type === 'movie';
-  const title = isMovie ? (details as MovieDetails)?.title || '' : (details as SeriesDetails)?.name || '';
+  const title = isMovie
+    ? (details as MovieDetails)?.title || ''
+    : (details as SeriesDetails)?.name || '';
 
   useSeoMeta({
     title: title || 'Loading...',
     description: details?.overview?.slice(0, 160) || `Watch ${title || type} on MVStream`,
-    image: details?.poster_path ? `https://image.tmdb.org/t/p/w500${details.poster_path}` : undefined,
+    image: details?.poster_path
+      ? `https://image.tmdb.org/t/p/w500${details.poster_path}`
+      : undefined,
     url: `/details/${type}/${id}`,
     type: isMovie ? 'video.movie' : 'video.tv',
   });
@@ -97,14 +119,16 @@ export default function DetailsPage() {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <p className="text-white/60 text-lg mb-4">{error || 'Not found'}</p>
-          <Link to="/" className="text-brand-primary hover:underline">Go Home</Link>
+          <Link to="/" className="text-brand-primary hover:underline">
+            Go Home
+          </Link>
         </div>
       </div>
     );
   }
 
-  const movieDetails_ = isMovie ? details as MovieDetails : null;
-  const seriesDetails_ = !isMovie ? details as SeriesDetails : null;
+  const movieDetails_ = isMovie ? (details as MovieDetails) : null;
+  const seriesDetails_ = !isMovie ? (details as SeriesDetails) : null;
   const releaseDate = movieDetails_?.release_date || seriesDetails_?.first_air_date || '';
   const runtime = movieDetails_?.runtime;
   const seasons = seriesDetails_?.seasons;
@@ -156,163 +180,164 @@ export default function DetailsPage() {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Main content */}
           <div className="flex-1 flex flex-col md:flex-row gap-8 min-w-0">
-          {/* Poster */}
-          <div className="shrink-0 w-48 md:w-64">
-            {details.poster_path ? (
-              <img
-                src={posterURL(details.poster_path, 'w342')}
-                alt={title}
-                className="w-full rounded-xl shadow-2xl"
-              />
-            ) : (
-              <div className="w-full aspect-[2/3] rounded-xl bg-white/10 flex items-center justify-center text-white/30">
-                No Image
+            {/* Poster */}
+            <div className="shrink-0 w-48 md:w-64">
+              {details.poster_path ? (
+                <img
+                  src={posterURL(details.poster_path, 'w342')}
+                  alt={title}
+                  className="w-full rounded-xl shadow-2xl"
+                />
+              ) : (
+                <div className="w-full aspect-[2/3] rounded-xl bg-white/10 flex items-center justify-center text-white/30">
+                  No Image
+                </div>
+              )}
+            </div>
+
+            {/* Info */}
+            <div className="flex-1 pt-4">
+              <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">{title}</h1>
+
+              <div className="flex flex-wrap items-center gap-3 mb-4 text-sm">
+                <span className="flex items-center gap-1 text-yellow-400">
+                  <Star size={14} fill="currentColor" />
+                  {details.vote_average?.toFixed(1) ?? 'N/A'}
+                </span>
+                {releaseDate && (
+                  <span className="flex items-center gap-1 text-white/60">
+                    <Calendar size={14} />
+                    {releaseDate.slice(0, 4)}
+                  </span>
+                )}
+                {runtime && (
+                  <span className="flex items-center gap-1 text-white/60">
+                    <Clock size={14} />
+                    {runtime}m
+                  </span>
+                )}
+                {!isMovie && seasons && (
+                  <span className="flex items-center gap-1 text-white/60">
+                    <Clock size={14} />
+                    {seasons.length} Season{seasons.length !== 1 ? 's' : ''}
+                  </span>
+                )}
               </div>
-            )}
-          </div>
 
-          {/* Info */}
-          <div className="flex-1 pt-4">
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">{title}</h1>
+              {/* Genres */}
+              <div className="flex flex-wrap gap-2 mb-4">
+                {genres.map((g) => (
+                  <span
+                    key={g}
+                    className="px-3 py-1 bg-white/10 rounded-full text-xs text-white/70"
+                  >
+                    {g}
+                  </span>
+                ))}
+              </div>
 
-            <div className="flex flex-wrap items-center gap-3 mb-4 text-sm">
-              <span className="flex items-center gap-1 text-yellow-400">
-                <Star size={14} fill="currentColor" />
-                {details.vote_average?.toFixed(1) ?? 'N/A'}
-              </span>
-              {releaseDate && (
-                <span className="flex items-center gap-1 text-white/60">
-                  <Calendar size={14} />
-                  {releaseDate.slice(0, 4)}
-                </span>
-              )}
-              {runtime && (
-                <span className="flex items-center gap-1 text-white/60">
-                  <Clock size={14} />
-                  {runtime}m
-                </span>
-              )}
-              {!isMovie && seasons && (
-                <span className="flex items-center gap-1 text-white/60">
-                  <Clock size={14} />
-                  {seasons.length} Season{seasons.length !== 1 ? 's' : ''}
-                </span>
-              )}
-            </div>
+              {/* Overview */}
+              <p className="text-white/70 leading-relaxed mb-6">{details.overview}</p>
 
-            {/* Genres */}
-            <div className="flex flex-wrap gap-2 mb-4">
-              {genres.map((g) => (
-                <span
-                  key={g}
-                  className="px-3 py-1 bg-white/10 rounded-full text-xs text-white/70"
-                >
-                  {g}
-                </span>
-              ))}
-            </div>
+              <AdSlot position="in-content" className="mb-6" />
 
-            {/* Overview */}
-            <p className="text-white/70 leading-relaxed mb-6">{details.overview}</p>
+              {/* Actions */}
+              <div className="flex flex-wrap gap-3 mb-6">
+                {trailer ? (
+                  <a
+                    href={`https://www.youtube.com/watch?v=${trailer.key}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-6 py-3 bg-brand-primary hover:bg-brand-hover text-white rounded-lg font-medium transition-colors"
+                  >
+                    <Play size={18} fill="white" /> Trailer
+                  </a>
+                ) : null}
 
-            <AdSlot position="in-content" className="mb-6" />
+                {/* Stream link dropdown + Play + Download */}
+                {(() => {
+                  const links = isMovie
+                    ? (firebaseMovie?.streamLinks ?? []).filter((l) => l.enabled)
+                    : ((firebaseSeries?.seasons ?? [])
+                        .find((s) => s.number === selectedSeason)
+                        ?.episodes?.find((e) => e.number === expandedEpisode)
+                        ?.streamLinks?.filter((l) => l.enabled) ?? []);
 
-            {/* Actions */}
-            <div className="flex flex-wrap gap-3 mb-6">
-              {trailer ? (
-                <a
-                  href={`https://www.youtube.com/watch?v=${trailer.key}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-6 py-3 bg-brand-primary hover:bg-brand-hover text-white rounded-lg font-medium transition-colors"
-                >
-                  <Play size={18} fill="white" /> Trailer
-                </a>
-              ) : null}
+                  if (links.length === 0) {
+                    return (
+                      <Link
+                        to={`/player/${type}/${movieId}`}
+                        className="flex items-center gap-2 px-6 py-3 bg-brand-primary hover:bg-brand-hover text-white rounded-lg font-medium transition-colors"
+                      >
+                        <Play size={18} fill="white" /> Watch Now
+                      </Link>
+                    );
+                  }
 
-              {/* Stream link dropdown + Play + Download */}
-              {(() => {
-                const links = isMovie
-                  ? (firebaseMovie?.streamLinks ?? []).filter((l) => l.enabled)
-                  : (firebaseSeries?.seasons ?? [])
-                      .find((s) => s.number === selectedSeason)
-                      ?.episodes?.find((e) => e.number === expandedEpisode)
-                      ?.streamLinks?.filter((l) => l.enabled) ?? [];
-
-                if (links.length === 0) {
                   return (
-                    <Link
-                      to={`/player/${type}/${movieId}`}
-                      className="flex items-center gap-2 px-6 py-3 bg-brand-primary hover:bg-brand-hover text-white rounded-lg font-medium transition-colors"
-                    >
-                      <Play size={18} fill="white" /> Watch Now
-                    </Link>
+                    <div className="flex items-center gap-2">
+                      <select
+                        value={selectedLink?.url ?? ''}
+                        onChange={(e) => {
+                          const link = links.find((l) => l.url === e.target.value);
+                          setSelectedLink(link ?? null);
+                        }}
+                        className="bg-white/10 text-white border border-white/20 rounded-lg px-3 py-3 text-sm focus:outline-none focus:border-brand-primary appearance-none cursor-pointer min-w-[180px]"
+                      >
+                        {links.map((l) => (
+                          <option key={l.url} value={l.url} className="bg-neutral-900 text-white">
+                            {l.name || l.quality}
+                          </option>
+                        ))}
+                      </select>
+                      <a
+                        href={selectedLink?.url ?? links[0].url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-6 py-3 bg-brand-primary hover:bg-brand-hover text-white rounded-lg font-medium transition-colors"
+                      >
+                        <Play size={18} fill="white" /> Play
+                      </a>
+                      <a
+                        href={selectedLink?.url ?? links[0].url}
+                        download
+                        className="flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition-colors"
+                      >
+                        <Download size={18} /> Download
+                      </a>
+                    </div>
                   );
-                }
+                })()}
 
-                return (
-                  <div className="flex items-center gap-2">
-                    <select
-                      value={selectedLink?.url ?? ''}
-                      onChange={(e) => {
-                        const link = links.find((l) => l.url === e.target.value);
-                        setSelectedLink(link ?? null);
-                      }}
-                      className="bg-white/10 text-white border border-white/20 rounded-lg px-3 py-3 text-sm focus:outline-none focus:border-brand-primary appearance-none cursor-pointer min-w-[180px]"
-                    >
-                      {links.map((l) => (
-                        <option key={l.url} value={l.url} className="bg-neutral-900 text-white">
-                          {l.name || l.quality}
-                        </option>
-                      ))}
-                    </select>
-                    <a
-                      href={selectedLink?.url ?? links[0].url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-6 py-3 bg-brand-primary hover:bg-brand-hover text-white rounded-lg font-medium transition-colors"
-                    >
-                      <Play size={18} fill="white" /> Play
-                    </a>
-                    <a
-                      href={selectedLink?.url ?? links[0].url}
-                      download
-                      className="flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition-colors"
-                    >
-                      <Download size={18} /> Download
-                    </a>
-                  </div>
-                );
-              })()}
+                {isAuthenticated && (
+                  <button
+                    onClick={() => toggleWatchlist(movieId)}
+                    className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors ${
+                      isWatchlisted(movieId)
+                        ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                        : 'bg-white/10 text-white hover:bg-white/20'
+                    }`}
+                  >
+                    <BookmarkPlus size={18} />
+                    {isWatchlisted(movieId) ? 'In Watchlist' : 'Watchlist'}
+                  </button>
+                )}
 
-              {isAuthenticated && (
-                <button
-                  onClick={() => toggleWatchlist(movieId)}
-                  className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors ${
-                    isWatchlisted(movieId)
-                      ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                      : 'bg-white/10 text-white hover:bg-white/20'
-                  }`}
-                >
-                  <BookmarkPlus size={18} />
-                  {isWatchlisted(movieId) ? 'In Watchlist' : 'Watchlist'}
-                </button>
-              )}
-
-              {isAuthenticated && (
-                <button
-                  onClick={handleRequestMovie}
-                  disabled={requestSent || requestLoading}
-                  className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors ${
-                    requestSent
-                      ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-                      : 'bg-white/10 text-white hover:bg-white/20'
-                  }`}
-                >
-                  <Send size={18} />
-                  {requestSent ? 'Requested' : requestLoading ? 'Sending...' : 'Request'}
-                </button>
-              )}
+                {isAuthenticated && (
+                  <button
+                    onClick={handleRequestMovie}
+                    disabled={requestSent || requestLoading}
+                    className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors ${
+                      requestSent
+                        ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                        : 'bg-white/10 text-white hover:bg-white/20'
+                    }`}
+                  >
+                    <Send size={18} />
+                    {requestSent ? 'Requested' : requestLoading ? 'Sending...' : 'Request'}
+                  </button>
+                )}
+              </div>
             </div>
           </div>
 
@@ -358,30 +383,33 @@ export default function DetailsPage() {
 
             {/* Season selector */}
             <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-              {seasons.filter((s) => s.season_number > 0).map((season) => (
-                <button
-                  key={season.season_number}
-                  onClick={() => setSelectedSeason(season.season_number)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-                    selectedSeason === season.season_number
-                      ? 'bg-brand-primary text-white'
-                      : 'bg-white/5 text-white/60 hover:bg-white/10'
-                  }`}
-                >
-                  Season {season.season_number}
-                </button>
-              ))}
+              {seasons
+                .filter((s) => s.season_number > 0)
+                .map((season) => (
+                  <button
+                    key={season.season_number}
+                    onClick={() => setSelectedSeason(season.season_number)}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
+                      selectedSeason === season.season_number
+                        ? 'bg-brand-primary text-white'
+                        : 'bg-white/5 text-white/60 hover:bg-white/10'
+                    }`}
+                  >
+                    Season {season.season_number}
+                  </button>
+                ))}
             </div>
 
             {/* Episodes */}
             <div className="space-y-3">
               {episodes.map((ep) => (
-                <div
-                  key={ep.id}
-                  className="bg-white/5 rounded-xl overflow-hidden"
-                >
+                <div key={ep.id} className="bg-white/5 rounded-xl overflow-hidden">
                   <button
-                    onClick={() => setExpandedEpisode(expandedEpisode === ep.episode_number ? null : ep.episode_number)}
+                    onClick={() =>
+                      setExpandedEpisode(
+                        expandedEpisode === ep.episode_number ? null : ep.episode_number,
+                      )
+                    }
                     className="w-full flex items-center gap-4 p-4 text-left hover:bg-white/5 transition-colors"
                   >
                     <span className="text-white/40 text-sm font-mono w-8">{ep.episode_number}</span>
@@ -404,14 +432,13 @@ export default function DetailsPage() {
                   </button>
                   {expandedEpisode === ep.episode_number && (
                     <div className="px-4 pb-4">
-                      {ep.overview && (
-                        <p className="text-sm text-white/50 mb-3">{ep.overview}</p>
-                      )}
+                      {ep.overview && <p className="text-sm text-white/50 mb-3">{ep.overview}</p>}
                       {(() => {
-                        const epLinks = (firebaseSeries?.seasons ?? [])
-                          .find((s) => s.number === selectedSeason)
-                          ?.episodes?.find((e) => e.number === ep.episode_number)
-                          ?.streamLinks?.filter((l) => l.enabled) ?? [];
+                        const epLinks =
+                          (firebaseSeries?.seasons ?? [])
+                            .find((s) => s.number === selectedSeason)
+                            ?.episodes?.find((e) => e.number === ep.episode_number)
+                            ?.streamLinks?.filter((l) => l.enabled) ?? [];
 
                         if (epLinks.length === 0) {
                           return (
@@ -438,7 +465,11 @@ export default function DetailsPage() {
                               className="bg-white/10 text-white border border-white/20 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-brand-primary appearance-none cursor-pointer min-w-[140px]"
                             >
                               {epLinks.map((l) => (
-                                <option key={l.url} value={l.url} className="bg-neutral-900 text-white">
+                                <option
+                                  key={l.url}
+                                  value={l.url}
+                                  className="bg-neutral-900 text-white"
+                                >
                                   {l.name || l.quality}
                                 </option>
                               ))}
