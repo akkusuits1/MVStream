@@ -23,17 +23,23 @@ export default function InterstitialAd() {
     const lastShown = parseInt(localStorage.getItem(DISMISS_KEY) || '0', 10);
     if (Date.now() - lastShown < MIN_INTERVAL) return;
 
+    let dismissed = false;
     getEnabledAdsForPosition('interstitial').then((results) => {
+      if (dismissed) return;
       const allAds = results.flatMap((r) => r.ads);
       if (allAds.length === 0) return;
       setAd(allAds[0]);
       setVisible(true);
       localStorage.setItem(DISMISS_KEY, String(Date.now()));
-
-      // Auto-dismiss after 5 seconds
-      const timer = setTimeout(() => setDismissable(true), 5000);
-      return () => clearTimeout(timer);
     });
+
+    // Auto-dismiss after 5 seconds
+    const timer = setTimeout(() => setDismissable(true), 5000);
+
+    return () => {
+      dismissed = true;
+      clearTimeout(timer);
+    };
   }, [pathname]);
 
   // Inject ad code
